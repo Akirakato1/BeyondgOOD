@@ -4,7 +4,7 @@ import java.util.List;
 import edu.cs3500.spreadsheets.sexp.Sexp;
 import edu.cs3500.spreadsheets.sexp.SexpVisitor;
 
-public class GetNumber implements SexpVisitor<Double>{
+public class GetNum implements SexpVisitor<Double>{
 
   @Override
   public Double visitBoolean(boolean b) {

@@ -29,7 +29,12 @@ public class SList implements Sexp {
 
   @Override
   public String toString() {
-    return "(" + this.contents.stream().map(Sexp::toString).collect(Collectors.joining(" ")) + ")";
+    //return "(" + this.contents.stream().map(Sexp::toString).collect(Collectors.joining(" ")) + ")";
+    String output="";
+    for(int i=0;i<this.contents.size();i++) {
+      output+=this.contents.get(i).getClass();
+    }
+    return output;
   }
 
   @Override

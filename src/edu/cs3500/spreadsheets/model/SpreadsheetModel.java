@@ -2,6 +2,7 @@ package edu.cs3500.spreadsheets.model;
 
 import java.util.HashMap;
 import edu.cs3500.spreadsheets.sexp.Parser;
+import edu.cs3500.spreadsheets.sexp.SList;
 import edu.cs3500.spreadsheets.sexp.SNumber;
 import edu.cs3500.spreadsheets.sexp.Sexp;
 
@@ -9,7 +10,7 @@ public class SpreadsheetModel implements ISpreadsheetModel {
   private HashMap<Coord, String> cells = new HashMap<>();
   //value hashmap only for numeric coordinates
   //null for error (cyclic)
-  private HashMap<Coord, IValue> values = new HashMap<>();
+  private HashMap<Coord, Double> values = new HashMap<>();
 
   private void cellDontExistException(Coord coord) {
     if (!cells.containsKey(coord)) {
@@ -17,33 +18,43 @@ public class SpreadsheetModel implements ISpreadsheetModel {
     }
   }
 
+  //evalCell return Sexp, if blank its empty string Sexp. else its a number,boolean, string
+  
   @Override
-  public double computeValue(Coord coord) {
+  public void expProcess(Coord coord) {
     cellDontExistException(coord);
+    String expression=cells.get(coord);
+    if(expression.substring(0,1).equals("=")) {
+      values.put(coord,formulaProcess(expression.substring(1,expression.length())));
+    }
     Sexp sexp=Parser.parse(cells.get(coord));
+  }
+  
+  private double formulaProcess(String expression) {
+    Sexp sexp=Parser.parse(expression);
+    if(sexp instanceof SList) {
+     
+    }
     
     
     return 0;
-  }
-
-  private double computeValueHelper(Sexp expression) {
-    return 1;
   }
 
   @Override
   public void updateCellSexp(Coord coord, String sexp) {
     cellDontExistException(coord);
     cells.put(coord, sexp);
-    updateValuesMap(coord,sexp);
+   // updateValuesMap(coord,sexp);
   }
 
   @Override
   public void createCell(int row, int col, String sexp) {
     Coord coordinate = new Coord(col, row);
     cells.put(coordinate, sexp);
-    updateValuesMap(coordinate,sexp);
+   // updateValuesMap(coordinate,sexp);
   }
   
+  /*
   private void updateValuesMap(Coord coordinate, String sexp) {
     Sexp parsed=Parser.parse(sexp);
     if(parsed instanceof SNumber) {
@@ -51,13 +62,13 @@ public class SpreadsheetModel implements ISpreadsheetModel {
     }else if(values.containsKey(coordinate)){
       values.remove(coordinate);
     }
-  }
+  }*/
 
   @Override
   public void deleteCell(Coord coord) {
     cellDontExistException(coord);
     cells.remove(coord);
-    values.remove(coord);
+   // values.remove(coord);
   }
 
   private Coord nameToCoord(String name) {

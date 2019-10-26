@@ -7,7 +7,7 @@ package edu.cs3500.spreadsheets.model;
  */
 public interface ISpreadsheetModel {
    
-  double computeValue(Coord coord);
+  void expProcess(Coord coord);
   
   
   void deleteCell(Coord coord);

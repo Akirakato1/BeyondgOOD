@@ -23,7 +23,6 @@ public class BeyondGood {
      * and build a model from it, - evaluate all the cells, and - report any errors, or print the
      * evaluated value of the requested cell.
      */
-    
-   
+    (p (p str str) str str);
   }
 }
