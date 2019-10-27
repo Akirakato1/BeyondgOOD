@@ -1,12 +1,7 @@
 package edu.cs3500.spreadsheets;
 
-import java.util.List;
-import java.util.Scanner;
-import edu.cs3500.spreadsheets.sexp.Parser;
-import edu.cs3500.spreadsheets.sexp.SList;
-import edu.cs3500.spreadsheets.sexp.SString;
-import edu.cs3500.spreadsheets.sexp.SSymbol;
-import edu.cs3500.spreadsheets.sexp.Sexp;
+import edu.cs3500.spreadsheets.model.WorksheetBuilderImpl;
+import edu.cs3500.spreadsheets.model.WorksheetReader;
 
 /**
  * The main class for our program.
@@ -23,6 +18,6 @@ public class BeyondGood {
      * and build a model from it, - evaluate all the cells, and - report any errors, or print the
      * evaluated value of the requested cell.
      */
-    (p (p str str) str str);
+    WorksheetReader reader=new WorksheetReader();
   }
 }

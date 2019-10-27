@@ -2,108 +2,49 @@ package edu.cs3500.spreadsheets.model;
 
 import java.util.HashMap;
 import edu.cs3500.spreadsheets.sexp.Parser;
-import edu.cs3500.spreadsheets.sexp.SList;
-import edu.cs3500.spreadsheets.sexp.SNumber;
-import edu.cs3500.spreadsheets.sexp.Sexp;
 
 public class SpreadsheetModel implements ISpreadsheetModel {
-  private HashMap<Coord, String> cells = new HashMap<>();
-  //value hashmap only for numeric coordinates
-  //null for error (cyclic)
-  private HashMap<Coord, Double> values = new HashMap<>();
-
-  private void cellDontExistException(Coord coord) {
-    if (!cells.containsKey(coord)) {
-      throw new IllegalArgumentException("Cell doesn't exist at given coordinate");
-    }
-  }
-
-  //evalCell return Sexp, if blank its empty string Sexp. else its a number,boolean, string
-  
-  @Override
-  public void expProcess(Coord coord) {
-    cellDontExistException(coord);
-    String expression=cells.get(coord);
-    if(expression.substring(0,1).equals("=")) {
-      values.put(coord,formulaProcess(expression.substring(1,expression.length())));
-    }
-    Sexp sexp=Parser.parse(cells.get(coord));
-  }
-  
-  private double formulaProcess(String expression) {
-    Sexp sexp=Parser.parse(expression);
-    if(sexp instanceof SList) {
-     
-    }
-    
-    
-    return 0;
-  }
+  private HashMap<Coord, Formula> cells = new HashMap<>();
 
   @Override
-  public void updateCellSexp(Coord coord, String sexp) {
-    cellDontExistException(coord);
-    cells.put(coord, sexp);
-   // updateValuesMap(coord,sexp);
-  }
-
-  @Override
-  public void createCell(int row, int col, String sexp) {
-    Coord coordinate = new Coord(col, row);
-    cells.put(coordinate, sexp);
-   // updateValuesMap(coordinate,sexp);
-  }
-  
-  /*
-  private void updateValuesMap(Coord coordinate, String sexp) {
-    Sexp parsed=Parser.parse(sexp);
-    if(parsed instanceof SNumber) {
-      values.put(coordinate, parsed.accept(new GetNumber()));
-    }else if(values.containsKey(coordinate)){
-      values.remove(coordinate);
+  public void updateCell(Coord coord, String sexp) {
+    String exp = sexp;
+    if (exp.substring(0, 1).equals("=")) {
+      exp = exp.substring(1, exp.length());
     }
-  }*/
+    Formula formula = Parser.parse(exp).accept(new TranslateSexp(this));
+    if (cyclePresent(coord, formula)) {
+      throw new IllegalArgumentException("Cycle detected in formula");
+    }
+    cells.put(coord, formula);
+  }
 
   @Override
   public void deleteCell(Coord coord) {
-    cellDontExistException(coord);
+    if (!cells.containsKey(coord)) {
+      throw new IllegalArgumentException("Coord is not mapped");
+    }
     cells.remove(coord);
-   // values.remove(coord);
   }
 
-  private Coord nameToCoord(String name) {
-    int index = validateCoordName(name);
-    return new Coord(Coord.colNameToIndex(name.substring(0, index)),
-        Integer.parseInt(name.substring(index, name.length())));
+  @Override
+  public Formula getFormulaAtCoord(Coord coord) {
+    if (cells.containsKey(coord)) {
+      return cells.get(coord);
+    }
+    return new Blank();
   }
 
-  private int validateCoordName(String name) {
-    int indexAlphabet = 0;
-    
-    for (; indexAlphabet < name.length(); indexAlphabet++) {
-      if (!(name.charAt(indexAlphabet) <= 'Z' && name.charAt(indexAlphabet) >= 'A')) {
-        if(indexAlphabet==0) {
-          throw new IllegalArgumentException("First letter not alphabet");
-        }
-        break;
-      }
+  @Override
+  public Value evaluateCell(Coord coord) {
+    if (!cells.containsKey(coord)) {
+      return new Blank();
     }
+    return cells.get(coord).evaluate();
+  }
 
-    int indexInteger = indexAlphabet;
-    for (; indexInteger < name.length(); indexInteger++) {
-      if (!(name.charAt(indexInteger) <= '9' && name.charAt(indexInteger) >= '0')) {
-        if(indexInteger==name.length()-1) {
-          throw new IllegalArgumentException("Last letter not integer");
-        }
-        break;
-      }
-    }
-    
-    if(indexInteger<name.length()-1) {
-      throw new IllegalArgumentException("Doesn't follow alphabet+number pattern or have other symbols");
-    }
-
-    return indexAlphabet;
+  private boolean cyclePresent(Coord currentCoord, Formula formula) {
+    return formula.cyclePresent(currentCoord);
   }
 
 }

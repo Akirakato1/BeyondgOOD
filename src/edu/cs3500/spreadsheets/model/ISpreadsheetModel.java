@@ -6,14 +6,13 @@ package edu.cs3500.spreadsheets.model;
  *
  */
 public interface ISpreadsheetModel {
-   
-  void expProcess(Coord coord);
   
+  Formula getFormulaAtCoord(Coord coord);
+  
+  Value evaluateCell(Coord coord);
   
   void deleteCell(Coord coord);
 
-  void createCell(int row, int col, String sexp);
-
-  void updateCellSexp(Coord coord, String sexp);
+  void updateCell(Coord coord, String sexp);
   
 }
