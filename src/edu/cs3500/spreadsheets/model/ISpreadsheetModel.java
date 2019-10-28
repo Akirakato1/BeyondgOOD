@@ -24,8 +24,7 @@ public interface ISpreadsheetModel {
   Value evaluateCell(Coord coord);
 
   /**
-   * Deletes a cell from the spreadsheet. NOTE: NOT IMPLEMENTED IN HW5 YET. NEED MORE INFO
-   * IN THE COMING ASSINGMENTS ON HOW DELETION WORKS.
+   * Deletes a cell from the spreadsheet.
    * @param coord coordinate of cell
    */
   void deleteCell(Coord coord);

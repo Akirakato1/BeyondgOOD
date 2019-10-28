@@ -16,7 +16,7 @@ public class TranslateSexp implements SexpVisitor<Formula> {
   private ISpreadsheetModel ss;
 
   /**
-   * Constructor for a TrnaslateSexp that translates SExps into Formulas.
+   * Constructor for a TranslateSexp that translates SExps into Formulas.
    */
   public TranslateSexp(ISpreadsheetModel ss) {
     this.ss = ss;
@@ -112,7 +112,7 @@ public class TranslateSexp implements SexpVisitor<Formula> {
    * @return boolean of whether given string is a valid rectangle representation
    */
   private static boolean isValidRectangle(String name) {
-    return validRectangleHelper(name) == null;
+    return validRectangleHelper(name) != null;
   }
 
   /**

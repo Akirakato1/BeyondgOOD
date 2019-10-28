@@ -11,7 +11,7 @@ public class Product extends AbstractFunction {
    * @param args array of formulas that are inputted
    */
   public Product(Formula... args) {
-    super(args);
+    arguments = args;
   }
 
   /**
