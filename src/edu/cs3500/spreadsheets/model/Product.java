@@ -1,12 +1,24 @@
 package edu.cs3500.spreadsheets.model;
 
+/**
+ * To represent a product function. It multiples 2 cells or a range of cells.
+ */
 public class Product extends AbstractFunction {
-  Formula[] arguments;
+  private Formula[] arguments;
 
+  /**
+   * Consturctor to create a formula function.
+   * @param args array of formulas that are inputted
+   */
   public Product(Formula... args) {
     super(args);
   }
 
+  /**
+   * If there are blank or non-number cells, they are ignored. If all inputs are non-number,
+   * then outputs 0. Otherwise, outputs the product of the cells.
+   * @return product of the cells
+   */
   @Override
   public Value evaluate() {
     Value output;

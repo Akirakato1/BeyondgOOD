@@ -1,5 +1,8 @@
 package edu.cs3500.spreadsheets.model;
 
+/**
+ * To represent a blank cell, which is also a type of value.
+ */
 public class Blank implements Value{
   
   @Override

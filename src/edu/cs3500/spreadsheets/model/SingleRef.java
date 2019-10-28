@@ -1,12 +1,21 @@
 package edu.cs3500.spreadsheets.model;
 
+/**
+ * To represent a single cell reference (eg. A1 = B1).
+ */
 public class SingleRef implements Ref {
-  Coord refCoord;
-  ISpreadsheetModel ss;
-  
-  public SingleRef(Coord coord,ISpreadsheetModel ss) {
-    this.refCoord=coord;
-    this.ss=ss;
+  private final Coord refCoord;
+  private ISpreadsheetModel ss;
+
+  /**
+   * Constructor to make a single cell reference
+   *
+   * @param coord coordinate of cell
+   * @param ss    spreadsheet model
+   */
+  public SingleRef(Coord coord, ISpreadsheetModel ss) {
+    this.refCoord = coord;
+    this.ss = ss;
   }
 
   @Override
@@ -24,5 +33,5 @@ public class SingleRef implements Ref {
   public boolean cyclePresent(Coord currentCoord) {
     return refCoord.equals(currentCoord);
   }
-  
+
 }

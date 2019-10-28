@@ -3,12 +3,21 @@ package edu.cs3500.spreadsheets.model;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import edu.cs3500.spreadsheets.sexp.Sexp;
 import edu.cs3500.spreadsheets.sexp.SexpVisitor;
 
+/**
+ * Visitor that translates given s-expressions into a formula. In this way, we avoid the pitfalls of
+ * storing a hashmap of coordinate/SExp pairs to represent cells. This class is used when we create
+ * our hashmap of coordinates/Formulas.
+ */
 public class TranslateSexp implements SexpVisitor<Formula> {
-  ISpreadsheetModel ss;
+  private ISpreadsheetModel ss;
 
+  /**
+   * Constructor for a TrnaslateSexp that translates SExps into Formulas.
+   */
   public TranslateSexp(ISpreadsheetModel ss) {
     this.ss = ss;
   }
@@ -51,13 +60,13 @@ public class TranslateSexp implements SexpVisitor<Formula> {
   @Override
   public Formula visitSymbol(String s) {
     try {
-      Coord coord=nameToCoord(s);
+      Coord coord = nameToCoord(s);
       return new SingleRef(coord, ss);
-    }catch(IllegalArgumentException e) {
-      if(isValidRectangle(s)) {
-        List<Coord> coords=validRectangleHelper(s);
-        return new RectangleRef(coords.get(0),coords.get(1),ss);
-      }else {
+    } catch (IllegalArgumentException e) {
+      if (isValidRectangle(s)) {
+        List<Coord> coords = validRectangleHelper(s);
+        return new RectangleRef(coords.get(0), coords.get(1), ss);
+      } else {
         throw new IllegalArgumentException("Not a valid singleref or rectangleref symbol");
       }
     }
@@ -68,6 +77,14 @@ public class TranslateSexp implements SexpVisitor<Formula> {
     return new Str(s);
   }
 
+  /**
+   * Returns a list of coordinates representing the two coordinates given from a rectangle. ("A1:B1"
+   * -> creates A1 and B1 and inserts into a list).
+   *
+   * @param name A string representing the range of cells.
+   * @return a list containing the first and last coordinates of the rectangle
+   * Otherwise, returns null if there is an error/invalid rectangle.
+   */
   private static List<Coord> validRectangleHelper(String name) {
     int colonIndex = name.indexOf(':');
     if (colonIndex < 0) {
@@ -79,7 +96,7 @@ public class TranslateSexp implements SexpVisitor<Formula> {
       Coord cell1Coord = nameToCoord(cell1);
       Coord cell2Coord = nameToCoord(cell2);
       if (cell1Coord.col <= cell2Coord.col && cell1Coord.row <= cell2Coord.row) {
-        return new ArrayList<Coord>(Arrays.asList(cell1Coord, cell2Coord));
+        return new ArrayList<>(Arrays.asList(cell1Coord, cell2Coord));
       }
       return null;
 
@@ -89,10 +106,21 @@ public class TranslateSexp implements SexpVisitor<Formula> {
 
   }
 
+  /**
+   * Returns whether given input is a valid rectangle.
+   * @param name given range of cells (eg. "A1:B3"
+   * @return boolean of whether given string is a valid rectangle representation
+   */
   private static boolean isValidRectangle(String name) {
     return validRectangleHelper(name) == null;
   }
 
+  /**
+   * Returns index of where the letter ends and the numbers start. Throws error
+   * if cell name is malformed.
+   * @param name given cell name
+   * @return index of the last letter in the cell name
+   */
   private static int isValidCell(String name) {
     int indexAlphabet = 0;
 
@@ -117,16 +145,21 @@ public class TranslateSexp implements SexpVisitor<Formula> {
 
     if (indexInteger < name.length() - 1) {
       throw new IllegalArgumentException(
-          "Doesn't follow alphabet+number pattern or have other symbols");
+              "Doesn't follow alphabet+number pattern or have other symbols");
     }
 
     return indexAlphabet;
   }
 
+  /**
+   * Turns a named cell into a coordinate.
+   * @param name name of cell (eg. "A1")
+   * @return returns coordinate of that cell
+   */
   private static Coord nameToCoord(String name) {
     int index = isValidCell(name);
     return new Coord(Coord.colNameToIndex(name.substring(0, index)),
-        Integer.parseInt(name.substring(index, name.length())));
+            Integer.parseInt(name.substring(index, name.length())));
   }
 
 }

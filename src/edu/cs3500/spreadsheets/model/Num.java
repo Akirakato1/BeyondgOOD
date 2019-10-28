@@ -1,8 +1,15 @@
 package edu.cs3500.spreadsheets.model;
 
+/**
+ * To represent a number value inside a spreadsheet cell.
+ */
 public class Num implements Value{
   private final double value;
-  
+
+  /**
+   * Constructor to make a number.
+   * @param val value of cell
+   */
   public Num(double val) {
     this.value=val;
   }

@@ -1,7 +1,14 @@
 package edu.cs3500.spreadsheets.model;
 
+/**
+ * To represent the lessthan function "<".
+ */
 public class Lessthan extends AbstractFunction {
-  
+
+  /**
+   * Constructor for the lessthan formula.
+   * @param args arguments of the function
+   */
   public Lessthan(Formula...args) {
     super(args);
     if(args.length!=2) {

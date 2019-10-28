@@ -1,5 +1,8 @@
 package edu.cs3500.spreadsheets.model;
 
+/**
+ * To represent a boolean value (true/false)
+ */
 public class Bool implements Value{
   private final boolean value;
   

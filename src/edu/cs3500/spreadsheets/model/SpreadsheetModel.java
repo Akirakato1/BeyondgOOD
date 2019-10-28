@@ -1,8 +1,13 @@
 package edu.cs3500.spreadsheets.model;
 
 import java.util.HashMap;
+
 import edu.cs3500.spreadsheets.sexp.Parser;
 
+/**
+ * Implementation of the spreadsheet model interface. It contains a hashmap that has the coordinates
+ * as well as the formulas, so users can perform basic "CRUD" operations on the spreadsheet.
+ */
 public class SpreadsheetModel implements ISpreadsheetModel {
   private HashMap<Coord, Formula> cells = new HashMap<>();
 

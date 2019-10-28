@@ -1,8 +1,16 @@
 package edu.cs3500.spreadsheets.model;
 
+/**
+ * To represent a string value of a single cell. Used when we translate
+ * SExp into values.
+ */
 public class Str implements Value{
   private final String value;
-  
+
+  /**
+   * Constructor to create a string value.
+   * @param val string to be stored
+   */
   public Str(String val) {
     this.value=val;
   }

@@ -2,16 +2,23 @@ package edu.cs3500.spreadsheets.model;
 
 import edu.cs3500.spreadsheets.model.WorksheetReader.WorksheetBuilder;
 
-public class WorksheetBuilderImpl implements WorksheetBuilder<ISpreadsheetModel>{
-  ISpreadsheetModel ss;
-  
+/**
+ * Implementation of the worksheet builder. Contains methods that builds and creates the worksheet
+ * (which is an ISpreadsheetModel) and the cells.
+ */
+public class WorksheetBuilderImpl implements WorksheetBuilder<ISpreadsheetModel> {
+  private ISpreadsheetModel ss;
+
+  /**
+   * Constructor to create a worksheet builder.
+   */
   public WorksheetBuilderImpl() {
-    ss=new SpreadsheetModel();
+    ss = new SpreadsheetModel();
   }
-  
+
   @Override
   public WorksheetBuilder<ISpreadsheetModel> createCell(int col, int row, String contents) {
-    ss.updateCell(new Coord(col,row), contents);
+    ss.updateCell(new Coord(col, row), contents);
     return this;
   }
 
