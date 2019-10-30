@@ -1,5 +1,6 @@
 package edu.cs3500.spreadsheets;
 
+import java.util.Scanner;
 import edu.cs3500.spreadsheets.model.WorksheetBuilderImpl;
 import edu.cs3500.spreadsheets.model.WorksheetReader;
 

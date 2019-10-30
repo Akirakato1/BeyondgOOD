@@ -9,6 +9,7 @@ package edu.cs3500.spreadsheets.model;
  */
 public interface ISpreadsheetModel {
 
+ 
   /**
    * Gets the formula used at a certain cell.
    * @param coord coordinate of cell

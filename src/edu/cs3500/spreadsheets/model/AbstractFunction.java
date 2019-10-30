@@ -26,8 +26,4 @@ abstract class AbstractFunction implements Function {
     return output;
   }
   
-  @Override
-  public void setArgs(Formula...args) {
-    this.arguments=args;
-  }
 }

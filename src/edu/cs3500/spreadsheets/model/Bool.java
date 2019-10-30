@@ -3,7 +3,7 @@ package edu.cs3500.spreadsheets.model;
 /**
  * To represent a boolean value (true/false)
  */
-class Bool implements Value{
+public class Bool implements Value{
   private final boolean value;
   
   public Bool(boolean bool) {
@@ -30,5 +30,12 @@ class Bool implements Value{
     return visitor.visitFormula(this);
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if(!(o instanceof Bool)) {
+      return false;
+    }
+    return this.value==((Bool)o).value;
+  }
 
 }

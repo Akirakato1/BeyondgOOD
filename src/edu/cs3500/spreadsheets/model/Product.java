@@ -29,7 +29,7 @@ class Product extends AbstractFunction {
     List<Double> visitorOutput=new ArrayList<>();
     int ignored = 0;
     for (int i = 0; i < arguments.length; i++) {
-      output = arguments[i].accept(new EvaluateVisitor(new Product()));
+      output = arguments[i].accept(new EvaluateVisitor("PRODUCT"));
       visitorOutput = output.accept(new ProductVisitor());
       result*=visitorOutput.get(0);
       if(visitorOutput.get(1)==1) {

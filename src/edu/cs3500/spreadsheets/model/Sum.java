@@ -20,8 +20,8 @@ class Sum extends AbstractFunction {
     Value output;
     double result = 0;
     for (int i = 0; i < arguments.length; i++) {
-      output = arguments[i].accept(new EvaluateVisitor(new Sum()));
-      result = output.accept(new SumVisitor());
+      output = arguments[i].accept(new EvaluateVisitor("SUM"));
+      result += output.accept(new SumVisitor());
     }
     return new Num(result);
   }

@@ -4,7 +4,7 @@ package edu.cs3500.spreadsheets.model;
  * To represent a string value of a single cell. Used when we translate
  * SExp into values.
  */
-class Str implements Value{
+public class Str implements Value{
   private final String value;
 
   /**
@@ -33,6 +33,19 @@ class Str implements Value{
   @Override
   public <R> R accept(FormulaVisitor<R> visitor) {
     return visitor.visitFormula(this);
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if(!(o instanceof Str)) {
+      return false;
+    }
+    return this.value.equals(((Str)o).value);
+  }
+  
+  @Override
+  public String toString() {
+    return this.value;
   }
 
 }

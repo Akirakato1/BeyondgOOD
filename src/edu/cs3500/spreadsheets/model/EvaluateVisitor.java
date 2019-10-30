@@ -1,16 +1,27 @@
 package edu.cs3500.spreadsheets.model;
 
 public class EvaluateVisitor implements FormulaVisitor<Value> {
-  Function func;
+  String func;
 
-  public EvaluateVisitor(Function f) {
+  public EvaluateVisitor(String f) {
     func = f;
   }
 
   @Override
   public Value visitRectangleRef(RectangleRef rf) {
-    func.setArgs(rf.expand());
-    return func.evaluate();
+    switch (func) {
+      case "SUM":
+        return new Sum(rf.expand()).evaluate();
+      case "PRODUCT":
+        return new Product(rf.expand()).evaluate();
+      case "<":
+        return new Lessthan(rf.expand()).evaluate();
+      case "CONCAT":
+        return new Concat(rf.expand()).evaluate();
+      default:
+        throw new IllegalArgumentException(
+            "function type not exist, should never throw this exception since visitor");
+    }
   }
 
   @Override

@@ -19,8 +19,8 @@ class Concat extends AbstractFunction {
     String result = "";
 
     for (int i = 0; i < arguments.length; i++) {
-      output = arguments[i].accept(new EvaluateVisitor(new Concat()));
-      result = output.accept(new ConcatVisitor());
+      output = arguments[i].accept(new EvaluateVisitor("CONCAT"));
+      result += output.accept(new ConcatVisitor());
     }
     return new Str(result);
   }
