@@ -8,10 +8,9 @@ import static org.junit.Assert.assertEquals;
 
 public class TestSpreadsheet {
 
-  // TODO:
+  // TODO: REFACTOR ALL FUNCTIONS!!!!
   // test for all the different cell contents (q 19)............
   // rendering values as strings (24)
-  //test for concat
   // non matching (sum true 5)
   // product of empty cell should be 0 not 1
   // test for all public methods in ISpreadsheetModel
@@ -257,6 +256,101 @@ public class TestSpreadsheet {
     double value = model.evaluateCell(new Coord(1,2)).getDouble();
     assertEquals(0, value,0.0);
   }
+
+
+  // test for concat on a simple good input.
+  @Test
+  public void testConcat() {
+    SpreadsheetModel model = new SpreadsheetModel();
+    model.updateCell(new Coord(1, 1), "=(CONCAT hello world)");
+    Value value = model.evaluateCell(new Coord(1, 1));
+    assertEquals("helloworld", value.getString());
+  }
+
+  // test for concat on multiple good input.
+  @Test
+  public void testConcat2() {
+    SpreadsheetModel model = new SpreadsheetModel();
+    model.updateCell(new Coord(1, 1), "=(CONCAT HI HI HI)");
+    Value value = model.evaluateCell(new Coord(1, 1));
+    assertEquals(24.0, value.getString());
+  }
+
+  // test for concat on multiple good input and functions.
+  @Test
+  public void testConcat3() {
+    SpreadsheetModel model = new SpreadsheetModel();
+    model.updateCell(new Coord(1, 1), "=(CONCAT HELLO (SUM 1 2) 3 4)");
+    Value value = model.evaluateCell(new Coord(1, 1));
+    assertEquals(36.0, value.getString());
+  }
+
+  // test concat on references.
+  @Test
+  public void testConcat4() {
+    SpreadsheetModel model = new SpreadsheetModel();
+    model.updateCell(new Coord(1, 1), "=Hello");
+    model.updateCell(new Coord(1, 2), "A1");
+    model.updateCell(new Coord(1, 3), "=(CONCAT A1 A2)");
+    Value value = model.evaluateCell(new Coord(1, 3));
+    assertEquals(1296.0, value.getString());
+  }
+
+  // test concat on rectangle of references.
+  @Test
+  public void testConcat5() {
+    SpreadsheetModel model = new SpreadsheetModel();
+    model.updateCell(new Coord(1, 1), "=HELLO");
+    model.updateCell(new Coord(1, 2), "=A1");
+    model.updateCell(new Coord(2, 1), "10");
+    model.updateCell(new Coord(1, 3), "=(CONCAT A1:B2)");
+    Value value = model.evaluateCell(new Coord(1, 3));
+    assertEquals(12960.0, value.getString());
+  }
+
+  // test concat for no numeric values.
+  @Test
+  public void testConcat6() {
+    SpreadsheetModel model = new SpreadsheetModel();
+    model.updateCell(new Coord(1, 1), "=(< (SUM 1 2) 3)");
+    model.updateCell(new Coord(1, 2), "=A1");
+    model.updateCell(new Coord(2, 1), "=A2");
+    model.updateCell(new Coord(1, 6), "=(SUM A1:B5)");
+    Value value = model.evaluateCell(new Coord(1, 6));
+    assertEquals(0.0, value.getDouble(), 0.0);
+
+  }
+
+  // test concat for many cells with a cycle.
+  @Test(expected = IllegalArgumentException.class)
+  public void testConcatManyWithCycle() {
+    SpreadsheetModel model = new SpreadsheetModel();
+    model.updateCell(new Coord(1, 1), "=(CONCAT (PRODUCT 1 2) 3)");
+    model.updateCell(new Coord(1, 2), "=A1");
+    model.updateCell(new Coord(2, 1), "=A2");
+    model.updateCell(new Coord(1, 3), "=(CONCAT A1:B10)");
+  }
+
+  // test for concat product with arbitrary inputs.
+  @Test
+  public void testConcatSingleCell() {
+    SpreadsheetModel model = new SpreadsheetModel();
+    model.updateCell(new Coord(1, 1), "=(CONCAT hello product (PRODUCT 1 2 3))");
+    Value value = model.evaluateCell(new Coord(1, 1));
+    assertEquals(6.0, value.getString());
+  }
+
+  // test concat that contains blank cell.
+  @Test
+  public void testConcatBlankCell() {
+    SpreadsheetModel model = new SpreadsheetModel();
+    model.updateCell(new Coord(1,1),"B1");
+    model.updateCell(new Coord(1,2),"=(CONCAT B1 B1)");
+    String value = model.evaluateCell(new Coord(1,2)).getString();
+    assertEquals("", value);
+  }
+
+
 
 
   // test for product on a simple good input.
