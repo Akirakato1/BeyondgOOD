@@ -37,5 +37,10 @@ public class Bool implements Value{
     }
     return this.value==((Bool)o).value;
   }
+  
+  @Override
+  public String toString() {
+    return value+"";
+  }
 
 }

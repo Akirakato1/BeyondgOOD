@@ -12,13 +12,14 @@ class RectangleRef implements Ref {
   /**
    * Constructor for a rectangle of references
    *
-   * @param first  coordinate of first cell
+   * @param first coordinate of first cell
    * @param second coordinate of last cell
-   * @param ss     spreadsheet model
+   * @param ss spreadsheet model
    */
   public RectangleRef(Coord first, Coord second, ISpreadsheetModel ss) {
     if (!(first.col <= second.col && first.row <= second.row)) {
-      throw new IllegalArgumentException("First coord not less than or equal to second coord");
+      throw new IllegalArgumentException("First coord not less than or equal to second coord: "
+          + first.toString() + ":" + second.toString());
     }
 
     this.first = first;

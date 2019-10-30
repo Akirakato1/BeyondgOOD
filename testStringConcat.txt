@@ -1,0 +1,4 @@
+A1 "a says \"hi\". b has one backslash \\ here."
+A2 "b says bye"
+
+A3 =(CONCAT A1:A2)

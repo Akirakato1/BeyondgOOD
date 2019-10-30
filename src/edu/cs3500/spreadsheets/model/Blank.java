@@ -24,5 +24,10 @@ class Blank implements Value{
   public <R> R accept(FormulaVisitor<R> visitor) {
     return visitor.visitFormula(this);
   }
+  
+  @Override
+  public String toString() {
+    return "";
+  }
 
 }

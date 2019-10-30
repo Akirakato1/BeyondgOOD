@@ -22,7 +22,8 @@ public class SpreadsheetModel implements ISpreadsheetModel {
     Formula formula = Parser.parse(exp).accept(new TranslateSexp(this));
 
     if (cyclePresent(coord, formula)) {
-      throw new IllegalArgumentException("Cycle detected in formula");
+      throw new IllegalArgumentException(
+          "Cycle detected at " + coord.toString() + " formula: " + formula.toString());
     }
 
     cells.put(coord, formula);
