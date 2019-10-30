@@ -7,14 +7,13 @@ import java.util.List;
  * To represent a product function. It multiples 2 cells or a range of cells.
  */
 class Product extends AbstractFunction {
-  private Formula[] arguments;
 
   /**
    * Constructor to create a formula function.
    * @param args array of formulas that are inputted
    */
   public Product(Formula... args) {
-    arguments = args;
+    super(args);
   }
 
   /**
@@ -40,16 +39,6 @@ class Product extends AbstractFunction {
       result = 0;
     }
     return new Num(result);
-  }
-
-  @Override
-  public boolean cyclePresent(Coord currentCoord) {
-    boolean output = false;
-    for (Formula arg : arguments) {
-      output = output || arg.cyclePresent(currentCoord);
-    }
-
-    return output;
   }
 
   @Override

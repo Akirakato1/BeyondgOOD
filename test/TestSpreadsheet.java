@@ -140,7 +140,7 @@ public class TestSpreadsheet {
     Value value = model.evaluateCell(new Coord(1, 1));
     assertEquals(null, value.getDouble());
   }
-
+*/
   // test sum when cell refers to itself.
   @Test(expected = IllegalArgumentException.class)
   public void testUpdateCellCycle() {
@@ -185,6 +185,7 @@ public class TestSpreadsheet {
     model.updateCell(new Coord(1, 1), "=(PRODUCT A1 1)");
   }
 
+  /*
   // test model when cell is updated with a cycle.
   @Test(expected = IllegalArgumentException.class)
   public void testSumCycleAfterUpdate() {
@@ -322,7 +323,7 @@ public class TestSpreadsheet {
     assertEquals(0.0, value.getDouble(), 0.0);
 
   }
-
+*/
   // test concat for many cells with a cycle.
   @Test(expected = IllegalArgumentException.class)
   public void testConcatManyWithCycle() {
@@ -331,7 +332,7 @@ public class TestSpreadsheet {
     model.updateCell(new Coord(1, 2), "=A1");
     model.updateCell(new Coord(2, 1), "=A2");
     model.updateCell(new Coord(1, 3), "=(CONCAT A1:B10)");
-  }
+  }/*
 
   // test for concat product with arbitrary inputs.
   @Test

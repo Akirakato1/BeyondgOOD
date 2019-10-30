@@ -4,7 +4,6 @@ package edu.cs3500.spreadsheets.model;
  * To represent a sum function. 1
  */
 class Sum extends AbstractFunction {
-  private Formula[] arguments;
 
   /**
    * Constructor for a sum function.
@@ -12,7 +11,7 @@ class Sum extends AbstractFunction {
    * @param args array of formula arguments
    */
   public Sum(Formula... args) {
-    arguments = args;
+    super(args);
   }
 
   @Override
@@ -24,15 +23,6 @@ class Sum extends AbstractFunction {
       result += output.accept(new SumVisitor());
     }
     return new Num(result);
-  }
-
-  @Override
-  public boolean cyclePresent(Coord currentCoord) {
-    boolean output = false;
-    for (Formula arg : arguments) {
-      output = output || arg.cyclePresent(currentCoord);
-    }
-    return output;
   }
 
   @Override
