@@ -1,5 +1,8 @@
 package edu.cs3500.spreadsheets.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * To represent a product function. It multiples 2 cells or a range of cells.
  */
@@ -7,7 +10,7 @@ class Product extends AbstractFunction {
   private Formula[] arguments;
 
   /**
-   * Consturctor to create a formula function.
+   * Constructor to create a formula function.
    * @param args array of formulas that are inputted
    */
   public Product(Formula... args) {
@@ -23,19 +26,14 @@ class Product extends AbstractFunction {
   public Value evaluate() {
     Value output;
     double result = 1;
+    List<Double> visitorOutput=new ArrayList<>();
     int ignored = 0;
     for (int i = 0; i < arguments.length; i++) {
-      if (arguments[i].getType().equals("RectangleRef")) {
-        output = new Product(((RectangleRef) arguments[i]).expand()).evaluate();
-      } else {
-        output = arguments[i].evaluate();
-      }
-      switch (output.getType()) {
-        case "Num":
-          result = result * output.getDouble();
-          break;
-        default:
-          ignored++;
+      output = arguments[i].accept(new EvaluateVisitor(new Product()));
+      visitorOutput = output.accept(new ProductVisitor());
+      result*=visitorOutput.get(0);
+      if(visitorOutput.get(1)==1) {
+        ignored++;
       }
     }
     if (ignored == arguments.length) {
@@ -45,13 +43,6 @@ class Product extends AbstractFunction {
   }
 
   @Override
-  public String getType() {
-    return "PRODUCT";
-  }
-
-
-
-  @Override
   public boolean cyclePresent(Coord currentCoord) {
     boolean output = false;
     for (Formula arg : arguments) {
@@ -59,6 +50,11 @@ class Product extends AbstractFunction {
     }
 
     return output;
+  }
+
+  @Override
+  public <R> R accept(FormulaVisitor<R> visitor) {
+    return visitor.visitFormula(this);
   }
 
 

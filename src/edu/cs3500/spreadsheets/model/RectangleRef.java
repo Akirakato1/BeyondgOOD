@@ -31,11 +31,6 @@ class RectangleRef implements Ref {
     return new Blank();
   }
 
-  @Override
-  public String getType() {
-    return "RectangleRef";
-  }
-
   public Formula[] expand() {
     Formula[] expanded = new Formula[(second.col - first.col + 1) * (second.row - first.row + 1)];
     int k = 0;
@@ -56,6 +51,11 @@ class RectangleRef implements Ref {
       output = output || r.cyclePresent(currentCoord);
     }
     return output;
+  }
+
+  @Override
+  public <R> R accept(FormulaVisitor<R> visitor) {
+    return visitor.visitRectangleRef(this);
   }
 
 }

@@ -7,36 +7,32 @@ class Lessthan extends AbstractFunction {
 
   /**
    * Constructor for the lessthan formula.
+   * 
    * @param args arguments of the function
    */
-  public Lessthan(Formula...args) {
+  public Lessthan(Formula... args) {
     super(args);
-    if(args.length!=2) {
+    if (args.length != 2) {
       throw new IllegalArgumentException("not exactly 2 arguments to lessthan");
     }
   }
-  
+
   @Override
   public Value evaluate() {
     Value output;
-    double[] input=new double[2];
-    for(int i=0;i<2;i++) {
-      output=arguments[i].evaluate();
-      switch(output.getType()) {
-        case "Num":
-          input[i]=output.getDouble();
-          break;
-        default:
-      }
+    double[] input = new double[2];
+    for (int i = 0; i < 2; i++) {
+      output = arguments[i].accept(new EvaluateVisitor(new Lessthan()));
+      input[i] = output.accept(new LessthanVisitor());
     }
-    return new Bool(input[0]<input[1]);
+    return new Bool(input[0] < input[1]);
   }
 
   @Override
-  public String getType() {
-    return "<";
+  public <R> R accept(FormulaVisitor<R> visitor) {
+    return visitor.visitFormula(this);
   }
- 
+
 
 
 }

@@ -13,13 +13,7 @@ public interface Formula {
    */
   Value evaluate();
 
-  /**
-   * Gets the type of function/operation to be performed.
-   *
-   * @return a string to represent which function it is  (PRODUCT/SUM/LESSTHAN/CONCAT)
-   */
-  String getType();
-
+  
   /**
    * Since cycles may be detected differently depending on the type of value/formula it is (eg.
    * single blank cells cannot have cycles, this method allows more flexibility to detect where
@@ -28,5 +22,7 @@ public interface Formula {
    * @return boolean to represent if there is a cycle at that coordinate
    */
   boolean cyclePresent(Coord currentCoord);
+  
+  <R> R accept(FormulaVisitor<R> visitor);
 
 }

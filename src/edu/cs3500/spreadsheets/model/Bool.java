@@ -16,28 +16,18 @@ class Bool implements Value{
   }
 
   @Override
-  public String getType() {
-    return "Bool";
-  }
-
-  @Override
-  public String getString() {
-    return null;
-  }
-
-  @Override
-  public Double getDouble() {
-    return null;
-  }
-
-  @Override
-  public Boolean getBoolean() {
-    return value;
-  }
-
-  @Override
   public boolean cyclePresent(Coord currentCoord) {
     return false;
+  }
+
+  @Override
+  public <R> R accept(ValueVisitor<R> visitor) {
+    return visitor.visitBool(value);
+  }
+  
+  @Override
+  public <R> R accept(FormulaVisitor<R> visitor) {
+    return visitor.visitFormula(this);
   }
 
 

@@ -440,7 +440,7 @@ public class TestSpreadsheet {
   public void testProductBlankCell() {
     SpreadsheetModel model = new SpreadsheetModel();
     model.updateCell(new Coord(1,1),"B1");
-    model.updateCell(new Coord(1,2),"=(PRODUCT 1 B1)");
+    model.updateCell(new Coord(1,2),"=(PRODUCT B1 B1)");
     double value = model.evaluateCell(new Coord(1,2)).getDouble();
     assertEquals(0, value,0.0);
   }

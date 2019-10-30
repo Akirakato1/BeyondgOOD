@@ -19,27 +19,17 @@ class Concat extends AbstractFunction {
     String result = "";
 
     for (int i = 0; i < arguments.length; i++) {
-      if (arguments[i].getType().equals("RectangleRef")) { // if rectangle (A1:B3)
-        output = new Concat(((RectangleRef) arguments[i]).expand()).evaluate();
-      } else {
-        output = arguments[i].evaluate();
-      }
-      switch (output.getType()) {
-        case "Str":
-          result = result + output.getString();
-          break;
-        case "Num":
-          result = result + output.getDouble();
-        default:
-      }
+      output = arguments[i].accept(new EvaluateVisitor(new Concat()));
+      result = output.accept(new ConcatVisitor());
     }
     return new Str(result);
   }
 
   @Override
-  public String getType() {
-    return "CONCAT";
+  public <R> R accept(FormulaVisitor<R> visitor) {
+    return visitor.visitFormula(this);
   }
+
 
 
 }

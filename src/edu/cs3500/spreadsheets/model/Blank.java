@@ -11,28 +11,18 @@ class Blank implements Value{
   }
 
   @Override
-  public String getType() {
-    return "Blank";
-  }
-
-  @Override
-  public String getString() {
-    return null;
-  }
-
-  @Override
-  public Double getDouble() {
-    return null;
-  }
-
-  @Override
-  public Boolean getBoolean() {
-    return null;
-  }
-
-  @Override
   public boolean cyclePresent(Coord currentCoord) {
     return false;
+  }
+
+  @Override
+  public <R> R accept(ValueVisitor<R> visitor) {
+    return visitor.visitBlank();
+  }
+
+  @Override
+  public <R> R accept(FormulaVisitor<R> visitor) {
+    return visitor.visitFormula(this);
   }
 
 }

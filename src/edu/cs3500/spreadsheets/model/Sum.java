@@ -20,24 +20,10 @@ class Sum extends AbstractFunction {
     Value output;
     double result = 0;
     for (int i = 0; i < arguments.length; i++) {
-      if (arguments[i].getType().equals("RectangleRef")) {
-        output = new Sum(((RectangleRef) arguments[i]).expand()).evaluate();
-      } else {
-        output = arguments[i].evaluate();
-      }
-      switch (output.getType()) {
-        case "Num":
-          result = result + output.getDouble();
-          break;
-        default:
-      }
+      output = arguments[i].accept(new EvaluateVisitor(new Sum()));
+      result = output.accept(new SumVisitor());
     }
     return new Num(result);
-  }
-
-  @Override
-  public String getType() {
-    return "SUM";
   }
 
   @Override
@@ -47,6 +33,11 @@ class Sum extends AbstractFunction {
       output = output || arg.cyclePresent(currentCoord);
     }
     return output;
+  }
+
+  @Override
+  public <R> R accept(FormulaVisitor<R> visitor) {
+    return visitor.visitFormula(this);
   }
 
 

@@ -20,28 +20,18 @@ public class Num implements Value{
   }
 
   @Override
-  public String getType() {
-    return "Num";
-  }
-
-  @Override
-  public String getString() {
-    return null;
-  }
-
-  @Override
-  public Double getDouble() {
-    return value;
-  }
-
-  @Override
-  public Boolean getBoolean() {
-    return null;
-  }
-
-  @Override
   public boolean cyclePresent(Coord currentCoord) {
     return false;
+  }
+
+  @Override
+  public <R> R accept(ValueVisitor<R> visitor) {
+    return visitor.visitNum(value);
+  }
+  
+  @Override
+  public <R> R accept(FormulaVisitor<R> visitor) {
+    return visitor.visitFormula(this);
   }
 
 }

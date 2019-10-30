@@ -11,7 +11,7 @@ class SingleRef implements Ref {
    * Constructor to make a single cell reference
    *
    * @param coord coordinate of cell
-   * @param ss    spreadsheet model
+   * @param ss spreadsheet model
    */
   public SingleRef(Coord coord, ISpreadsheetModel ss) {
     this.refCoord = coord;
@@ -24,21 +24,14 @@ class SingleRef implements Ref {
   }
 
   @Override
-  public String getType() {
-    return "SingleRef";
-  }
-
-  @Override
   public boolean cyclePresent(Coord currentCoord) {
-
-    return refCoord.equals(currentCoord) ||
-            ss.getFormulaAtCoord(refCoord).cyclePresent(currentCoord);
-
+    return refCoord.equals(currentCoord)
+        || ss.getFormulaAtCoord(refCoord).cyclePresent(currentCoord);
   }
 
   @Override
-  public String toString() {
-    return refCoord.toString();
+  public <R> R accept(FormulaVisitor<R> visitor) {
+    return visitor.visitFormula(this);
   }
 
 }

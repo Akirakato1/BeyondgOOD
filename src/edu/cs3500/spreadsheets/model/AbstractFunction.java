@@ -5,7 +5,7 @@ package edu.cs3500.spreadsheets.model;
  * is some shared code between the different functions, especially how they check cycles.
  */
 abstract class AbstractFunction implements Function {
-  protected final Formula[] arguments;
+  protected Formula[] arguments;
 
   /**
    * Constructor to be shared among the functions
@@ -25,5 +25,9 @@ abstract class AbstractFunction implements Function {
 
     return output;
   }
-
+  
+  @Override
+  public void setArgs(Formula...args) {
+    this.arguments=args;
+  }
 }
