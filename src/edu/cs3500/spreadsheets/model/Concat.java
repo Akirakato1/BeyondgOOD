@@ -4,7 +4,7 @@ package edu.cs3500.spreadsheets.model;
  * To represent the concat function that users can use.
  * An example concat would be ("hello " + "world" -> "hello world").
  */
-public class Concat extends AbstractFunction {
+class Concat extends AbstractFunction {
   /**
    * Constructor to create a concat function.
    * @param args array list of formula arguments

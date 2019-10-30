@@ -4,7 +4,7 @@ package edu.cs3500.spreadsheets.model;
  * To represent a function that users can use (SUM/PRODUCT/LESSTHAN/CONCAT). Abstract because there
  * is some shared code between the different functions, especially how they check cycles.
  */
-public abstract class AbstractFunction implements Function {
+abstract class AbstractFunction implements Function {
   protected final Formula[] arguments;
 
   /**
@@ -22,6 +22,7 @@ public abstract class AbstractFunction implements Function {
     for (Formula arg : arguments) {
       output = output || arg.cyclePresent(currentCoord);
     }
+
     return output;
   }
 

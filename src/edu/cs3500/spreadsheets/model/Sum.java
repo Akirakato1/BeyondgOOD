@@ -3,7 +3,7 @@ package edu.cs3500.spreadsheets.model;
 /**
  * To represent a sum function. 1
  */
-public class Sum extends AbstractFunction {
+class Sum extends AbstractFunction {
   private Formula[] arguments;
 
   /**
@@ -38,6 +38,15 @@ public class Sum extends AbstractFunction {
   @Override
   public String getType() {
     return "SUM";
+  }
+
+  @Override
+  public boolean cyclePresent(Coord currentCoord) {
+    boolean output = false;
+    for (Formula arg : arguments) {
+      output = output || arg.cyclePresent(currentCoord);
+    }
+    return output;
   }
 
 

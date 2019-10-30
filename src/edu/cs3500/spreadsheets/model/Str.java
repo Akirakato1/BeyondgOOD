@@ -4,7 +4,7 @@ package edu.cs3500.spreadsheets.model;
  * To represent a string value of a single cell. Used when we translate
  * SExp into values.
  */
-public class Str implements Value{
+class Str implements Value{
   private final String value;
 
   /**

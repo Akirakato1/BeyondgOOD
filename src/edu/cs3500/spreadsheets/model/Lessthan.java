@@ -3,7 +3,7 @@ package edu.cs3500.spreadsheets.model;
 /**
  * To represent the lessthan function "<".
  */
-public class Lessthan extends AbstractFunction {
+class Lessthan extends AbstractFunction {
 
   /**
    * Constructor for the lessthan formula.

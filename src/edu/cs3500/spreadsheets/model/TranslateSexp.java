@@ -12,7 +12,7 @@ import edu.cs3500.spreadsheets.sexp.SexpVisitor;
  * storing a hashmap of coordinate/SExp pairs to represent cells. This class is used when we create
  * our hashmap of coordinates/Formulas.
  */
-public class TranslateSexp implements SexpVisitor<Formula> {
+class TranslateSexp implements SexpVisitor<Formula> {
   private ISpreadsheetModel ss;
 
   /**

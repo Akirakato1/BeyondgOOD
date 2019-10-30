@@ -3,7 +3,7 @@ package edu.cs3500.spreadsheets.model;
 /**
  * To represent a rectangle of references (used when user inputs something like A1:B3)
  */
-public class RectangleRef implements Ref {
+class RectangleRef implements Ref {
   private final Coord first;
   private final Coord second;
   private ISpreadsheetModel ss;

@@ -6,7 +6,10 @@ import edu.cs3500.spreadsheets.sexp.Parser;
 
 /**
  * Implementation of the spreadsheet model interface. It contains a hashmap that has the coordinates
- * as well as the formulas, so users can perform basic "CRUD" operations on the spreadsheet.
+ * as well as the formulas, so users can perform basic "CRUD" operations on the spreadsheet. All
+ * cells are blank unless defined. If a cell is initiated and references another cell that has not
+ * been defined yet (eg. A1 = B1), A1 will be blank as B1 has not been defined yet. If the user
+ * introduces a cycle in B1/refers to A1, the model will throw an error.
  */
 public class SpreadsheetModel implements ISpreadsheetModel {
   private HashMap<Coord, Formula> cells = new HashMap<>();
@@ -18,9 +21,11 @@ public class SpreadsheetModel implements ISpreadsheetModel {
       exp = exp.substring(1, exp.length());
     }
     Formula formula = Parser.parse(exp).accept(new TranslateSexp(this));
+
     if (cyclePresent(coord, formula)) {
       throw new IllegalArgumentException("Cycle detected in formula");
     }
+
     cells.put(coord, formula);
   }
 

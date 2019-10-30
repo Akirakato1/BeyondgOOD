@@ -3,7 +3,7 @@ package edu.cs3500.spreadsheets.model;
 /**
  * To represent a product function. It multiples 2 cells or a range of cells.
  */
-public class Product extends AbstractFunction {
+class Product extends AbstractFunction {
   private Formula[] arguments;
 
   /**
@@ -47,6 +47,18 @@ public class Product extends AbstractFunction {
   @Override
   public String getType() {
     return "PRODUCT";
+  }
+
+
+
+  @Override
+  public boolean cyclePresent(Coord currentCoord) {
+    boolean output = false;
+    for (Formula arg : arguments) {
+      output = output || arg.cyclePresent(currentCoord);
+    }
+
+    return output;
   }
 
 

@@ -3,7 +3,7 @@ package edu.cs3500.spreadsheets.model;
 /**
  * To represent a single cell reference (eg. A1 = B1).
  */
-public class SingleRef implements Ref {
+class SingleRef implements Ref {
   private final Coord refCoord;
   private ISpreadsheetModel ss;
 
@@ -20,7 +20,6 @@ public class SingleRef implements Ref {
 
   @Override
   public Value evaluate() {
-    //detect cycle
     return ss.getFormulaAtCoord(refCoord).evaluate();
   }
 
@@ -31,7 +30,15 @@ public class SingleRef implements Ref {
 
   @Override
   public boolean cyclePresent(Coord currentCoord) {
-    return refCoord.equals(currentCoord);
+
+    return refCoord.equals(currentCoord) ||
+            ss.getFormulaAtCoord(refCoord).cyclePresent(currentCoord);
+
+  }
+
+  @Override
+  public String toString() {
+    return refCoord.toString();
   }
 
 }
