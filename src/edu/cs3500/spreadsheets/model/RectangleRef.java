@@ -10,7 +10,7 @@ class RectangleRef implements Ref {
 
 
   /**
-   * Constructor for a rectangle of references
+   * Constructor for a rectangle of references.
    *
    * @param first coordinate of first cell
    * @param second coordinate of last cell

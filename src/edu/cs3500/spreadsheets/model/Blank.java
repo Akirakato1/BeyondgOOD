@@ -1,5 +1,7 @@
 package edu.cs3500.spreadsheets.model;
 
+import java.util.Objects;
+
 /**
  * To represent a blank cell, which is also a type of value.
  */
@@ -28,6 +30,16 @@ class Blank implements Value{
   @Override
   public String toString() {
     return "";
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    return o instanceof Blank;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(this);
   }
 
 }

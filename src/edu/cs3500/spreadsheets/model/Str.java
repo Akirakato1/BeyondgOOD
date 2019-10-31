@@ -1,5 +1,7 @@
 package edu.cs3500.spreadsheets.model;
 
+import java.util.Objects;
+
 /**
  * To represent a string value of a single cell. Used when we translate
  * SExp into values.
@@ -46,6 +48,11 @@ public class Str implements Value{
   @Override
   public String toString() {
     return this.value;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(value);
   }
 
 }

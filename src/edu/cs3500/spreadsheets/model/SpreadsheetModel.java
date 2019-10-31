@@ -53,6 +53,12 @@ public class SpreadsheetModel implements ISpreadsheetModel {
     return cells.get(coord).evaluate();
   }
 
+  /**
+   * Checks if there is a cycle at the given coordinate and formula
+   * @param currentCoord current coordinate
+   * @param formula formula to be evaluated
+   * @return
+   */
   private boolean cyclePresent(Coord currentCoord, Formula formula) {
     return formula.cyclePresent(currentCoord);
   }

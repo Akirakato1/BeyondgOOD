@@ -1,5 +1,7 @@
 package edu.cs3500.spreadsheets.model;
 
+import java.util.Objects;
+
 /**
  * To represent a number value inside a spreadsheet cell.
  */
@@ -38,5 +40,23 @@ public class Num implements Value {
   @Override
   public String toString() {
     return value + "";
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+
+    if (!(o instanceof Num)) {
+      return false;
+    }
+
+    return this.equals(o.toString());
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(value);
   }
 }

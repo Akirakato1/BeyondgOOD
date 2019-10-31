@@ -9,7 +9,7 @@ import static org.junit.Assert.assertEquals;
 
 public class TestSpreadsheet {
 
-  // TODO: REFACTOR ALL FUNCTIONS!!!!
+  // TODO: Refactor value?
   // test for all the different cell contents (q 19)............
   // rendering values as strings (24)
   // non matching (sum true 5)
@@ -17,13 +17,13 @@ public class TestSpreadsheet {
   // test for all public methods in ISpreadsheetModel
 
   // test for creating an empty spreadsheet.
-  /*
+
   @Test
   public void createEmptySpreadsheet() {
     SpreadsheetModel model = new SpreadsheetModel();
     model.getFormulaAtCoord(new Coord(1, 1));
     Value value = model.evaluateCell(new Coord(1, 1));
-    assertEquals(null, value.getDouble());
+    assertEquals("", value.toString());
   }
 
 
@@ -34,11 +34,15 @@ public class TestSpreadsheet {
     model.updateCell(new Coord(1, 1), "=(PRODUCT (SUM 1 2) 3 4)");
     model.updateCell(new Coord(1, 2), "A1");
     model.updateCell(new Coord(1, 3), "=(SUM A1 A2)");
-    assertEquals(36, model.getFormulaAtCoord(new Coord(1,1)).evaluate().getDouble(), 0.0);
-    assertEquals(36, model.getFormulaAtCoord(new Coord(1,2)).evaluate().getDouble(), 0.0);
-    assertEquals(72, model.getFormulaAtCoord(new Coord(1,3)).evaluate().getDouble(), 0.0);
+    assertEquals("36.0",
+            model.getFormulaAtCoord(new Coord(1,1)).evaluate().toString());
+    assertEquals("36.0",
+            model.getFormulaAtCoord(new Coord(1,2)).evaluate().toString());
+    assertEquals("72.0",
+            model.getFormulaAtCoord(new Coord(1,3)).evaluate().toString());
   }
 
+  /*
   // test for sum on a simple good input.
   @Test
   public void testSum() {

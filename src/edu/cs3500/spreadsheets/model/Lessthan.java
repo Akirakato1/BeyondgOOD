@@ -26,11 +26,10 @@ class Lessthan extends AbstractFunction {
     return new Bool(input[0] < input[1]);
   }
 
-  @Override
-  public <R> R accept(FormulaVisitor<R> visitor) {
-    return visitor.visitFormula(this);
-  }
-
+  /**
+   * Throws exception if length of arguments is not equal to 2.
+   * @param args given arguments/formula
+   */
   private void argException(Formula... args) {
     if (args.length != 2) {
       throw new IllegalArgumentException("not exactly 2 arguments to lessthan" + args.length);

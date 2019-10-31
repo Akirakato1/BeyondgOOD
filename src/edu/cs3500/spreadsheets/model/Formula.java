@@ -7,7 +7,7 @@ package edu.cs3500.spreadsheets.model;
 public interface Formula {
 
   /**
-   * Evaluates the formula and returns a value representing its type (Str/Bool/Num)
+   * Evaluates the formula and returns a value representing its type (Str/Bool/Num).
    *
    * @return returns output/result of the formula after it is evaluated.
    */
@@ -22,7 +22,14 @@ public interface Formula {
    * @return boolean to represent if there is a cycle at that coordinate
    */
   boolean cyclePresent(Coord currentCoord);
-  
+
+  /**
+   * Accepts the visitor and visits the formula and outputs its corresponding value, which can then
+   * be evaluated.
+   * @param visitor visitor type for the formula (LessthanVisitor/SumVisitor/etc.)
+   * @param <R> an object representing formula output
+   * @return
+   */
   <R> R accept(FormulaVisitor<R> visitor);
 
 }

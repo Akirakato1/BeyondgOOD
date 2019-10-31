@@ -81,9 +81,9 @@ class TranslateSexp implements SexpVisitor<Formula> {
    * Returns a list of coordinates representing the two coordinates given from a rectangle. ("A1:B1"
    * -> creates A1 and B1 and inserts into a list).
    *
-   * @param name A string representing the range of cells.
+   * @param name A string representing the range of cells
    * @return a list containing the first and last coordinates of the rectangle
-   * Otherwise, returns null if there is an error/invalid rectangle.
+   * Otherwise, returns null if there is an error/invalid rectangle
    */
   private static List<Coord> validRectangleHelper(String name) {
     int colonIndex = name.indexOf(':');

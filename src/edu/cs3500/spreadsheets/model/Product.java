@@ -41,11 +41,5 @@ class Product extends AbstractFunction {
     return new Num(result);
   }
 
-  @Override
-  public <R> R accept(FormulaVisitor<R> visitor) {
-    return visitor.visitFormula(this);
-  }
-
-
 
 }

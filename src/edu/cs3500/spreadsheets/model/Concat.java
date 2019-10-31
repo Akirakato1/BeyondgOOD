@@ -25,11 +25,4 @@ class Concat extends AbstractFunction {
     return new Str(result);
   }
 
-  @Override
-  public <R> R accept(FormulaVisitor<R> visitor) {
-    return visitor.visitFormula(this);
-  }
-
-
-
 }

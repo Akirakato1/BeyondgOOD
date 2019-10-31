@@ -1,7 +1,7 @@
 package edu.cs3500.spreadsheets.model;
 
 /**
- * To represent a sum function. 1
+ * To represent a sum function.
  */
 class Sum extends AbstractFunction {
 
@@ -24,11 +24,5 @@ class Sum extends AbstractFunction {
     }
     return new Num(result);
   }
-
-  @Override
-  public <R> R accept(FormulaVisitor<R> visitor) {
-    return visitor.visitFormula(this);
-  }
-
 
 }
