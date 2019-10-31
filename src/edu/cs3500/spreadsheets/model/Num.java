@@ -10,7 +10,7 @@ public class Num implements Value {
 
   /**
    * Constructor to make a number.
-   * 
+   *
    * @param val value of cell
    */
   public Num(double val) {

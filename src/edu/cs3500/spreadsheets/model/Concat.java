@@ -1,13 +1,14 @@
 package edu.cs3500.spreadsheets.model;
 
 /**
- * To represent the concat function that users can use.
- * An example concat would be ("hello " + "world" -> "hello world").
+ * To represent the concat function that users can use. An example concat would be ("hello " +
+ * "world" -> "hello world").
  */
 class Concat extends AbstractFunction {
   /**
    * Constructor to create a concat function.
-   * @param args array list of formula arguments
+   *
+   * @param args array of formula arguments
    */
   public Concat(Formula... args) {
     super(args);
@@ -24,10 +25,10 @@ class Concat extends AbstractFunction {
     }
     return new Str(result);
   }
-  
+
   @Override
   public String toString() {
-    return "(CONCAT" +super.toString()+")";
+    return "(CONCAT" + super.toString() + ")";
   }
 
 }

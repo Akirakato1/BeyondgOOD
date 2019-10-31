@@ -5,8 +5,8 @@ import java.util.Objects;
 /**
  * To represent a blank cell, which is also a type of value.
  */
-public class Blank implements Value{
-  
+public class Blank implements Value {
+
   @Override
   public Value evaluate() {
     return this;
@@ -26,7 +26,7 @@ public class Blank implements Value{
   public <R> R accept(FormulaVisitor<R> visitor) {
     return visitor.visitFormula(this);
   }
-  
+
   @Override
   public String toString() {
     return "";

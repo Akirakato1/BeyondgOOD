@@ -14,6 +14,11 @@ class Sum extends AbstractFunction {
     super(args);
   }
 
+  /**
+   * Adds up all the values and ignores any non-numeric values.
+   *
+   * @return Value representing the sum
+   */
   @Override
   public Value evaluate() {
     Value output;
@@ -24,10 +29,10 @@ class Sum extends AbstractFunction {
     }
     return new Num(result);
   }
-  
+
   @Override
   public String toString() {
-    return "(SUM"+super.toString()+")";
+    return "(SUM" + super.toString() + ")";
   }
 
 }

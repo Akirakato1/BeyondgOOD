@@ -2,7 +2,8 @@ package edu.cs3500.spreadsheets.model;
 
 /**
  * To represent a Formula, which is used to represent the values stored within the cells. A formula
- * is characterized when a user inputs an equal sign (eg. "= SUM 1 2").
+ * is characterized when a user inputs an equal sign (eg. "= SUM 1 2"). A formula is one of: 1) a
+ * value 2) a reference to a rectangular region of cells 3) a function.
  */
 public interface Formula {
 
@@ -13,11 +14,12 @@ public interface Formula {
    */
   Value evaluate();
 
-  
+
   /**
    * Since cycles may be detected differently depending on the type of value/formula it is (eg.
    * single blank cells cannot have cycles, this method allows more flexibility to detect where
    * cycles are.
+   *
    * @param currentCoord current coordinate
    * @return boolean to represent if there is a cycle at that coordinate
    */
@@ -26,9 +28,9 @@ public interface Formula {
   /**
    * Accepts the visitor and visits the formula and outputs its corresponding value, which can then
    * be evaluated.
+   *
    * @param visitor visitor type for the formula (LessthanVisitor/SumVisitor/etc.)
-   * @param <R> an object representing formula output
-   * @return
+   * @param <R>     an object representing formula output
    */
   <R> R accept(FormulaVisitor<R> visitor);
 

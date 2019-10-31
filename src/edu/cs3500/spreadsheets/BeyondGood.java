@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.model.ISpreadsheetModel;
 import edu.cs3500.spreadsheets.model.Value;
@@ -14,12 +15,13 @@ import edu.cs3500.spreadsheets.model.WorksheetReader;
 import edu.cs3500.spreadsheets.model.WorksheetReader.WorksheetBuilder;
 
 /**
- * The main class for our program.
+ * The main class for our program where users can access the spreadsheet.
  */
 public class BeyondGood {
   /**
-   * The main entry point.
-   * 
+   * The main entry point for our program, where users can load up a file they made and access the
+   * values inside the spreadsheet.
+   *
    * @param args any command-line arguments
    */
   public static void main(String[] args) {
@@ -34,12 +36,12 @@ public class BeyondGood {
       WorksheetReader.read(builder, file);
       String cell = args[3];
       ISpreadsheetModel ss = builder.createWorksheet();
-      List<String> errs=ss.errorMessages();
-      if(errs.size()==0) {
-      Value result = ss.evaluateCell(nameToCoord(cell));
-      System.out.print(result.toString());
-      }else {
-        for(String s:errs) {
+      List<String> errs = ss.errorMessages();
+      if (errs.size() == 0) {
+        Value result = ss.evaluateCell(nameToCoord(cell));
+        System.out.print(result.toString());
+      } else {
+        for (String s : errs) {
           System.out.println(s);
         }
       }
@@ -50,6 +52,12 @@ public class BeyondGood {
     }
   }
 
+  /**
+   * Given a string coordinate name representing its position, turns it into an actual coordinate.
+   *
+   * @param name string name of coordinate
+   * @return actual coordinate representing that position
+   */
   private static Coord nameToCoord(String name) {
     final Pattern cellRef = Pattern.compile("([A-Za-z]+)([1-9][0-9]*)");
     Matcher m = cellRef.matcher(name);

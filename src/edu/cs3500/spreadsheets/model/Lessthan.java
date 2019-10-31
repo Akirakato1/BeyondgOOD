@@ -1,7 +1,7 @@
 package edu.cs3500.spreadsheets.model;
 
 /**
- * To represent the lessthan function "<".
+ * To represent the lessthan function "<". (Eg: 1 < 2 -> true).
  */
 class Lessthan extends AbstractFunction {
 

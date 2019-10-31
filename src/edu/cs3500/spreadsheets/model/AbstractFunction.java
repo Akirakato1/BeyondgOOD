@@ -4,7 +4,8 @@ import java.util.Objects;
 
 /**
  * To represent a function that users can use (SUM/PRODUCT/LESSTHAN/CONCAT). Abstract because there
- * is some shared code between the different functions, especially how they check cycles.
+ * is some shared code between the different functions, especially how they check cycles and how
+ * they accept visitors.
  */
 abstract class AbstractFunction implements Function {
   protected Formula[] arguments;
@@ -12,7 +13,7 @@ abstract class AbstractFunction implements Function {
   /**
    * Constructor to be shared among the functions.
    *
-   * @param args array list of arguments/formulas
+   * @param args array of arguments/formulas
    */
   public AbstractFunction(Formula... args) {
     arguments = args;
@@ -53,7 +54,7 @@ abstract class AbstractFunction implements Function {
   public String toString() {
     String ans = "";
     for (int i = 0; i < arguments.length; i++) {
-      ans +=" "+ this.arguments[i].toString();
+      ans += " " + this.arguments[i].toString();
     }
     return ans;
   }

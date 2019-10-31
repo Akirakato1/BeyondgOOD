@@ -3,7 +3,8 @@ package edu.cs3500.spreadsheets.model;
 import java.util.Objects;
 
 /**
- * To represent a boolean value (true/false).
+ * To represent a boolean value (true/false). Booleans are usually used to represent the result of
+ * functions like LESSTHAN.
  */
 public class Bool implements Value {
   private final boolean value;

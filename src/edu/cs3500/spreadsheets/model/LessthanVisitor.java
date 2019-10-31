@@ -1,10 +1,10 @@
 package edu.cs3500.spreadsheets.model;
 
 /**
- * To represent a LessthanVisitor that is used when the lessthan function object is used.
- * This gets the corresponding value from the Value objects.
+ * To represent a LessthanVisitor that is used when the lessthan function object is used. This class
+ * is used to get the corresponding value from the Value objects, or throws an error.
  */
-public class LessthanVisitor implements ValueVisitor<Double>{
+public class LessthanVisitor implements ValueVisitor<Double> {
 
   @Override
   public Double visitBool(boolean b) {

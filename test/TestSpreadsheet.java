@@ -48,9 +48,9 @@ public class TestSpreadsheet {
   @Test
   public void testStringCell() {
     SpreadsheetModel model = new SpreadsheetModel();
-    model.updateCell(new Coord(1, 1), "=\"HELLO\"");
-    Value value = model.getFormulaAtCoord(new Coord(1, 2)).evaluate();
-    assertEquals(new Str("HELLO"), value);
+    model.updateCell(new Coord(1, 1), "\"HELLO\"");
+    Value value = model.evaluateCell(new Coord(1, 1));
+    assertEquals(new Str("HELLO"), value.evaluate());
   }
 
   // test for sum on a simple good input (same inputs).
@@ -87,10 +87,10 @@ public class TestSpreadsheet {
   @Test
   public void testSumMismatch() {
     SpreadsheetModel model = new SpreadsheetModel();
-    assertEquals(0,model.errorMessages().size());
+    assertEquals(0, model.errorMessages().size());
     model.updateCell(new Coord(1, 1), "5");
-    model.updateCell(new Coord(1, 2), "=(SUM A1 true)");
-    assertEquals(1,model.errorMessages().size());
+    model.updateCell(new Coord(1, 2), "=(SUM A1 TRUE)");
+    assertEquals(1, model.errorMessages().size());
   }
 
   // test for product on a simple good input (same inputs).
@@ -98,16 +98,15 @@ public class TestSpreadsheet {
   public void testProductMismatch() {
     SpreadsheetModel model = new SpreadsheetModel();
     model.updateCell(new Coord(1, 1), "\"HELLO\"");
-    model.updateCell(new Coord(1, 2), "=(PRODUCT 5 A1)");
-    Value value = model.evaluateCell(new Coord(1, 2));
-    assertEquals(new Num(25), value.evaluate());
+    model.updateCell(new Coord(1, 2), "=(PRODUCT TRUE A1)");
+    assertEquals(1, model.errorMessages().size());
   }
 
   // test for concat on multiple good input (same inputs).
   @Test
   public void testConcatSame() {
     SpreadsheetModel model = new SpreadsheetModel();
-    model.updateCell(new Coord(1, 1), "=\"HI\")");
+    model.updateCell(new Coord(1, 1), "\"HI\"");
     model.updateCell(new Coord(1, 2), "=(CONCAT A1 A1)");
     Value value = model.evaluateCell(new Coord(1, 2));
     assertEquals(new Str("HIHI"), value.evaluate());
@@ -355,7 +354,7 @@ public class TestSpreadsheet {
 
 
   // test < on references.
-  @Test
+  @Test(expected = IllegalArgumentException.class)
   public void testLessThan4() {
     SpreadsheetModel model = new SpreadsheetModel();
     model.updateCell(new Coord(1, 1), "=(< (SUM 1 2) 1)");
@@ -366,12 +365,12 @@ public class TestSpreadsheet {
   }
 
   // test < for no numeric values.
-  @Test
+  @Test(expected = IllegalArgumentException.class)
   public void testBadLessThan() {
     SpreadsheetModel model = new SpreadsheetModel();
-    assertEquals(0,model.errorMessages().size());
+    assertEquals(0, model.errorMessages().size());
     model.updateCell(new Coord(1, 1), "=(< B2 B3)");
-    assertEquals(1,model.errorMessages().size());
+    model.evaluateCell(new Coord(1, 1));
   }
 
   // test for < with arbitrary inputs.
@@ -384,13 +383,13 @@ public class TestSpreadsheet {
   }
 
   // test < when it contains blank cell.
-  @Test
+  @Test(expected = IllegalArgumentException.class)
   public void testBadLessThan3() {
     SpreadsheetModel model = new SpreadsheetModel();
     assertEquals(0, model.errorMessages().size());
     model.updateCell(new Coord(1, 1), "B1");
     model.updateCell(new Coord(1, 2), "=(< B1 B5)");
-    assertEquals(1, model.errorMessages().size());
+    model.evaluateCell(new Coord(1, 2));
 
   }
 
@@ -461,12 +460,12 @@ public class TestSpreadsheet {
   @Test
   public void testConcatManyWithCycle() {
     SpreadsheetModel model = new SpreadsheetModel();
-    assertEquals(0,model.errorMessages().size());
+    assertEquals(0, model.errorMessages().size());
     model.updateCell(new Coord(1, 1), "=(CONCAT (PRODUCT 1 2) 3)");
     model.updateCell(new Coord(1, 2), "=A1");
     model.updateCell(new Coord(2, 1), "=A2");
     model.updateCell(new Coord(1, 3), "=(CONCAT A1:B10)");
-    assertEquals(4,model.errorMessages().size());
+    assertEquals(1, model.errorMessages().size());
 
   }
 
@@ -566,12 +565,12 @@ public class TestSpreadsheet {
   @Test
   public void testProductManyWithCycle() {
     SpreadsheetModel model = new SpreadsheetModel();
-    assertEquals(0,model.errorMessages().size());
+    assertEquals(0, model.errorMessages().size());
     model.updateCell(new Coord(1, 1), "=(< (PRODUCT 1 2) 3)");
     model.updateCell(new Coord(1, 2), "=A1");
     model.updateCell(new Coord(2, 1), "=A2");
     model.updateCell(new Coord(1, 3), "=(PRODUCT A1:B10)");
-    assertEquals(1,model.errorMessages().size());
+    assertEquals(1, model.errorMessages().size());
   }
 
   // test for product with arbitrary inputs.

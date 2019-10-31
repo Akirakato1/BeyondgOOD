@@ -3,7 +3,7 @@ package edu.cs3500.spreadsheets.model;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import javax.swing.plaf.ListUI;
+
 import edu.cs3500.spreadsheets.sexp.Parser;
 
 /**
@@ -29,7 +29,7 @@ public class SpreadsheetModel implements ISpreadsheetModel {
       Formula formula = Parser.parse(exp).accept(new TranslateSexp(this));
       if (cyclePresent(coord, formula)) {
         this.errorMessages
-            .add("Cycle detected at " + coord.toString() + " formula: =" + formula.toString());
+                .add("Cycle detected at " + coord.toString() + " formula: =" + formula.toString());
       } else {
         cells.put(coord, formula);
       }
@@ -60,7 +60,7 @@ public class SpreadsheetModel implements ISpreadsheetModel {
     if (!cells.containsKey(coord)) {
       return new Blank();
     }
-    if(values.containsKey(coord)) {
+    if (values.containsKey(coord)) {
       return values.get(coord);
     }
     values.put(coord, cells.get(coord).evaluate());
@@ -69,10 +69,9 @@ public class SpreadsheetModel implements ISpreadsheetModel {
 
   /**
    * Checks if there is a cycle at the given coordinate and formula
-   * 
+   *
    * @param currentCoord current coordinate
-   * @param formula formula to be evaluated
-   * @return
+   * @param formula      formula to be evaluated
    */
   private boolean cyclePresent(Coord currentCoord, Formula formula) {
     return formula.cyclePresent(currentCoord);

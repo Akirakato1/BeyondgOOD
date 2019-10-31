@@ -1,7 +1,7 @@
 package edu.cs3500.spreadsheets.model;
 
 /**
- * To represent a rectangle of references (used when user inputs something like A1:B3)
+ * To represent a rectangle of references (used when user inputs something like A1:B3).
  */
 class RectangleRef implements Ref {
   private final Coord first;
@@ -12,14 +12,14 @@ class RectangleRef implements Ref {
   /**
    * Constructor for a rectangle of references.
    *
-   * @param first coordinate of first cell
+   * @param first  coordinate of first cell
    * @param second coordinate of last cell
-   * @param ss spreadsheet model
+   * @param ss     spreadsheet model
    */
   public RectangleRef(Coord first, Coord second, ISpreadsheetModel ss) {
     if (!(first.col <= second.col && first.row <= second.row)) {
       throw new IllegalArgumentException("First coord not less than or equal to second coord: "
-          + first.toString() + ":" + second.toString());
+              + first.toString() + ":" + second.toString());
     }
 
     this.first = first;
@@ -58,10 +58,10 @@ class RectangleRef implements Ref {
   public <R> R accept(FormulaVisitor<R> visitor) {
     return visitor.visitRectangleRef(this);
   }
-  
+
   @Override
   public String toString() {
-    return first.toString()+":"+second.toString();
+    return first.toString() + ":" + second.toString();
   }
 
 }

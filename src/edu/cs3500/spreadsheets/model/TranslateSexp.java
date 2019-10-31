@@ -53,7 +53,7 @@ class TranslateSexp implements SexpVisitor<Formula> {
       case "CONCAT":
         return new Concat(args);
       default:
-        throw new IllegalArgumentException("Not a valid command/function "+command);
+        throw new IllegalArgumentException("Not a valid command/function " + command);
     }
   }
 
@@ -64,10 +64,10 @@ class TranslateSexp implements SexpVisitor<Formula> {
       return new SingleRef(coord, ss);
     } catch (IllegalArgumentException e) {
       if (isValidRectangle(s)) {
-        List<Coord> coords = validRectangleHelper(s);
+        List<Coord> coords = validRectangleExpander(s);
         return new RectangleRef(coords.get(0), coords.get(1), ss);
       } else {
-        throw new IllegalArgumentException(s+" is Not a valid singleref or rectangleref symbol");
+        throw new IllegalArgumentException(s + " is Not a valid singleref or rectangleref symbol");
       }
     }
   }
@@ -82,10 +82,10 @@ class TranslateSexp implements SexpVisitor<Formula> {
    * -> creates A1 and B1 and inserts into a list).
    *
    * @param name A string representing the range of cells
-   * @return a list containing the first and last coordinates of the rectangle
-   * Otherwise, returns null if there is an error/invalid rectangle
+   * @return a list containing the first and last coordinates of the rectangle Otherwise, returns
+   * null if there is an error/invalid rectangle
    */
-  private static List<Coord> validRectangleHelper(String name) {
+  private static List<Coord> validRectangleExpander(String name) {
     int colonIndex = name.indexOf(':');
     if (colonIndex < 0) {
       return null;
@@ -108,16 +108,18 @@ class TranslateSexp implements SexpVisitor<Formula> {
 
   /**
    * Returns whether given input is a valid rectangle.
+   *
    * @param name given range of cells (eg. "A1:B3"
    * @return boolean of whether given string is a valid rectangle representation
    */
   private static boolean isValidRectangle(String name) {
-    return validRectangleHelper(name) != null;
+    return validRectangleExpander(name) != null;
   }
 
   /**
-   * Returns index of where the letter ends and the numbers start. Throws error
-   * if cell name is malformed.
+   * Returns index of where the letter ends and the numbers start. Throws error if cell name is
+   * malformed.
+   *
    * @param name given cell name
    * @return index of the last letter in the cell name
    */
@@ -153,6 +155,7 @@ class TranslateSexp implements SexpVisitor<Formula> {
 
   /**
    * Turns a named cell into a coordinate.
+   *
    * @param name name of cell (eg. "A1")
    * @return returns coordinate of that cell
    */
