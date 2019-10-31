@@ -5,13 +5,11 @@ import java.util.List;
 /**
  * Represents interface of spreadsheet model. A model can be modified
  * through user updates, and this model has methods that allows a user to perform
- * basic CRUD operations on the spreadsheet.
+ * basic CRUD operations on the spreadsheet. 
  * @author Akira Kato
  *
  */
 public interface ISpreadsheetModel {
-
- 
   /**
    * Gets the formula used at a certain cell.
    * @param coord coordinate of cell

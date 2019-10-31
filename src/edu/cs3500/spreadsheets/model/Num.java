@@ -52,7 +52,7 @@ public class Num implements Value {
       return false;
     }
 
-    return this.equals(o.toString());
+    return this.value == ((Num) o).value;
   }
 
   @Override

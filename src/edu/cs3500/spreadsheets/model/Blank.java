@@ -5,7 +5,7 @@ import java.util.Objects;
 /**
  * To represent a blank cell, which is also a type of value.
  */
-class Blank implements Value{
+public class Blank implements Value{
   
   @Override
   public Value evaluate() {
