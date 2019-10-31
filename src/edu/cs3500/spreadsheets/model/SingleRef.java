@@ -22,7 +22,8 @@ class SingleRef implements Ref {
 
   @Override
   public Value evaluate() {
-    return ss.getFormulaAtCoord(refCoord).evaluate();
+    
+    return ss.evaluateCell(refCoord);
   }
 
   @Override

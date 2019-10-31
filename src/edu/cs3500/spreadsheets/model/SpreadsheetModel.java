@@ -15,6 +15,7 @@ import edu.cs3500.spreadsheets.sexp.Parser;
  */
 public class SpreadsheetModel implements ISpreadsheetModel {
   private HashMap<Coord, Formula> cells = new HashMap<>();
+  private HashMap<Coord, Value> values = new HashMap<>();
   private List<String> errorMessages = new ArrayList<>();
 
   @Override
@@ -59,7 +60,11 @@ public class SpreadsheetModel implements ISpreadsheetModel {
     if (!cells.containsKey(coord)) {
       return new Blank();
     }
-    return cells.get(coord).evaluate();
+    if(values.containsKey(coord)) {
+      return values.get(coord);
+    }
+    values.put(coord, cells.get(coord).evaluate());
+    return values.get(coord);
   }
 
   /**
