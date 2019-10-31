@@ -2,6 +2,7 @@ package edu.cs3500.spreadsheets;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -33,15 +34,17 @@ public class BeyondGood {
       WorksheetReader.read(builder, file);
       String cell = args[3];
       ISpreadsheetModel ss = builder.createWorksheet();
+      List<String> errs=ss.errorMessages();
+      if(errs.size()==0) {
       Value result = ss.evaluateCell(nameToCoord(cell));
-      System.out.println(result.toString());
-
+      System.out.print(result.toString());
+      }else {
+        for(String s:errs) {
+          System.out.println(s);
+        }
+      }
     } catch (FileNotFoundException e) {
       System.out.println("File not found");
-    } catch (IllegalArgumentException e1) {
-      // prints the error message when any exception is thrown. Detail of which are documented at
-      // each method.
-      System.out.println(e1.getMessage());
     } catch (ArrayIndexOutOfBoundsException e2) {
       System.out.println("malformatted input args");
     }

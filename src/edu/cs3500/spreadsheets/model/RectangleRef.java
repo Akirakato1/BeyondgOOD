@@ -58,5 +58,10 @@ class RectangleRef implements Ref {
   public <R> R accept(FormulaVisitor<R> visitor) {
     return visitor.visitRectangleRef(this);
   }
+  
+  @Override
+  public String toString() {
+    return first.toString()+":"+second.toString();
+  }
 
 }

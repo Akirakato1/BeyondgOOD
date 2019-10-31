@@ -53,7 +53,7 @@ abstract class AbstractFunction implements Function {
   public String toString() {
     String ans = "";
     for (int i = 0; i < arguments.length; i++) {
-      ans += this.arguments.toString();
+      ans +=" "+ this.arguments[i].toString();
     }
     return ans;
   }

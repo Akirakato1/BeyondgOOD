@@ -24,5 +24,10 @@ class Concat extends AbstractFunction {
     }
     return new Str(result);
   }
+  
+  @Override
+  public String toString() {
+    return "(CONCAT" +super.toString()+")";
+  }
 
 }

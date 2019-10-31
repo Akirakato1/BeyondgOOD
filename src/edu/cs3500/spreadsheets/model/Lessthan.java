@@ -36,6 +36,10 @@ class Lessthan extends AbstractFunction {
     }
   }
 
+  @Override
+  public String toString() {
+    return "(<"+super.toString()+")";
+  }
 
 
 }

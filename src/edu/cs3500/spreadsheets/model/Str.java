@@ -47,7 +47,7 @@ public class Str implements Value{
   
   @Override
   public String toString() {
-    return this.value;
+    return "\""+this.value+"\"";
   }
 
   @Override

@@ -24,5 +24,10 @@ class Sum extends AbstractFunction {
     }
     return new Num(result);
   }
+  
+  @Override
+  public String toString() {
+    return "(SUM"+super.toString()+")";
+  }
 
 }

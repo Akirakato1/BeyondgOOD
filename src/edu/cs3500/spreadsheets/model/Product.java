@@ -41,5 +41,9 @@ class Product extends AbstractFunction {
     return new Num(result);
   }
 
+  @Override
+  public String toString() {
+    return "(PRODUCT"+super.toString()+")";
+  }
 
 }

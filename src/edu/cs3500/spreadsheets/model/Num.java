@@ -39,7 +39,7 @@ public class Num implements Value {
 
   @Override
   public String toString() {
-    return value + "";
+    return String.format("%f", value);
   }
 
   @Override

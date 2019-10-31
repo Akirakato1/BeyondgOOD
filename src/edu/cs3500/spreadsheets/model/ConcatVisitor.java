@@ -4,7 +4,7 @@ public class ConcatVisitor implements ValueVisitor<String> {
 
   @Override
   public String visitBool(boolean b) {
-    return "";
+    return b+"";
   }
 
   @Override
@@ -14,7 +14,7 @@ public class ConcatVisitor implements ValueVisitor<String> {
 
   @Override
   public String visitNum(double d) {
-    return "";
+    return d+"";
   }
 
   @Override

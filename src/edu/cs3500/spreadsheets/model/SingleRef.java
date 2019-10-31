@@ -1,5 +1,7 @@
 package edu.cs3500.spreadsheets.model;
 
+import edu.cs3500.spreadsheets.sexp.Parser;
+
 /**
  * To represent a single cell reference (eg. A1 = B1).
  */
@@ -32,6 +34,11 @@ class SingleRef implements Ref {
   @Override
   public <R> R accept(FormulaVisitor<R> visitor) {
     return visitor.visitFormula(this);
+  }
+  
+  @Override
+  public String toString() {
+    return refCoord.toString();
   }
 
 }
