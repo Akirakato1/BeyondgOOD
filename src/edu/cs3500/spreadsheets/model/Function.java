@@ -5,5 +5,4 @@ package edu.cs3500.spreadsheets.model;
  * SUM/PRODUCT/LESSTHAN/CONCAT.
  */
 public interface Function extends Formula {
-
 }

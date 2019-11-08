@@ -3,10 +3,8 @@ package edu.cs3500.spreadsheets;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.List;
-import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.model.ISpreadsheetModel;
 import edu.cs3500.spreadsheets.model.Value;
@@ -32,17 +30,25 @@ public class BeyondGood {
      */
     WorksheetBuilder<ISpreadsheetModel> builder = new WorksheetBuilderImpl();
     try {
-      Readable file = new FileReader(args[1]);
-      WorksheetReader.read(builder, file);
-      String cell = args[3];
-      ISpreadsheetModel ss = builder.createWorksheet();
-      List<String> errs = ss.errorMessages();
-      if (errs.size() == 0) {
-        Value result = ss.evaluateCell(nameToCoord(cell));
-        System.out.print(result.toString());
+      if (!(args[0].equals("-in") && args[2].equals("-eval"))) {
+        System.out.println("first arg not -in or 3rd arg not -eval");
       } else {
-        for (String s : errs) {
-          System.out.println(s);
+        Readable file = new FileReader(args[1]);
+        WorksheetReader.read(builder, file);
+        String cell = args[3];
+        ISpreadsheetModel ss = builder.createWorksheet();
+        List<String> errs = ss.errorMessages();
+        if (errs.size() == 0) {
+          try {
+            Value result = ss.evaluateCell(nameToCoord(cell));
+            System.out.print(result.toString());
+          } catch (IllegalArgumentException e3) {
+            System.out.println("Cell: " + nameToCoord(cell) + e3.getMessage());
+          }
+        } else {
+          for (String s : errs) {
+            System.out.println(s);
+          }
         }
       }
     } catch (FileNotFoundException e) {
@@ -61,7 +67,8 @@ public class BeyondGood {
   private static Coord nameToCoord(String name) {
     final Pattern cellRef = Pattern.compile("([A-Za-z]+)([1-9][0-9]*)");
     Matcher m = cellRef.matcher(name);
-    int col, row;
+    int col;
+    int row;
     if (m.matches()) {
       col = Coord.colNameToIndex(m.group(1));
       row = Integer.parseInt(m.group(2));

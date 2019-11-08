@@ -1,5 +1,7 @@
 package edu.cs3500.spreadsheets.model;
 
+import java.util.HashSet;
+
 /**
  * To represent a Formula, which is used to represent the values stored within the cells. A formula
  * is characterized when a user inputs an equal sign (eg. "= SUM 1 2"). A formula is one of: 1) a
@@ -23,14 +25,14 @@ public interface Formula {
    * @param currentCoord current coordinate
    * @return boolean to represent if there is a cycle at that coordinate
    */
-  boolean cyclePresent(Coord currentCoord);
+  boolean cyclePresent(Coord currentCoord, HashSet<Coord> noCycle, HashSet<Coord> hasCycle);
 
   /**
    * Accepts the visitor and visits the formula and outputs its corresponding value, which can then
    * be evaluated.
    *
    * @param visitor visitor type for the formula (LessthanVisitor/SumVisitor/etc.)
-   * @param <R>     an object representing formula output
+   * @param <R> an object representing formula output
    */
   <R> R accept(FormulaVisitor<R> visitor);
 

@@ -1,5 +1,6 @@
 package edu.cs3500.spreadsheets.model;
 
+import java.util.HashSet;
 import java.util.Objects;
 
 /**
@@ -20,10 +21,10 @@ abstract class AbstractFunction implements Function {
   }
 
   @Override
-  public boolean cyclePresent(Coord currentCoord) {
+  public boolean cyclePresent(Coord currentCoord, HashSet<Coord> noCycle, HashSet<Coord> hasCycle) {
     boolean output = false;
     for (Formula arg : arguments) {
-      output = output || arg.cyclePresent(currentCoord);
+      output = output || arg.cyclePresent(currentCoord, noCycle, hasCycle);
     }
 
     return output;
@@ -43,7 +44,6 @@ abstract class AbstractFunction implements Function {
 
     return isEqualCount == arguments.length - 1;
   }
-
 
   @Override
   public int hashCode() {

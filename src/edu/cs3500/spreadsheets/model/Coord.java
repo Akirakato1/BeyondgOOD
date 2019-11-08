@@ -9,6 +9,11 @@ public class Coord {
   public final int row;
   public final int col;
 
+  /**
+   * Constructor for a Coord object. 
+   * @param col column.
+   * @param row row.
+   */
   public Coord(int col, int row) {
     if (row < 1 || col < 1) {
       throw new IllegalArgumentException("Coordinates should be strictly positive");
@@ -63,8 +68,7 @@ public class Coord {
       return false;
     }
     Coord coord = (Coord) o;
-    return row == coord.row
-            && col == coord.col;
+    return row == coord.row && col == coord.col;
   }
 
   @Override

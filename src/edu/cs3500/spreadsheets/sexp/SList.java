@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
  */
 public class SList implements Sexp {
   private final List<Sexp> contents;
-  
+
   public SList(Sexp... contents) {
     this(Arrays.asList(contents));
   }
@@ -29,12 +29,7 @@ public class SList implements Sexp {
 
   @Override
   public String toString() {
-    //return "(" + this.contents.stream().map(Sexp::toString).collect(Collectors.joining(" ")) + ")";
-    String output="";
-    for(int i=0;i<this.contents.size();i++) {
-      output+=this.contents.get(i).getClass();
-    }
-    return output;
+    return "(" + this.contents.stream().map(Sexp::toString).collect(Collectors.joining(" ")) + ")";
   }
 
   @Override

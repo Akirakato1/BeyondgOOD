@@ -1,5 +1,7 @@
 package edu.cs3500.spreadsheets.model;
 
+import java.util.HashSet;
+
 /**
  * To represent a rectangle of references (used when user inputs something like A1:B3).
  */
@@ -12,14 +14,14 @@ class RectangleRef implements Ref {
   /**
    * Constructor for a rectangle of references.
    *
-   * @param first  coordinate of first cell
+   * @param first coordinate of first cell
    * @param second coordinate of last cell
-   * @param ss     spreadsheet model
+   * @param ss spreadsheet model
    */
   public RectangleRef(Coord first, Coord second, ISpreadsheetModel ss) {
     if (!(first.col <= second.col && first.row <= second.row)) {
       throw new IllegalArgumentException("First coord not less than or equal to second coord: "
-              + first.toString() + ":" + second.toString());
+          + first.toString() + ":" + second.toString());
     }
 
     this.first = first;
@@ -45,11 +47,11 @@ class RectangleRef implements Ref {
   }
 
   @Override
-  public boolean cyclePresent(Coord currentCoord) {
+  public boolean cyclePresent(Coord currentCoord, HashSet<Coord> noCycle, HashSet<Coord> hasCycle) {
     Formula[] refs = this.expand();
     boolean output = false;
     for (Formula r : refs) {
-      output = output || r.cyclePresent(currentCoord);
+      output = output || r.cyclePresent(currentCoord, noCycle, hasCycle);
     }
     return output;
   }

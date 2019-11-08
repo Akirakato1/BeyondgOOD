@@ -1,5 +1,6 @@
 package edu.cs3500.spreadsheets.model;
 
+import java.util.HashSet;
 import java.util.Objects;
 
 /**
@@ -23,7 +24,7 @@ public class Str implements Value {
   }
 
   @Override
-  public boolean cyclePresent(Coord currentCoord) {
+  public boolean cyclePresent(Coord currentCoord, HashSet<Coord> noCycle, HashSet<Coord> hasCycle) {
     return false;
   }
 

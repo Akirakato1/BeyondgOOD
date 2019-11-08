@@ -28,8 +28,7 @@ public class EvaluateVisitor implements FormulaVisitor<Value> {
       case "CONCAT":
         return new Concat(rf.expand()).evaluate();
       default:
-        throw new IllegalArgumentException(
-                "Function type not exist!");
+        throw new IllegalArgumentException("Function type not exist!");
     }
   }
 

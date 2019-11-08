@@ -1,5 +1,7 @@
 package edu.cs3500.spreadsheets.model;
 
+import java.util.HashSet;
+
 /**
  * To represent a single cell reference (eg. A1 = B1).
  */
@@ -8,10 +10,10 @@ class SingleRef implements Ref {
   private final ISpreadsheetModel ss;
 
   /**
-   * Constructor to make a single cell reference
+   * Constructor to make a single cell reference.
    *
    * @param coord coordinate of cell
-   * @param ss    spreadsheet model
+   * @param ss spreadsheet model
    */
   public SingleRef(Coord coord, ISpreadsheetModel ss) {
     this.refCoord = coord;
@@ -25,9 +27,22 @@ class SingleRef implements Ref {
   }
 
   @Override
-  public boolean cyclePresent(Coord currentCoord) {
-    return refCoord.equals(currentCoord)
-            || ss.getFormulaAtCoord(refCoord).cyclePresent(currentCoord);
+  public boolean cyclePresent(Coord currentCoord, HashSet<Coord> noCycle, HashSet<Coord> hasCycle) {
+    if (noCycle.contains(refCoord)) {
+      return false;
+    } else if (hasCycle.contains(refCoord)) {
+      return true;
+    } else {
+      boolean isCyclePresent = refCoord.equals(currentCoord)
+          || ss.getFormulaAtCoord(refCoord).cyclePresent(currentCoord, noCycle, hasCycle);
+      if (isCyclePresent) {
+        hasCycle.add(refCoord);
+        return true;
+      } else {
+        noCycle.add(refCoord);
+        return false;
+      }
+    }
   }
 
   @Override
