@@ -8,12 +8,12 @@ public class LessthanVisitor implements ValueVisitor<Double> {
 
   @Override
   public Double visitBool(boolean b) {
-    throw new IllegalArgumentException("Arguments must be a number!");
+    throw new IllegalArgumentException(Error.VALUE.toString());
   }
 
   @Override
   public Double visitStr(String s) {
-    throw new IllegalArgumentException("Arguments must be a number!");
+    throw new IllegalArgumentException(Error.VALUE.toString());
   }
 
   @Override
@@ -23,7 +23,7 @@ public class LessthanVisitor implements ValueVisitor<Double> {
 
   @Override
   public Double visitBlank() {
-    throw new IllegalArgumentException("Arguments must be a number!");
+    throw new IllegalArgumentException(Error.VALUE.toString());
   }
 
 }

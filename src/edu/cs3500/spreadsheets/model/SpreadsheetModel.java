@@ -1,9 +1,11 @@
 package edu.cs3500.spreadsheets.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import edu.cs3500.spreadsheets.sexp.Parser;
 
 /**
@@ -16,7 +18,6 @@ import edu.cs3500.spreadsheets.sexp.Parser;
 public class SpreadsheetModel implements ISpreadsheetModel {
   private HashMap<Coord, Formula> cells = new HashMap<>();
   private HashMap<Coord, Value> values = new HashMap<>();
-  private List<String> errorMessages = new ArrayList<>();
 
   @Override
   public void updateCell(Coord coord, String sexp) {
@@ -27,14 +28,53 @@ public class SpreadsheetModel implements ISpreadsheetModel {
 
     try {
       Formula formula = Parser.parse(exp).accept(new TranslateSexp(this));
+      cells.put(coord, formula);
       if (cyclePresent(coord, formula)) {
-        this.errorMessages
-            .add("Cycle detected at " + coord.toString() + " formula: =" + formula.toString());
+        values.put(coord, Error.REF);
+        this.reevaluateValueMap();
       } else {
-        cells.put(coord, formula);
+        this.evaluateCell(coord);
       }
+
     } catch (IllegalArgumentException e) {
-      this.errorMessages.add(e.getMessage());
+      boolean errorHandled = this.handleErrorValue(e.getMessage(), coord);
+      this.reevaluateValueMap();
+      if (errorHandled) {
+        return;
+      }
+      // If it's not an Error type argumentexception, do some other stuff here
+    }
+  }
+
+  private void reevaluateValueMap() {
+    boolean isError = false;
+    //try to get deep copy of the keys of values hashmap
+    Set<Coord> coords=values.keySet();
+    Object[] cs=coords.toArray();
+    
+    System.out.println(cs);
+    for(int i=0;i<cs.length;i++) {
+      List<Error> errorList = Arrays.asList(Error.values());
+      for (Error err : errorList) {
+        if (cs[i].toString().equals(err.toString())) {
+          isError = true;
+        }
+      }
+      if (isError) {
+        isError = false;
+      } else {
+        values.remove(cs[i]);
+      }
+    }
+
+    for (Coord c : cells.keySet()) {
+      if (!values.containsKey(c)) {
+        if (cyclePresent(c, cells.get(c))) {
+          values.put(c, Error.REF);
+        } else {
+          this.evaluateCell(c);
+        }
+      }
     }
 
   }
@@ -57,14 +97,30 @@ public class SpreadsheetModel implements ISpreadsheetModel {
 
   @Override
   public Value evaluateCell(Coord coord) {
-    if (!cells.containsKey(coord)) {
-      return new Blank();
-    }
-    if (values.containsKey(coord)) {
+    try {
+      if (!cells.containsKey(coord)) {
+        return new Blank();
+      }
+      if (!values.containsKey(coord)) {
+        values.put(coord, cells.get(coord).evaluate());
+      }
+      return values.get(coord);
+    } catch (IllegalArgumentException e) {
+      this.handleErrorValue(e.getMessage(), coord);
       return values.get(coord);
     }
-    values.put(coord, cells.get(coord).evaluate());
-    return values.get(coord);
+  }
+
+  // successfully handled error return true, if msg is not error type return false
+  private boolean handleErrorValue(String exceptionMsg, Coord coord) {
+    List<Error> errorList = Arrays.asList(Error.values());
+    for (Error err : errorList) {
+      if (exceptionMsg.equals(err.toString())) {
+        values.put(coord, err);
+        return true;
+      }
+    }
+    return false;
   }
 
   /**
@@ -74,12 +130,29 @@ public class SpreadsheetModel implements ISpreadsheetModel {
    * @param formula formula to be evaluated
    */
   private boolean cyclePresent(Coord currentCoord, Formula formula) {
-    return formula.cyclePresent(currentCoord, new HashSet<Coord>(), new HashSet<Coord>());
+    return formula.cyclePresent(currentCoord, new HashSet<Coord>());
   }
 
   @Override
   public List<String> errorMessages() {
-    return new ArrayList<String>(errorMessages);
+    List<String> errorMessages = new ArrayList<>();
+    List<Error> errorList = Arrays.asList(Error.values());
+    for (Coord c : values.keySet()) {
+      for (Error err : errorList) {
+        if (values.get(c).toString().equals(err.toString())) {
+          errorMessages.add("ERROR: " + err.toString() + " at " + c.toString());
+        }
+      }
+    }
+    return errorMessages;
   }
 
+  @Override
+  public List<Coord> getOccupiedCoords() {
+    List<Coord> output = new ArrayList<Coord>();
+    for (Coord c : cells.keySet()) {
+      output.add(new Coord(c.col, c.row));
+    }
+    return output;
+  }
 }

@@ -21,10 +21,10 @@ abstract class AbstractFunction implements Function {
   }
 
   @Override
-  public boolean cyclePresent(Coord currentCoord, HashSet<Coord> noCycle, HashSet<Coord> hasCycle) {
+  public boolean cyclePresent(Coord currentCoord, HashSet<Coord> visited) {
     boolean output = false;
     for (Formula arg : arguments) {
-      output = output || arg.cyclePresent(currentCoord, noCycle, hasCycle);
+      output = output || arg.cyclePresent(currentCoord, (HashSet<Coord>)visited.clone());
     }
 
     return output;

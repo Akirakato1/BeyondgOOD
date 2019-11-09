@@ -48,4 +48,10 @@ public interface ISpreadsheetModel {
    */
   List<String> errorMessages();
 
+  /**
+   * Gets the list of occupied Coords in this spreadsheet. 
+   * 
+   * @return list of Coord.
+   */
+  List<Coord> getOccupiedCoords();
 }

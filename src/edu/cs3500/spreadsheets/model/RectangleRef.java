@@ -20,8 +20,7 @@ class RectangleRef implements Ref {
    */
   public RectangleRef(Coord first, Coord second, ISpreadsheetModel ss) {
     if (!(first.col <= second.col && first.row <= second.row)) {
-      throw new IllegalArgumentException("First coord not less than or equal to second coord: "
-          + first.toString() + ":" + second.toString());
+      throw new IllegalArgumentException(Error.NAME.toString());
     }
 
     this.first = first;
@@ -47,11 +46,11 @@ class RectangleRef implements Ref {
   }
 
   @Override
-  public boolean cyclePresent(Coord currentCoord, HashSet<Coord> noCycle, HashSet<Coord> hasCycle) {
+  public boolean cyclePresent(Coord currentCoord, HashSet<Coord> visited) {
     Formula[] refs = this.expand();
     boolean output = false;
     for (Formula r : refs) {
-      output = output || r.cyclePresent(currentCoord, noCycle, hasCycle);
+      output = output || r.cyclePresent(currentCoord, (HashSet<Coord>)visited.clone());
     }
     return output;
   }

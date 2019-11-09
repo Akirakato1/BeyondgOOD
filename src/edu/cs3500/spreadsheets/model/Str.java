@@ -24,7 +24,7 @@ public class Str implements Value {
   }
 
   @Override
-  public boolean cyclePresent(Coord currentCoord, HashSet<Coord> noCycle, HashSet<Coord> hasCycle) {
+  public boolean cyclePresent(Coord currentCoord, HashSet<Coord> visited) {
     return false;
   }
 

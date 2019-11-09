@@ -22,26 +22,16 @@ class SingleRef implements Ref {
 
   @Override
   public Value evaluate() {
-
     return ss.evaluateCell(refCoord);
   }
 
   @Override
-  public boolean cyclePresent(Coord currentCoord, HashSet<Coord> noCycle, HashSet<Coord> hasCycle) {
-    if (noCycle.contains(refCoord)) {
-      return false;
-    } else if (hasCycle.contains(refCoord)) {
+  public boolean cyclePresent(Coord currentCoord, HashSet<Coord> visited) {
+    if (visited.contains(refCoord)) {
       return true;
     } else {
-      boolean isCyclePresent = refCoord.equals(currentCoord)
-          || ss.getFormulaAtCoord(refCoord).cyclePresent(currentCoord, noCycle, hasCycle);
-      if (isCyclePresent) {
-        hasCycle.add(refCoord);
-        return true;
-      } else {
-        noCycle.add(refCoord);
-        return false;
-      }
+      visited.add(refCoord);
+      return ss.getFormulaAtCoord(refCoord).cyclePresent(currentCoord, visited);
     }
   }
 

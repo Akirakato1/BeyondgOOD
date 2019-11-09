@@ -25,7 +25,7 @@ public interface Formula {
    * @param currentCoord current coordinate
    * @return boolean to represent if there is a cycle at that coordinate
    */
-  boolean cyclePresent(Coord currentCoord, HashSet<Coord> noCycle, HashSet<Coord> hasCycle);
+  boolean cyclePresent(Coord currentCoord, HashSet<Coord> visited);
 
   /**
    * Accepts the visitor and visits the formula and outputs its corresponding value, which can then
