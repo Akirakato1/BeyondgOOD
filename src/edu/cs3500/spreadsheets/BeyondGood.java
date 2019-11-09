@@ -1,16 +1,24 @@
 package edu.cs3500.spreadsheets;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.JFrame;
 import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.model.ISpreadsheetModel;
 import edu.cs3500.spreadsheets.model.Value;
 import edu.cs3500.spreadsheets.model.WorksheetBuilderImpl;
 import edu.cs3500.spreadsheets.model.WorksheetReader;
 import edu.cs3500.spreadsheets.model.WorksheetReader.WorksheetBuilder;
+import edu.cs3500.spreadsheets.view.SpreadsheetTable;
+import edu.cs3500.spreadsheets.view.SpreadsheetView;
+import edu.cs3500.spreadsheets.view.TextualView;
+import edu.cs3500.spreadsheets.view.VisualView;
 
 /**
  * The main class for our program where users can access the spreadsheet.
@@ -23,39 +31,37 @@ public class BeyondGood {
    * @param args any command-line arguments
    */
   public static void main(String[] args) {
-    /*
-     * TODO: For now, look in the args array to obtain a filename and a cell name, - read the file
-     * and build a model from it, - evaluate all the cells, and - report any errors, or print the
-     * evaluated value of the requested cell.
-     */
     WorksheetBuilder<ISpreadsheetModel> builder = new WorksheetBuilderImpl();
+    File outputFile = new File("C:\\EclipseWorkspace\\Beyond gOOD\\outputFile.txt");
     try {
-      if (!(args[0].equals("-in") && args[2].equals("-eval"))) {
-        System.out.println("first arg not -in or 3rd arg not -eval");
-      } else {
-        Readable file = new FileReader(args[1]);
-        WorksheetReader.read(builder, file);
-        String cell = args[3];
-        ISpreadsheetModel ss = builder.createWorksheet();
-        List<String> errs = ss.errorMessages();
-        if (errs.size() == 0) {
-          try {
-            Value result = ss.evaluateCell(nameToCoord(cell));
-            System.out.print(result.toString());
-          } catch (IllegalArgumentException e3) {
-            System.out.println("Cell: " + nameToCoord(cell) + e3.getMessage());
-          }
-        } else {
-          for (String s : errs) {
-            System.out.println(s);
-          }
-        }
-      }
+      PrintWriter writeFile = new PrintWriter(new FileOutputStream(outputFile, true));
+      Readable file = new FileReader(args[1]);
+      WorksheetReader.read(builder, file);
+      ISpreadsheetModel ss = builder.createWorksheet();
+      
+      SpreadsheetView vv=new VisualView(args[1],ss,1000,500);
+      SpreadsheetView tv = new TextualView(writeFile, ss);
+      vv.render();
+      tv.render();
+      writeFile.flush();
+      writeFile.close();
     } catch (FileNotFoundException e) {
-      System.out.println("File not found");
-    } catch (ArrayIndexOutOfBoundsException e2) {
-      System.out.println("malformatted input args");
+      e.printStackTrace();
     }
+    /*
+     * WorksheetBuilder<ISpreadsheetModel> builder = new WorksheetBuilderImpl(); try { if
+     * (!(args[0].equals("-in") && args[2].equals("-eval"))) {
+     * System.out.println("first arg not -in or 3rd arg not -eval"); } else { Readable file = new
+     * FileReader(args[1]); WorksheetReader.read(builder, file); String cell = args[3];
+     * ISpreadsheetModel ss = builder.createWorksheet(); List<String> errs = ss.errorMessages(); if
+     * (errs.size() == 0) { try { Value result = ss.evaluateCell(nameToCoord(cell));
+     * System.out.print(result.toString()); } catch (IllegalArgumentException e3) {
+     * System.out.println("Cell: " + nameToCoord(cell) + e3.getMessage()); } } else { for (String s
+     * : errs) { System.out.println(s); } } } } catch (FileNotFoundException e) {
+     * System.out.println("File not found"); } catch (ArrayIndexOutOfBoundsException e2) {
+     * System.out.println("malformatted input args"); }
+     * 
+     */
   }
 
   /**

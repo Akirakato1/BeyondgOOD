@@ -36,4 +36,7 @@ public interface Formula {
    */
   <R> R accept(FormulaVisitor<R> visitor);
 
+
+  void validateFormula();
+
 }

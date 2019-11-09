@@ -24,7 +24,7 @@ abstract class AbstractFunction implements Function {
   public boolean cyclePresent(Coord currentCoord, HashSet<Coord> visited) {
     boolean output = false;
     for (Formula arg : arguments) {
-      output = output || arg.cyclePresent(currentCoord, (HashSet<Coord>)visited.clone());
+      output = output || arg.cyclePresent(currentCoord, (HashSet<Coord>) visited.clone());
     }
 
     return output;
@@ -62,6 +62,13 @@ abstract class AbstractFunction implements Function {
   @Override
   public <R> R accept(FormulaVisitor<R> visitor) {
     return visitor.visitFormula(this);
+  }
+
+  @Override
+  public void validateFormula() {
+    for (int i = 0; i < arguments.length; i++) {
+      arguments[i].validateFormula();
+    }
   }
 
 }

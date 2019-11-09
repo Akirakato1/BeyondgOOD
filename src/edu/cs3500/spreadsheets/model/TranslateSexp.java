@@ -52,7 +52,7 @@ class TranslateSexp implements SexpVisitor<Formula> {
       case "CONCAT":
         return new Concat(args);
       default:
-        throw new IllegalArgumentException(Error.NAME.toString());
+        return new BadFunc(command, args);
     }
   }
 
@@ -66,7 +66,7 @@ class TranslateSexp implements SexpVisitor<Formula> {
         List<Coord> coords = validRectangleExpander(s);
         return new RectangleRef(coords.get(0), coords.get(1), ss);
       } else {
-        throw new IllegalArgumentException(Error.NAME.toString());
+        return new BadRef(s);
       }
     }
   }

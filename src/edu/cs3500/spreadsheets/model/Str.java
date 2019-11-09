@@ -48,12 +48,22 @@ public class Str implements Value {
 
   @Override
   public String toString() {
-    return "\"" + this.value + "\"";
+    String output = this.value;
+    for (int i = 0; i < output.length(); i++) {
+      if (output.charAt(i) == '\\' || output.charAt(i) == '\"') {
+        output = output.substring(0, i) + "\\" + output.substring(i, output.length());
+        i++;
+      }
+    }
+    return "\"" + output + "\"";
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(value);
   }
+
+  @Override
+  public void validateFormula() {}
 
 }

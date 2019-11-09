@@ -29,6 +29,8 @@ public class SpreadsheetModel implements ISpreadsheetModel {
     try {
       Formula formula = Parser.parse(exp).accept(new TranslateSexp(this));
       cells.put(coord, formula);
+      formula.validateFormula();
+      cells.put(coord, formula);
       if (cyclePresent(coord, formula)) {
         values.put(coord, Error.REF);
         this.reevaluateValueMap();
@@ -48,21 +50,21 @@ public class SpreadsheetModel implements ISpreadsheetModel {
 
   private void reevaluateValueMap() {
     boolean isError = false;
-    //try to get deep copy of the keys of values hashmap
-    Set<Coord> coords=values.keySet();
-    Object[] cs=coords.toArray();
-    
-    System.out.println(cs);
-    for(int i=0;i<cs.length;i++) {
+    // try to get deep copy of the keys of values hashmap
+    Set<Coord> coords = values.keySet();
+    Object[] cs = coords.toArray();
+
+    for (int i = 0; i < cs.length; i++) {
       List<Error> errorList = Arrays.asList(Error.values());
       for (Error err : errorList) {
-        if (cs[i].toString().equals(err.toString())) {
+        if (values.get(cs[i]).toString().equals(err.toString())) {
           isError = true;
         }
       }
       if (isError) {
         isError = false;
       } else {
+        System.out.println(cs[i]);
         values.remove(cs[i]);
       }
     }

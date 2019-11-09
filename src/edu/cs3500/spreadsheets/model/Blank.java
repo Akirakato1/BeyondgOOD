@@ -43,4 +43,8 @@ public class Blank implements Value {
     return Objects.hash(this);
   }
 
+  @Override
+  public void validateFormula() {
+  }
+
 }

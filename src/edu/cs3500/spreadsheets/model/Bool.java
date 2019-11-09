@@ -52,5 +52,9 @@ public class Bool implements Value {
     return value + "";
   }
 
+  @Override
+  public void validateFormula() {
+  }
+
 
 }

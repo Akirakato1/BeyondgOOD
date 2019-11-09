@@ -2,7 +2,7 @@ package edu.cs3500.spreadsheets.model;
 
 import java.util.HashSet;
 
-public enum Error implements Value{
+public enum Error implements Value {
   REF("#REF!"), NAME("#NAME?"), VALUE("#VALUE!");
   private final String message;
 
@@ -16,7 +16,7 @@ public enum Error implements Value{
   }
 
   @Override
-  public Value evaluate(){
+  public Value evaluate() {
     throw new IllegalArgumentException(message);
   }
 
@@ -34,5 +34,8 @@ public enum Error implements Value{
   public <R> R accept(ValueVisitor<R> visitor) {
     throw new IllegalArgumentException(message);
   }
-  
+
+  @Override
+  public void validateFormula() {}
+
 }

@@ -60,4 +60,7 @@ public class Num implements Value {
   public int hashCode() {
     return Objects.hash(value);
   }
+
+  @Override
+  public void validateFormula() {}
 }

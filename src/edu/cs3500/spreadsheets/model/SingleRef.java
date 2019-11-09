@@ -45,4 +45,7 @@ class SingleRef implements Ref {
     return refCoord.toString();
   }
 
+  @Override
+  public void validateFormula() {}
+
 }

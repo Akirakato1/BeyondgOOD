@@ -50,7 +50,7 @@ class RectangleRef implements Ref {
     Formula[] refs = this.expand();
     boolean output = false;
     for (Formula r : refs) {
-      output = output || r.cyclePresent(currentCoord, (HashSet<Coord>)visited.clone());
+      output = output || r.cyclePresent(currentCoord, (HashSet<Coord>) visited.clone());
     }
     return output;
   }
@@ -64,5 +64,8 @@ class RectangleRef implements Ref {
   public String toString() {
     return first.toString() + ":" + second.toString();
   }
+
+  @Override
+  public void validateFormula() {}
 
 }

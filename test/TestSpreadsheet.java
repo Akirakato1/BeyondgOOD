@@ -1,5 +1,4 @@
 import org.junit.Test;
-
 import edu.cs3500.spreadsheets.model.Blank;
 import edu.cs3500.spreadsheets.model.Bool;
 import edu.cs3500.spreadsheets.model.Coord;
@@ -7,7 +6,7 @@ import edu.cs3500.spreadsheets.model.Num;
 import edu.cs3500.spreadsheets.model.SpreadsheetModel;
 import edu.cs3500.spreadsheets.model.Str;
 import edu.cs3500.spreadsheets.model.Value;
-
+import edu.cs3500.spreadsheets.model.Error;
 import static org.junit.Assert.assertEquals;
 
 public class TestSpreadsheet {
@@ -90,7 +89,7 @@ public class TestSpreadsheet {
     assertEquals(0, model.errorMessages().size());
     model.updateCell(new Coord(1, 1), "5");
     model.updateCell(new Coord(1, 2), "=(SUM A1 TRUE)");
-    assertEquals(1, model.errorMessages().size());
+    assertEquals(0, model.errorMessages().size());
   }
 
   // test for product on a simple good input (same inputs).
@@ -99,7 +98,7 @@ public class TestSpreadsheet {
     SpreadsheetModel model = new SpreadsheetModel();
     model.updateCell(new Coord(1, 1), "\"HELLO\"");
     model.updateCell(new Coord(1, 2), "=(PRODUCT TRUE A1)");
-    assertEquals(1, model.errorMessages().size());
+    assertEquals(0, model.errorMessages().size());
   }
 
   // test for concat on multiple good input (same inputs).
@@ -117,11 +116,10 @@ public class TestSpreadsheet {
   @Test
   public void renderString() {
     SpreadsheetModel model = new SpreadsheetModel();
-    model.updateCell(new Coord(1, 1),
-            "\"Jack says \"hi\"\"");
+    model.updateCell(new Coord(1, 1), "\"Jack says \\\\ \"");
     model.updateCell(new Coord(1, 2), "=\"b says bye\"");
     Value value = model.evaluateCell(new Coord(1, 1));
-    assertEquals(new Str("b says bye"), value.evaluate());
+    assertEquals(new Str("Jack says \\ "), value);
     Value value2 = model.evaluateCell(new Coord(1, 2));
     assertEquals(new Str("b says bye"), value2.evaluate());
   }
@@ -144,12 +142,9 @@ public class TestSpreadsheet {
     model.updateCell(new Coord(1, 1), "=(PRODUCT (SUM 1 2) 3 4)");
     model.updateCell(new Coord(1, 2), "A1");
     model.updateCell(new Coord(1, 3), "=(SUM A1 A2)");
-    assertEquals(new Num(36),
-            model.getFormulaAtCoord(new Coord(1, 1)).evaluate());
-    assertEquals(new Num(36),
-            model.getFormulaAtCoord(new Coord(1, 2)).evaluate());
-    assertEquals(new Num(72),
-            model.getFormulaAtCoord(new Coord(1, 3)).evaluate());
+    assertEquals(new Num(36), model.getFormulaAtCoord(new Coord(1, 1)).evaluate());
+    assertEquals(new Num(36), model.getFormulaAtCoord(new Coord(1, 2)).evaluate());
+    assertEquals(new Num(72), model.getFormulaAtCoord(new Coord(1, 3)).evaluate());
   }
 
 
@@ -283,7 +278,7 @@ public class TestSpreadsheet {
     assertEquals(0, model.errorMessages().size());
     model.updateCell(new Coord(1, 1), "=B1");
     model.updateCell(new Coord(2, 1), "=A1");
-    assertEquals(1, model.errorMessages().size());
+    assertEquals(2, model.errorMessages().size());
   }
 
   // test when cell performs a function on itself (<).
@@ -364,15 +359,6 @@ public class TestSpreadsheet {
     assertEquals(new Bool(false), value.evaluate());
   }
 
-  // test < for no numeric values.
-  @Test(expected = IllegalArgumentException.class)
-  public void testBadLessThan() {
-    SpreadsheetModel model = new SpreadsheetModel();
-    assertEquals(0, model.errorMessages().size());
-    model.updateCell(new Coord(1, 1), "=(< B2 B3)");
-    model.evaluateCell(new Coord(1, 1));
-  }
-
   // test for < with arbitrary inputs.
   @Test
   public void testBadLessThan2() {
@@ -383,14 +369,14 @@ public class TestSpreadsheet {
   }
 
   // test < when it contains blank cell.
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void testBadLessThan3() {
     SpreadsheetModel model = new SpreadsheetModel();
     assertEquals(0, model.errorMessages().size());
     model.updateCell(new Coord(1, 1), "B1");
-    model.updateCell(new Coord(1, 2), "=(< B1 B5)");
-    model.evaluateCell(new Coord(1, 2));
+    model.updateCell(new Coord(1, 2), "=(< A1 B5)");
 
+    assertEquals(Error.VALUE, model.evaluateCell(new Coord(1, 2)));
   }
 
   // test for concat on a simple good input.
