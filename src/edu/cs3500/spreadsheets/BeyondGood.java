@@ -32,36 +32,69 @@ public class BeyondGood {
    */
   public static void main(String[] args) {
     WorksheetBuilder<ISpreadsheetModel> builder = new WorksheetBuilderImpl();
-    File outputFile = new File("C:\\EclipseWorkspace\\Beyond gOOD\\outputFile.txt");
+    File outputFile;
+    ISpreadsheetModel ss;
+    SpreadsheetView vv;
+    SpreadsheetView tv;
+    Readable file;
+    PrintWriter writeFile;
+
     try {
-      PrintWriter writeFile = new PrintWriter(new FileOutputStream(outputFile, true));
-      Readable file = new FileReader(args[1]);
-      WorksheetReader.read(builder, file);
-      ISpreadsheetModel ss = builder.createWorksheet();
-      
-      SpreadsheetView vv=new VisualView(args[1],ss,1000,500);
-      SpreadsheetView tv = new TextualView(writeFile, ss);
-      vv.render();
-      tv.render();
-      writeFile.flush();
-      writeFile.close();
+      int counter = 0;
+      boolean loopCondition = args.length > 0;
+      while (loopCondition) {
+        switch (counter) {
+          case 0:
+            if (args[counter].equals("-gui") && args.length == 1) {
+              ss = builder.createWorksheet();
+              vv = new VisualView("New Blank", ss, 1000, 500);
+              vv.render();
+              loopCondition = false;
+              break;
+            } else if (!args[counter].equals("-in")) {
+              loopCondition = false;
+              break;
+            }
+            break;
+          case 1:
+            file = new FileReader(args[counter]);
+            WorksheetReader.read(builder, file);
+            ss = builder.createWorksheet();
+            for (String s : ss.errorMessages()) {
+              System.out.println(s);
+            }
+            break;
+          case 2:
+            ss = builder.createWorksheet();
+            if (args[counter].equals("-gui") && args.length == 3) {
+              vv = new VisualView(args[1], ss, 1000, 500);
+              vv.render();
+              loopCondition = false;
+              break;
+            } else if (args[counter].equals("-eval") && args.length == 4) {
+              Value result = ss.evaluateCell(nameToCoord(args[3]));
+              System.out.println("Evaluated " + args[3] + ": " + result.toString());
+              break;
+            } else if (args[counter].equals("-save") && args.length == 4) {
+              outputFile = new File(".\\" + args[3]);
+              outputFile.delete();
+              outputFile = new File(".\\" + args[3]);
+              writeFile = new PrintWriter(new FileOutputStream(outputFile, true));
+              tv = new TextualView(writeFile, ss);
+              tv.render();
+              writeFile.flush();
+              writeFile.close();
+              break;
+            }
+        }
+        counter++;
+        if (counter == 3 || counter > args.length - 1) {
+          loopCondition = false;
+        }
+      }
     } catch (FileNotFoundException e) {
-      e.printStackTrace();
+      System.out.println("input file not found");
     }
-    /*
-     * WorksheetBuilder<ISpreadsheetModel> builder = new WorksheetBuilderImpl(); try { if
-     * (!(args[0].equals("-in") && args[2].equals("-eval"))) {
-     * System.out.println("first arg not -in or 3rd arg not -eval"); } else { Readable file = new
-     * FileReader(args[1]); WorksheetReader.read(builder, file); String cell = args[3];
-     * ISpreadsheetModel ss = builder.createWorksheet(); List<String> errs = ss.errorMessages(); if
-     * (errs.size() == 0) { try { Value result = ss.evaluateCell(nameToCoord(cell));
-     * System.out.print(result.toString()); } catch (IllegalArgumentException e3) {
-     * System.out.println("Cell: " + nameToCoord(cell) + e3.getMessage()); } } else { for (String s
-     * : errs) { System.out.println(s); } } } } catch (FileNotFoundException e) {
-     * System.out.println("File not found"); } catch (ArrayIndexOutOfBoundsException e2) {
-     * System.out.println("malformatted input args"); }
-     * 
-     */
   }
 
   /**

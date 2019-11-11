@@ -157,4 +157,24 @@ public class SpreadsheetModel implements ISpreadsheetModel {
     }
     return output;
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (!(o instanceof ISpreadsheetModel)) {
+      return false;
+    }
+    List<Coord> coordsOther = ((ISpreadsheetModel) o).getOccupiedCoords();
+    HashMap<Coord, String> otherCells = new HashMap<>();
+    for (Coord c : coordsOther) {
+      otherCells.put(c, ((ISpreadsheetModel) o).getFormulaAtCoord(c).toString());
+    }
+
+    List<Coord> coordsThis = this.getOccupiedCoords();
+    HashMap<Coord, String> thisCells = new HashMap<>();
+    for (Coord c : coordsThis) {
+      thisCells.put(c, this.getFormulaAtCoord(c).toString());
+    }
+    return thisCells.equals(otherCells);
+  }
+
 }

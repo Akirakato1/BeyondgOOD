@@ -42,7 +42,7 @@ abstract class AbstractFunction implements Function {
       }
     }
 
-    return isEqualCount == arguments.length - 1;
+    return isEqualCount == arguments.length;
   }
 
   @Override

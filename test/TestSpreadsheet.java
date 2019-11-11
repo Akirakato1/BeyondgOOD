@@ -6,8 +6,19 @@ import edu.cs3500.spreadsheets.model.Num;
 import edu.cs3500.spreadsheets.model.SpreadsheetModel;
 import edu.cs3500.spreadsheets.model.Str;
 import edu.cs3500.spreadsheets.model.Value;
+import edu.cs3500.spreadsheets.model.WorksheetBuilderImpl;
+import edu.cs3500.spreadsheets.model.WorksheetReader;
+import edu.cs3500.spreadsheets.model.WorksheetReader.WorksheetBuilder;
+import edu.cs3500.spreadsheets.view.SpreadsheetView;
+import edu.cs3500.spreadsheets.view.TextualView;
 import edu.cs3500.spreadsheets.model.Error;
+import edu.cs3500.spreadsheets.model.ISpreadsheetModel;
 import static org.junit.Assert.assertEquals;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.PrintWriter;
 
 public class TestSpreadsheet {
 
@@ -88,7 +99,7 @@ public class TestSpreadsheet {
     SpreadsheetModel model = new SpreadsheetModel();
     assertEquals(0, model.errorMessages().size());
     model.updateCell(new Coord(1, 1), "5");
-    model.updateCell(new Coord(1, 2), "=(SUM A1 TRUE)");
+    model.updateCell(new Coord(1, 2), "=(SUM A1 true)");
     assertEquals(0, model.errorMessages().size());
   }
 
@@ -97,7 +108,7 @@ public class TestSpreadsheet {
   public void testProductMismatch() {
     SpreadsheetModel model = new SpreadsheetModel();
     model.updateCell(new Coord(1, 1), "\"HELLO\"");
-    model.updateCell(new Coord(1, 2), "=(PRODUCT TRUE A1)");
+    model.updateCell(new Coord(1, 2), "=(PRODUCT true A1)");
     assertEquals(0, model.errorMessages().size());
   }
 
@@ -111,6 +122,36 @@ public class TestSpreadsheet {
     assertEquals(new Str("HIHI"), value.evaluate());
   }
 
+
+  // test to check that rendering values as string works.
+  @Test
+  public void textualView() {
+    try {
+      String filename1 = "square_of_distance.txt";
+      String filename2 = "testFile.txt";
+      WorksheetBuilder<ISpreadsheetModel> builder1 = new WorksheetBuilderImpl();
+      Readable file1 = new FileReader(filename1);
+      WorksheetReader.read(builder1, file1);
+      ISpreadsheetModel ss1 = builder1.createWorksheet();
+
+      File outputFile = new File("C:\\EclipseWorkspace\\Beyond gOOD\\"+filename2);
+      PrintWriter writeFile;
+      writeFile = new PrintWriter(new FileOutputStream(outputFile, true));
+      SpreadsheetView tv = new TextualView(writeFile, ss1);
+      tv.render();
+      writeFile.flush();
+      writeFile.close();
+
+      WorksheetBuilder<ISpreadsheetModel> builder2 = new WorksheetBuilderImpl();
+      Readable file2 = new FileReader(filename2);
+      WorksheetReader.read(builder2, file2);
+      ISpreadsheetModel ss2 = builder2.createWorksheet();
+      
+      assertEquals(true,ss1.equals(ss2));
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    }
+  }
 
   // test to check that rendering values as string works.
   @Test
