@@ -37,6 +37,10 @@ public interface Formula {
   <R> R accept(FormulaVisitor<R> visitor);
 
 
+  /**
+   * Checks if the given Formula is a valid one. E.g Must not be self-referencing,
+   * a function mismatch or a badly formatted cell reference.
+   */
   void validateFormula();
 
 }

@@ -2,9 +2,16 @@ package edu.cs3500.spreadsheets.model;
 
 import java.util.HashSet;
 
+/**
+ * To represent a bad reference that the user inputted. This could be something like A1A1.
+ */
 public class BadRef implements Ref {
   String refName;
 
+  /**
+   * Constructor for a bad reference.
+   * @param name bad reference name
+   */
   public BadRef(String name) {
     refName = name;
   }
@@ -12,7 +19,7 @@ public class BadRef implements Ref {
   @Override
   public Value evaluate() {
     throw new IllegalArgumentException(
-        "Somethign wrong in badref " + refName + " should not reach here");
+            "Something was wrong with BadRef " + refName);
   }
 
   @Override
@@ -23,7 +30,7 @@ public class BadRef implements Ref {
   @Override
   public <R> R accept(FormulaVisitor<R> visitor) {
     throw new IllegalArgumentException(
-        "Somethign wrong in badref " + refName + " should not reach here");
+            "Something was wrong with BadRef " + refName);
   }
 
   @Override

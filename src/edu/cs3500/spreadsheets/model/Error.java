@@ -2,10 +2,20 @@ package edu.cs3500.spreadsheets.model;
 
 import java.util.HashSet;
 
+/**
+ * To represent an Error. It can be one of 3 types:
+ * 1) REF (eg. A1 = A1)
+ * 2) NAME (eg. = A1A1)
+ * 3) VALUE (eg. < 4 true)
+ */
 public enum Error implements Value {
   REF("#REF!"), NAME("#NAME?"), VALUE("#VALUE!");
   private final String message;
 
+  /**
+   * Constructor for error.
+   * @param message error message (one of the 3 types)
+   */
   Error(String message) {
     this.message = message;
   }

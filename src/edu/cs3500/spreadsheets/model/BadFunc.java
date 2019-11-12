@@ -1,8 +1,17 @@
 package edu.cs3500.spreadsheets.model;
 
+/**
+ * To represent a bad function if the user inputs something that is other
+ * than the defined functions (FUNC != SUM/PRODUCT/CONCAT/LESSTHAN).
+ */
 public class BadFunc extends AbstractFunction {
   private String funcName;
 
+  /**
+   * Constructor for bad function.
+   * @param name the faulty function name
+   * @param args array of formulas that are inputted
+   */
   public BadFunc(String name, Formula... args) {
     super(args);
     funcName = name;

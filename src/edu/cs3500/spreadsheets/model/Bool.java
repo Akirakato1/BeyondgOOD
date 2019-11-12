@@ -10,6 +10,10 @@ import java.util.Objects;
 public class Bool implements Value {
   private final boolean value;
 
+  /**
+   * Constructor for boolean.
+   * @param bool boolean to represent true/false
+   */
   public Bool(boolean bool) {
     this.value = bool;
   }

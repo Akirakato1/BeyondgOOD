@@ -20,10 +20,103 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.PrintWriter;
 
+/**
+ * Class to test spreadsheet.
+ */
 public class TestSpreadsheet {
 
-  // rendering values as strings (24)
-  // test for all public methods in ISpreadsheetModel
+  // test to check that the textual view renders the correct spreadsheet given a file.
+  @Test
+  public void testTextualView() {
+    try {
+      String filename1 = "square_of_distance.txt";
+      String filename2 = "testFile.txt";
+      WorksheetBuilder<ISpreadsheetModel> builder1 = new WorksheetBuilderImpl();
+      Readable file1 = new FileReader(filename1);
+      WorksheetReader.read(builder1, file1);
+      ISpreadsheetModel ss1 = builder1.createWorksheet();
+
+      File outputFile = new File("C:\\Users\\BeiBei\\Desktop\\BeyondgOOD\\"+filename2);
+      PrintWriter writeFile;
+      writeFile = new PrintWriter(new FileOutputStream(outputFile, true));
+      SpreadsheetView tv = new TextualView(writeFile, ss1);
+      tv.render();
+      writeFile.flush();
+      writeFile.close();
+
+      WorksheetBuilder<ISpreadsheetModel> builder2 = new WorksheetBuilderImpl();
+      Readable file2 = new FileReader(filename2);
+      WorksheetReader.read(builder2, file2);
+      ISpreadsheetModel ss2 = builder2.createWorksheet();
+
+      assertEquals(true,ss1.equals(ss2));
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    }
+  }
+
+  // test to check that the textual view renders the correct blank spreadsheet given a file.
+  @Test
+  public void testTextualView2Blank() {
+    try {
+      String filename1 = "blank.txt";
+      String filename2 = "testBlank.txt";
+      WorksheetBuilder<ISpreadsheetModel> builder1 = new WorksheetBuilderImpl();
+      Readable file1 = new FileReader(filename1);
+      WorksheetReader.read(builder1, file1);
+      ISpreadsheetModel ss1 = builder1.createWorksheet();
+
+      File outputFile = new File("C:\\Users\\BeiBei\\Desktop\\BeyondgOOD\\"+filename2);
+      PrintWriter writeFile;
+      writeFile = new PrintWriter(new FileOutputStream(outputFile, true));
+      SpreadsheetView tv = new TextualView(writeFile, ss1);
+      tv.render();
+      writeFile.flush();
+      writeFile.close();
+
+      WorksheetBuilder<ISpreadsheetModel> builder2 = new WorksheetBuilderImpl();
+      Readable file2 = new FileReader(filename2);
+      WorksheetReader.read(builder2, file2);
+      ISpreadsheetModel ss2 = builder2.createWorksheet();
+
+      assertEquals(true,ss1.equals(ss2));
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    }
+  }
+
+
+  // test to check that the textual view renders the correct spreadsheet (even if contains
+  // bad cells).
+  @Test
+  public void testTextualView3ErrorsIncluded() {
+    try {
+      String filename1 = "cycleDetected.txt";
+      String filename2 = "testCycle.txt";
+      WorksheetBuilder<ISpreadsheetModel> builder1 = new WorksheetBuilderImpl();
+      Readable file1 = new FileReader(filename1);
+      WorksheetReader.read(builder1, file1);
+      ISpreadsheetModel ss1 = builder1.createWorksheet();
+
+      File outputFile = new File("C:\\Users\\BeiBei\\Desktop\\BeyondgOOD\\"+filename2);
+      PrintWriter writeFile;
+      writeFile = new PrintWriter(new FileOutputStream(outputFile, true));
+      SpreadsheetView tv = new TextualView(writeFile, ss1);
+      tv.render();
+      writeFile.flush();
+      writeFile.close();
+
+      WorksheetBuilder<ISpreadsheetModel> builder2 = new WorksheetBuilderImpl();
+      Readable file2 = new FileReader(filename2);
+      WorksheetReader.read(builder2, file2);
+      ISpreadsheetModel ss2 = builder2.createWorksheet();
+
+      assertEquals(true,ss1.equals(ss2));
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    }
+  }
+
 
 
   // test that boolean is inputted correctly into cell.
@@ -120,37 +213,6 @@ public class TestSpreadsheet {
     model.updateCell(new Coord(1, 2), "=(CONCAT A1 A1)");
     Value value = model.evaluateCell(new Coord(1, 2));
     assertEquals(new Str("HIHI"), value.evaluate());
-  }
-
-
-  // test to check that rendering values as string works.
-  @Test
-  public void textualView() {
-    try {
-      String filename1 = "square_of_distance.txt";
-      String filename2 = "testFile.txt";
-      WorksheetBuilder<ISpreadsheetModel> builder1 = new WorksheetBuilderImpl();
-      Readable file1 = new FileReader(filename1);
-      WorksheetReader.read(builder1, file1);
-      ISpreadsheetModel ss1 = builder1.createWorksheet();
-
-      File outputFile = new File("C:\\EclipseWorkspace\\Beyond gOOD\\"+filename2);
-      PrintWriter writeFile;
-      writeFile = new PrintWriter(new FileOutputStream(outputFile, true));
-      SpreadsheetView tv = new TextualView(writeFile, ss1);
-      tv.render();
-      writeFile.flush();
-      writeFile.close();
-
-      WorksheetBuilder<ISpreadsheetModel> builder2 = new WorksheetBuilderImpl();
-      Readable file2 = new FileReader(filename2);
-      WorksheetReader.read(builder2, file2);
-      ISpreadsheetModel ss2 = builder2.createWorksheet();
-      
-      assertEquals(true,ss1.equals(ss2));
-    } catch (FileNotFoundException e) {
-      e.printStackTrace();
-    }
   }
 
   // test to check that rendering values as string works.

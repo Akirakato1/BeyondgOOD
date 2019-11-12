@@ -44,10 +44,12 @@ public class SpreadsheetModel implements ISpreadsheetModel {
       if (errorHandled) {
         return;
       }
-      // If it's not an Error type argumentexception, do some other stuff here
     }
   }
 
+  /**
+   * Re-evalutes the hashmap and puts in the REF Error values.
+   */
   private void reevaluateValueMap() {
     boolean isError = false;
     // try to get deep copy of the keys of values hashmap
@@ -63,8 +65,7 @@ public class SpreadsheetModel implements ISpreadsheetModel {
       }
       if (isError) {
         isError = false;
-      } else {
-        System.out.println(cs[i]);
+      } else { // remove non-error coord
         values.remove(cs[i]);
       }
     }
@@ -113,7 +114,16 @@ public class SpreadsheetModel implements ISpreadsheetModel {
     }
   }
 
-  // successfully handled error return true, if msg is not error type return false
+  //
+
+  /**
+   * Returns true if it was successful in putting the corresponding
+   * error message into the hashmap.
+   * @param exceptionMsg given error message
+   * @param coord given coordinate
+   * @return boolean representing whether function successfully put in the error (return true),
+   * else returns false
+   */
   private boolean handleErrorValue(String exceptionMsg, Coord coord) {
     List<Error> errorList = Arrays.asList(Error.values());
     for (Error err : errorList) {
