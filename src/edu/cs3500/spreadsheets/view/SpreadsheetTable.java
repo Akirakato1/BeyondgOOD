@@ -40,7 +40,7 @@ public class SpreadsheetTable extends JPanel {
     table = new JTable(model);
 
     table.setPreferredScrollableViewportSize(
-        new Dimension(this.windowWidth - 50, this.windowHeight - 100));
+        new Dimension(this.windowWidth - 100, this.windowHeight - 100));
     table.setFillsViewportHeight(true);
 
     JScrollPane js = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
@@ -48,8 +48,11 @@ public class SpreadsheetTable extends JPanel {
     table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
     js.setVisible(true);
     add(js);
-    table.getColumnModel().getColumn(0).setCellRenderer(new RowHeaderRenderer());
-    FrozenTablePane ftp=new FrozenTablePane(table,4);
+    table.getColumnModel().getColumn(0).setCellRenderer(new GrayBackground());
+    table.getColumnModel().getColumn(0).setPreferredWidth(50);
+    table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+    FixedColumnTable fct = new FixedColumnTable(1, js);
+    this.table = fct.getFixedTable();
   }
 
   private void calculateRowCol() {
@@ -88,27 +91,6 @@ public class SpreadsheetTable extends JPanel {
       }
     }
     return content;
-  }
-
-  static class RowHeaderRenderer extends DefaultTableCellRenderer {
-    public RowHeaderRenderer() {
-      setHorizontalAlignment(JLabel.CENTER);
-    }
-
-    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-        boolean hasFocus, int row, int column) {
-      if (table != null) {
-        JTableHeader header = table.getTableHeader();
-
-        if (header != null) {
-          setForeground(header.getForeground());
-          setBackground(header.getBackground());
-          setFont(header.getFont());
-        }
-      }
-      setValue(value);
-      return this;
-    }
   }
 
 }
