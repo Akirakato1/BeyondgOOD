@@ -1,18 +1,20 @@
 package edu.cs3500.spreadsheets.view;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.util.List;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
 import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.model.ISpreadsheetModel;
 
+/**
+ * Represents the a table object for our spreadsheetmodel.
+ * 
+ * @author Akira Kato
+ *
+ */
 public class SpreadsheetTable extends JPanel {
   private JTable table;
   private final ISpreadsheetModel ss;
@@ -23,6 +25,13 @@ public class SpreadsheetTable extends JPanel {
   private final int windowWidth;
   private final int windowHeight;
 
+  /**
+   * Constructor for SpreadsheetTable.
+   * 
+   * @param ss spreadsheet model
+   * @param ww window width
+   * @param wh window height
+   */
   public SpreadsheetTable(ISpreadsheetModel ss, int ww, int wh) {
     this.ss = ss;
     this.windowHeight = wh;
@@ -30,6 +39,11 @@ public class SpreadsheetTable extends JPanel {
     this.col = MINIMUM_COLUMNS;
     this.row = MINIMUM_ROWS;
     this.calculateRowCol();
+
+    this.createTable();
+  }
+
+  private void createTable() {
 
     String[] header = this.generateHeader();
     String[][] data = this.generateContent();
