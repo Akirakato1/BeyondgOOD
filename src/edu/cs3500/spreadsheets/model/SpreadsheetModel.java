@@ -30,7 +30,6 @@ public class SpreadsheetModel implements ISpreadsheetModel {
       Formula formula = Parser.parse(exp).accept(new TranslateSexp(this));
       cells.put(coord, formula);
       formula.validateFormula();
-      cells.put(coord, formula);
       if (cyclePresent(coord, formula)) {
         values.put(coord, Error.REF);
         this.reevaluateValueMap();
