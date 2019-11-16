@@ -5,17 +5,15 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.PrintWriter;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.swing.JFrame;
+
 import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.model.ISpreadsheetModel;
 import edu.cs3500.spreadsheets.model.Value;
 import edu.cs3500.spreadsheets.model.WorksheetBuilderImpl;
 import edu.cs3500.spreadsheets.model.WorksheetReader;
 import edu.cs3500.spreadsheets.model.WorksheetReader.WorksheetBuilder;
-import edu.cs3500.spreadsheets.view.SpreadsheetTable;
 import edu.cs3500.spreadsheets.view.SpreadsheetView;
 import edu.cs3500.spreadsheets.view.TextualView;
 import edu.cs3500.spreadsheets.view.VisualView;
@@ -52,6 +50,7 @@ public class BeyondGood {
               loopCondition = false;
               break;
             } else if (!args[counter].equals("-in")) {
+              System.out.println("Please make sure inputs are not malformed!");
               loopCondition = false;
               break;
             }
@@ -85,7 +84,13 @@ public class BeyondGood {
               writeFile.flush();
               writeFile.close();
               break;
+            } else {
+              System.out.println("Please make sure inputs are not malformed!");
+              break;
             }
+          default:
+            System.out.println("Please make sure inputs are not malformed!");
+            break;
         }
         counter++;
         if (counter == 3 || counter > args.length - 1) {
@@ -96,6 +101,7 @@ public class BeyondGood {
       System.out.println("input file not found");
     }
   }
+
 
   /**
    * Given a string coordinate name representing its position, turns it into an actual coordinate.

@@ -1,0 +1,7 @@
+A1 "a says \"hi\". b has one backslash \\ here."
+A2 "b says bye"
+
+A3 =(CONCAT A1:A2)
+
+A4 "HELLO"
+A5 =(PRODUCT true A1)

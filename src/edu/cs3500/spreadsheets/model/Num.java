@@ -62,5 +62,9 @@ public class Num implements Value {
   }
 
   @Override
-  public void validateFormula() {}
+  public void validateFormula() {
+    // We chose to put validateFormula on the Value class. For valid values,
+    // this method will not do anything. It does nothing because if it is
+    // a bad formula, then we throw an exception.
+  }
 }

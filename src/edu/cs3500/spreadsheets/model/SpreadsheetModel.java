@@ -5,7 +5,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
+
 import edu.cs3500.spreadsheets.sexp.Parser;
 
 /**
@@ -113,15 +115,13 @@ public class SpreadsheetModel implements ISpreadsheetModel {
     }
   }
 
-  //
 
   /**
-   * Returns true if it was successful in putting the corresponding
-   * error message into the hashmap.
+   * Returns true if it was successful in putting the corresponding error message into the hashmap.
+   *
    * @param exceptionMsg given error message
-   * @param coord given coordinate
-   * @return boolean representing whether function successfully put in the error (return true),
-   * else returns false
+   * @param coord        given coordinate
+   * @return representing whether function successfully put in the error
    */
   private boolean handleErrorValue(String exceptionMsg, Coord coord) {
     List<Error> errorList = Arrays.asList(Error.values());
@@ -138,7 +138,7 @@ public class SpreadsheetModel implements ISpreadsheetModel {
    * Checks if there is a cycle at the given coordinate and formula.
    *
    * @param currentCoord current coordinate
-   * @param formula formula to be evaluated
+   * @param formula      formula to be evaluated
    */
   private boolean cyclePresent(Coord currentCoord, Formula formula) {
     return formula.cyclePresent(currentCoord, new HashSet<Coord>());
@@ -184,6 +184,11 @@ public class SpreadsheetModel implements ISpreadsheetModel {
       thisCells.put(c, this.getFormulaAtCoord(c).toString());
     }
     return thisCells.equals(otherCells);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(cells, values);
   }
 
 }

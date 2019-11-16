@@ -2,18 +2,20 @@ package edu.cs3500.spreadsheets.view;
 
 import java.awt.Dimension;
 import java.util.List;
+
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
 import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.model.ISpreadsheetModel;
 
 /**
- * Represents the a table object for our spreadsheetmodel.
- * 
- * @author Akira Kato
- *
+ * To represent a spreadsheet table to be rendered.
+ * It has rows and columns and converts the model into a graphical view.
+ * The default spreadsheet size is 100 x 100 cells, and row headers are gray and
+ * uneditable.
  */
 public class SpreadsheetTable extends JPanel {
   private JTable table;
@@ -27,7 +29,7 @@ public class SpreadsheetTable extends JPanel {
 
   /**
    * Constructor for SpreadsheetTable.
-   * 
+   *
    * @param ss spreadsheet model
    * @param ww window width
    * @param wh window height
@@ -43,6 +45,9 @@ public class SpreadsheetTable extends JPanel {
     this.createTable();
   }
 
+  /**
+   * Creates the JTable for the GUI to use. (Used in SpreadsheetTable constructor).
+   */
   private void createTable() {
 
     String[] header = this.generateHeader();
@@ -54,11 +59,11 @@ public class SpreadsheetTable extends JPanel {
     table = new JTable(model);
 
     table.setPreferredScrollableViewportSize(
-        new Dimension(this.windowWidth - 100, this.windowHeight - 100));
+            new Dimension(this.windowWidth - 100, this.windowHeight - 100));
     table.setFillsViewportHeight(true);
 
     JScrollPane js = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-        JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+            JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
     js.setVisible(true);
     add(js);
@@ -69,6 +74,9 @@ public class SpreadsheetTable extends JPanel {
     this.table = fct.getFixedTable();
   }
 
+  /**
+   * Calculates the maximum row column size.
+   */
   private void calculateRowCol() {
     List<Coord> coords = ss.getOccupiedCoords();
     for (Coord c : coords) {
@@ -82,6 +90,11 @@ public class SpreadsheetTable extends JPanel {
     col++;
   }
 
+  /**
+   * Creates the table headers for the columns (eg A, B, C).
+   *
+   * @return array of string having the coordinate columns.
+   */
   private String[] generateHeader() {
     String[] header = new String[col];
     header[0] = "";
@@ -91,6 +104,10 @@ public class SpreadsheetTable extends JPanel {
     return header;
   }
 
+  /**
+   * Gets the formula from the model and evaluates them. Then places it in the array of array of
+   * string, which will represent our data in the view.
+   */
   private String[][] generateContent() {
     String[][] content = new String[row][col];
     List<Coord> coords = ss.getOccupiedCoords();
@@ -105,6 +122,16 @@ public class SpreadsheetTable extends JPanel {
       }
     }
     return content;
+  }
+
+  /**
+   * Gets the table of the spreadsheet view. May be helpful in future assignments.
+   *
+   * @return spreadsheet Jtable
+   */
+  JTable getTable() {
+    return table;
+
   }
 
 }

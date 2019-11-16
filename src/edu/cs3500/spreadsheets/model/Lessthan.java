@@ -15,7 +15,7 @@ class Lessthan extends AbstractFunction {
   }
 
   @Override
-  public Value evaluate(){
+  public Value evaluate() {
     Value output;
     Double[] input = new Double[2];
     if (arguments.length == 1) {

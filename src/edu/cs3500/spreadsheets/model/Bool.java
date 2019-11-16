@@ -12,6 +12,7 @@ public class Bool implements Value {
 
   /**
    * Constructor for boolean.
+   *
    * @param bool boolean to represent true/false
    */
   public Bool(boolean bool) {
@@ -58,6 +59,9 @@ public class Bool implements Value {
 
   @Override
   public void validateFormula() {
+    // We chose to put validateFormula on the Value class. For valid values,
+    // this method will not do anything. It does nothing because if it is
+    // a bad formula, then we throw an exception.
   }
 
 

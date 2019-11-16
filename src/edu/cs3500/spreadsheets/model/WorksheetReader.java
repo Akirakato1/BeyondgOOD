@@ -12,26 +12,26 @@ import java.util.regex.Pattern;
 public final class WorksheetReader {
   /**
    * A builder pattern for producing Worksheets.
-   * 
+   *
    * @param <T> the type of Worksheet to produce
    */
   public interface WorksheetBuilder<T> {
     /**
      * Creates a new cell at the given coordinates and fills in its raw contents.
-     * 
-     * @param col the column of the new cell (1-indexed)
-     * @param row the row of the new cell (1-indexed)
+     *
+     * @param col      the column of the new cell (1-indexed)
+     * @param row      the row of the new cell (1-indexed)
      * @param contents the raw contents of the new cell: may be {@code null}, or any string. Strings
-     *        beginning with an {@code =} character should be treated as formulas; all other strings
-     *        should be treated as number or boolean values if possible, and string values
-     *        otherwise.
+     *                 beginning with an {@code =} character should be treated as formulas; all
+     *                 other strings should be treated as number or boolean values if possible, and
+     *                 string values otherwise.
      * @return this {@link WorksheetBuilder}
      */
     WorksheetBuilder<T> createCell(int col, int row, String contents);
 
     /**
      * Finalizes the construction of the worksheet and returns it.
-     * 
+     *
      * @return the fully-filled-in worksheet
      */
     T createWorksheet();
@@ -41,7 +41,7 @@ public final class WorksheetReader {
    * <p>
    * A factory for producing Worksheets. The file format is
    * </p>
-   * 
+   *
    * <pre>
    *   &lt;cell coordinates, in A# format&gt; &lt;the raw contents of the cell&gt;
    *   ...
@@ -49,7 +49,7 @@ public final class WorksheetReader {
    * <p>
    * e.g.
    * </p>
-   * 
+   *
    * <pre>
    *   A1 5
    *   A2 6
@@ -63,10 +63,10 @@ public final class WorksheetReader {
    * There is no requirement that cells are filled in in order of their dependencies, since no cell
    * evaluation occurs during this creation process.
    * </p>
-   * 
-   * @param builder The source of the new Worksheet object
+   *
+   * @param builder  The source of the new Worksheet object
    * @param readable the input source for the contents of this Worksheet
-   * @param <T> the type of Worksheet to produce
+   * @param <T>      the type of Worksheet to produce
    * @return the fully-filled-in Worksheet
    */
   public static <T> T read(WorksheetBuilder<T> builder, Readable readable) {

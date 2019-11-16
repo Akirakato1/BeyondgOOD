@@ -1,21 +1,20 @@
 package edu.cs3500.spreadsheets.view;
 
 import java.util.EventObject;
+
 import javax.swing.DefaultCellEditor;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
-public class UneditableCell extends DefaultCellEditor {
+/**
+ * To represent an uneditable cell. Used in JTable on the row header column so users cannot edit the
+ * headers.
+ */
+class UneditableCell extends DefaultCellEditor {
 
-  public UneditableCell(JCheckBox checkBox) {
-    super(checkBox);
-  }
-
-  public UneditableCell(JComboBox comboBox) {
-    super(comboBox);
-  }
-
+  /**
+   * Constructor for an uneditable cell.
+   * @param textField text field inside the cell
+   */
   public UneditableCell(JTextField textField) {
     super(textField);
   }

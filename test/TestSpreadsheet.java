@@ -1,4 +1,12 @@
 import org.junit.Test;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 import edu.cs3500.spreadsheets.model.Blank;
 import edu.cs3500.spreadsheets.model.Bool;
 import edu.cs3500.spreadsheets.model.Coord;
@@ -13,19 +21,18 @@ import edu.cs3500.spreadsheets.view.SpreadsheetView;
 import edu.cs3500.spreadsheets.view.TextualView;
 import edu.cs3500.spreadsheets.model.Error;
 import edu.cs3500.spreadsheets.model.ISpreadsheetModel;
+
 import static org.junit.Assert.assertEquals;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.PrintWriter;
+
 
 /**
  * Class to test spreadsheet.
  */
 public class TestSpreadsheet {
 
-  // test to check that the textual view renders the correct spreadsheet given a file.
+  // test to check that the textual view renders the correct spreadsheet given a file:
+  // read in a file, render it through this view, and then read this
+  // view’s output back in as a second model, and check that the two models are equivalent.
   @Test
   public void testTextualView() {
     try {
@@ -36,7 +43,7 @@ public class TestSpreadsheet {
       WorksheetReader.read(builder1, file1);
       ISpreadsheetModel ss1 = builder1.createWorksheet();
 
-      File outputFile = new File("C:\\Users\\BeiBei\\Desktop\\BeyondgOOD\\"+filename2);
+      File outputFile = new File("C:\\Users\\BeiBei\\Desktop\\BeyondgOOD\\" + filename2);
       PrintWriter writeFile;
       writeFile = new PrintWriter(new FileOutputStream(outputFile, true));
       SpreadsheetView tv = new TextualView(writeFile, ss1);
@@ -49,13 +56,15 @@ public class TestSpreadsheet {
       WorksheetReader.read(builder2, file2);
       ISpreadsheetModel ss2 = builder2.createWorksheet();
 
-      assertEquals(true,ss1.equals(ss2));
+      assertEquals(true, ss1.equals(ss2));
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
   }
 
   // test to check that the textual view renders the correct blank spreadsheet given a file.
+  // read in a file, render it through this view, and then read this
+  // view’s output back in as a second model, and check that the two models are equivalent.
   @Test
   public void testTextualView2Blank() {
     try {
@@ -66,7 +75,7 @@ public class TestSpreadsheet {
       WorksheetReader.read(builder1, file1);
       ISpreadsheetModel ss1 = builder1.createWorksheet();
 
-      File outputFile = new File("C:\\Users\\BeiBei\\Desktop\\BeyondgOOD\\"+filename2);
+      File outputFile = new File("C:\\Users\\BeiBei\\Desktop\\BeyondgOOD\\" + filename2);
       PrintWriter writeFile;
       writeFile = new PrintWriter(new FileOutputStream(outputFile, true));
       SpreadsheetView tv = new TextualView(writeFile, ss1);
@@ -79,7 +88,7 @@ public class TestSpreadsheet {
       WorksheetReader.read(builder2, file2);
       ISpreadsheetModel ss2 = builder2.createWorksheet();
 
-      assertEquals(true,ss1.equals(ss2));
+      assertEquals(true, ss1.equals(ss2));
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
@@ -88,6 +97,8 @@ public class TestSpreadsheet {
 
   // test to check that the textual view renders the correct spreadsheet (even if contains
   // bad cells).
+  // read in a file, render it through this view, and then read this
+  // view’s output back in as a second model, and check that the two models are equivalent.
   @Test
   public void testTextualView3ErrorsIncluded() {
     try {
@@ -98,7 +109,7 @@ public class TestSpreadsheet {
       WorksheetReader.read(builder1, file1);
       ISpreadsheetModel ss1 = builder1.createWorksheet();
 
-      File outputFile = new File("C:\\Users\\BeiBei\\Desktop\\BeyondgOOD\\"+filename2);
+      File outputFile = new File("C:\\Users\\BeiBei\\Desktop\\BeyondgOOD\\" + filename2);
       PrintWriter writeFile;
       writeFile = new PrintWriter(new FileOutputStream(outputFile, true));
       SpreadsheetView tv = new TextualView(writeFile, ss1);
@@ -111,12 +122,174 @@ public class TestSpreadsheet {
       WorksheetReader.read(builder2, file2);
       ISpreadsheetModel ss2 = builder2.createWorksheet();
 
-      assertEquals(true,ss1.equals(ss2));
+      assertEquals(true, ss1.equals(ss2));
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
   }
 
+
+  // checks if textual view output is equal to expected output (spreadsheet with lots of errors)
+  @Test
+  public void testSpreadsheetWithErrors() {
+    try {
+      String filename1 = "cycleDetected.txt";
+      WorksheetBuilder<ISpreadsheetModel> builder1 = new WorksheetBuilderImpl();
+      Readable file1 = new FileReader(filename1);
+      WorksheetReader.read(builder1, file1);
+      ISpreadsheetModel ss1 = builder1.createWorksheet();
+
+      StringWriter out = new StringWriter();
+      PrintWriter writeFile;
+
+      writeFile = new PrintWriter(out);
+      SpreadsheetView tv = new TextualView(writeFile, ss1);
+      tv.render();
+      writeFile.flush();
+      writeFile.close();
+      System.out.println();
+
+      assertEquals("A1 =(SUM B1 B2)\n" +
+              "B1 =(SUM A1 B3)\n", out.toString());
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    }
+  }
+
+
+  // checks if textual view output is equal to expected output (spreadsheet with no bad cells)
+  @Test
+  public void testRenderSpreadsheet() {
+    try {
+      String filename1 = "square_of_distance.txt";
+      WorksheetBuilder<ISpreadsheetModel> builder1 = new WorksheetBuilderImpl();
+      Readable file1 = new FileReader(filename1);
+      WorksheetReader.read(builder1, file1);
+      ISpreadsheetModel ss1 = builder1.createWorksheet();
+
+      StringWriter out = new StringWriter();
+      PrintWriter writeFile;
+
+      writeFile = new PrintWriter(out);
+      SpreadsheetView tv = new TextualView(writeFile, ss1);
+      tv.render();
+      writeFile.flush();
+      writeFile.close();
+      assertEquals("A2 =(PRODUCT (SUM C1 A1) (SUM C1 A1))\n" +
+              "A1 3.000000\n" +
+              "B2 =(PRODUCT (SUM D1 B1) (SUM D1 B1))\n" +
+              "B1 4.000000\n" +
+              "C1 9.000000\n" +
+              "D1 12.000000\n" +
+              "A4 =(< (SUM (PRODUCT (SUM C1 A1) (SUM C1 A1)) (PRODUCT " +
+              "(SUM D1 B1) (SUM D1 B1))))\n", out.toString());
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    }
+  }
+
+  // checks if textual view output is equal to expected output (spreadsheet with no bad cells)
+  @Test
+  public void testRenderSpreadsheet2() {
+    try {
+      String filename1 = "testStringConcat.txt";
+      WorksheetBuilder<ISpreadsheetModel> builder1 = new WorksheetBuilderImpl();
+      Readable file1 = new FileReader(filename1);
+      WorksheetReader.read(builder1, file1);
+      ISpreadsheetModel ss1 = builder1.createWorksheet();
+
+      StringWriter out = new StringWriter();
+      PrintWriter writeFile;
+
+      writeFile = new PrintWriter(out);
+      SpreadsheetView tv = new TextualView(writeFile, ss1);
+      tv.render();
+      writeFile.flush();
+      writeFile.close();
+      assertEquals("A2 \"b says bye\"\n" +
+              "A1 \"a says \\\"hi\\\". b has one backslash \\\\ here.\"\n" +
+              "A6 =(CONCAT (< 2.000000 3.000000) A3)\n" +
+              "A5 51.500000\n" +
+              "A4 true\n" +
+              "A3 =(CONCAT A1:A2 A4:A5)\n", out.toString());
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    }
+  }
+
+  // checks if textual view output is equal to expected output (blank).
+  @Test
+  public void testRenderSpreadsheetBlank2() {
+
+    WorksheetBuilder<ISpreadsheetModel> builder1 = new WorksheetBuilderImpl();
+    ISpreadsheetModel ss1 = builder1.createWorksheet();
+
+    StringWriter out = new StringWriter();
+    PrintWriter writeFile;
+    writeFile = new PrintWriter(out);
+    SpreadsheetView tv = new TextualView(writeFile, ss1);
+
+    tv.render();
+    writeFile.flush();
+    writeFile.close();
+    assertEquals("", out.toString());
+
+  }
+
+
+  // checks if textual view output is equal to expected output
+  // (contains some cells that are updated)
+  @Test
+  public void testRenderSpreadsheet3() {
+
+    WorksheetBuilder<ISpreadsheetModel> builder1 = new WorksheetBuilderImpl();
+    ISpreadsheetModel ss1 = builder1.createWorksheet();
+    ss1.updateCell(new Coord(1, 1), "=true");
+    ss1.updateCell(new Coord(1, 1), "=false");
+    ss1.updateCell(new Coord(1, 2), "1");
+    ss1.updateCell(new Coord(1, 2), "2");
+    ss1.updateCell(new Coord(1, 3), "=A1");
+    ss1.updateCell(new Coord(1, 3), "=B2");
+
+    StringWriter out = new StringWriter();
+    PrintWriter writeFile;
+    writeFile = new PrintWriter(out);
+    SpreadsheetView tv = new TextualView(writeFile, ss1);
+
+    tv.render();
+    writeFile.flush();
+    writeFile.close();
+    assertEquals("A2 2.000000\n" +
+            "A1 false\n" +
+            "A3 B2\n", out.toString());
+  }
+
+
+  // checks if textual view output is equal to expected output
+  // (contains some cells that are updated)
+  @Test
+  public void testRenderSpreadsheet4() {
+
+    WorksheetBuilder<ISpreadsheetModel> builder1 = new WorksheetBuilderImpl();
+    ISpreadsheetModel ss1 = builder1.createWorksheet();
+    ss1.updateCell(new Coord(1, 1), "=true");
+    ss1.updateCell(new Coord(1, 2), "2");
+    ss1.updateCell(new Coord(1, 3), "=A1");
+    ss1.updateCell(new Coord(1, 4), "=A1:A3");
+
+    StringWriter out = new StringWriter();
+    PrintWriter writeFile;
+    writeFile = new PrintWriter(out);
+    SpreadsheetView tv = new TextualView(writeFile, ss1);
+
+    tv.render();
+    writeFile.flush();
+    writeFile.close();
+    assertEquals("A2 2.000000\n" +
+            "A1 true\n" +
+            "A4 A1:A3\n" +
+            "A3 A1\n", out.toString());
+  }
 
 
   // test that boolean is inputted correctly into cell.

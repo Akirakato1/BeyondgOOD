@@ -3,6 +3,7 @@ package edu.cs3500.spreadsheets.model;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import edu.cs3500.spreadsheets.sexp.Sexp;
 import edu.cs3500.spreadsheets.sexp.SexpVisitor;
 
@@ -81,8 +82,7 @@ class TranslateSexp implements SexpVisitor<Formula> {
    * -> creates A1 and B1 and inserts into a list).
    *
    * @param name A string representing the range of cells
-   * @return a list containing the first and last coordinates of the rectangle Otherwise, returns
-   *         null if there is an error/invalid rectangle
+   * @return a list containing the first and last coordinates of the rectangle
    */
   private static List<Coord> validRectangleExpander(String name) {
     int colonIndex = name.indexOf(':');
@@ -146,7 +146,7 @@ class TranslateSexp implements SexpVisitor<Formula> {
 
     if (indexInteger < name.length() - 1) {
       throw new IllegalArgumentException(
-          "Doesn't follow alphabet+number pattern or have other symbols");
+              "Doesn't follow alphabet+number pattern or have other symbols");
     }
 
     return indexAlphabet;
@@ -161,7 +161,7 @@ class TranslateSexp implements SexpVisitor<Formula> {
   private static Coord nameToCoord(String name) {
     int index = isValidCell(name);
     return new Coord(Coord.colNameToIndex(name.substring(0, index)),
-        Integer.parseInt(name.substring(index, name.length())));
+            Integer.parseInt(name.substring(index, name.length())));
   }
 
 }

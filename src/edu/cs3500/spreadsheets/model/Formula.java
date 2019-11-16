@@ -32,14 +32,14 @@ public interface Formula {
    * be evaluated.
    *
    * @param visitor visitor type for the formula (LessthanVisitor/SumVisitor/etc.)
-   * @param <R> an object representing formula output
+   * @param <R>     an object representing formula output
    */
   <R> R accept(FormulaVisitor<R> visitor);
 
 
   /**
-   * Checks if the given Formula is a valid one. E.g Must not be self-referencing,
-   * a function mismatch or a badly formatted cell reference.
+   * Checks if the given Formula is a valid one. E.g Must not be self-referencing, a function
+   * mismatch or a badly formatted cell reference.
    */
   void validateFormula();
 

@@ -37,7 +37,7 @@ public interface ISpreadsheetModel {
    * Updates the value at a given cell.
    *
    * @param coord coordinate of cell
-   * @param sexp new sexp to be inputted at given cell
+   * @param sexp  new sexp to be inputted at given cell
    */
   void updateCell(Coord coord, String sexp);
 
@@ -49,8 +49,8 @@ public interface ISpreadsheetModel {
   List<String> errorMessages();
 
   /**
-   * Gets the list of occupied Coords in this spreadsheet. 
-   * 
+   * Gets the list of occupied Coords in this spreadsheet.
+   *
    * @return list of Coord.
    */
   List<Coord> getOccupiedCoords();
