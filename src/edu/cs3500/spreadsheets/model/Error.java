@@ -3,10 +3,9 @@ package edu.cs3500.spreadsheets.model;
 import java.util.HashSet;
 
 /**
- * To represent an Error. It can be one of 3 types: 1) REF (eg. A1 = A1) 2) NAME (eg. = A1A1)
- * 3) VALUE (eg. < 4 true). This was to make our spreadsheet more flexible to hold all these
- * different types of errors, rather than just ignoring the user input and
- * not putting it in the hashmap.
+ * To represent an Error. It can be one of 3 types: 1) REF (eg. A1 = A1) 2) NAME (eg. = A1A1) 3)
+ * VALUE (eg. < 4 true). This was to make our spreadsheet more flexible to hold all these different
+ * types of errors, rather than just ignoring the user input and not putting it in the hashmap.
  */
 public enum Error implements Value {
   REF("#REF!"), NAME("#NAME?"), VALUE("#VALUE!");
@@ -53,4 +52,9 @@ public enum Error implements Value {
     // a bad formula, then we throw an exception.
   }
 
+  @Override
+  public HashSet<Coord> getDependent() {
+    // should never reach here
+    return new HashSet<Coord>();
+  }
 }

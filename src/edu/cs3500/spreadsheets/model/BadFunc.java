@@ -1,5 +1,7 @@
 package edu.cs3500.spreadsheets.model;
 
+import java.util.HashSet;
+
 /**
  * To represent a bad function if the user inputs something that is other than the defined functions
  * (FUNC != SUM/PRODUCT/CONCAT/LESSTHAN). This was created so the spreadsheet could hold
@@ -32,6 +34,11 @@ public class BadFunc extends AbstractFunction {
   @Override
   public void validateFormula() {
     throw new IllegalArgumentException(Error.NAME.toString());
+  }
+
+  @Override
+  public HashSet<Coord> getDependent() {
+    return new HashSet<Coord>();
   }
 
 }

@@ -21,8 +21,7 @@ public class BadRef implements Ref {
 
   @Override
   public Value evaluate() {
-    throw new IllegalArgumentException(
-            "Something was wrong with BadRef " + refName);
+    throw new IllegalArgumentException("Something was wrong with BadRef " + refName);
   }
 
   @Override
@@ -32,8 +31,7 @@ public class BadRef implements Ref {
 
   @Override
   public <R> R accept(FormulaVisitor<R> visitor) {
-    throw new IllegalArgumentException(
-            "Something was wrong with BadRef " + refName);
+    throw new IllegalArgumentException("Something was wrong with BadRef " + refName);
   }
 
   @Override
@@ -46,4 +44,8 @@ public class BadRef implements Ref {
     return refName;
   }
 
+  @Override
+  public HashSet<Coord> getDependent() {
+    return new HashSet<Coord>();
+  }
 }

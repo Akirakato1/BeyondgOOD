@@ -1,5 +1,6 @@
 package edu.cs3500.spreadsheets.model;
 
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -37,7 +38,7 @@ public interface ISpreadsheetModel {
    * Updates the value at a given cell.
    *
    * @param coord coordinate of cell
-   * @param sexp  new sexp to be inputted at given cell
+   * @param sexp new sexp to be inputted at given cell
    */
   void updateCell(Coord coord, String sexp);
 
@@ -54,4 +55,8 @@ public interface ISpreadsheetModel {
    * @return list of Coord.
    */
   List<Coord> getOccupiedCoords();
+
+  HashSet<Coord> getDependentHashSet(Coord coord);
+
+  boolean dependentHasCoord(Coord c);
 }

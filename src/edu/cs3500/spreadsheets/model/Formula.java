@@ -43,4 +43,7 @@ public interface Formula {
    */
   void validateFormula();
 
+
+  HashSet<Coord> getDependent();
+
 }

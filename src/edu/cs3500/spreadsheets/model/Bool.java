@@ -64,5 +64,10 @@ public class Bool implements Value {
     // a bad formula, then we throw an exception.
   }
 
+  @Override
+  public HashSet<Coord> getDependent() {
+    return new HashSet<Coord>();
+  }
+
 
 }

@@ -14,9 +14,9 @@ class RectangleRef implements Ref {
   /**
    * Constructor for a rectangle of references.
    *
-   * @param first  coordinate of first cell
+   * @param first coordinate of first cell
    * @param second coordinate of last cell
-   * @param ss     spreadsheet model
+   * @param ss spreadsheet model
    */
   public RectangleRef(Coord first, Coord second, ISpreadsheetModel ss) {
     if (!(first.col <= second.col && first.row <= second.row)) {
@@ -70,6 +70,16 @@ class RectangleRef implements Ref {
     // We chose to put validateFormula on the Value class. For valid values,
     // this method will not do anything. It does nothing because if it is
     // a bad formula, then we throw an exception.
+  }
+
+  @Override
+  public HashSet<Coord> getDependent() {
+    Formula[] expanded = this.expand();
+    HashSet<Coord> output = new HashSet<>();
+    for (Formula r : expanded) {
+      output.addAll(r.getDependent());
+    }
+    return output;
   }
 
 }

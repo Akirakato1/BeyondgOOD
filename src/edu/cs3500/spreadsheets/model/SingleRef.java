@@ -52,4 +52,18 @@ class SingleRef implements Ref {
     // a bad formula, then we throw an exception.
   }
 
+  @Override
+  public HashSet<Coord> getDependent() {
+    HashSet<Coord> output = new HashSet<>();
+    output.add(refCoord);
+    return output;
+ 
+    /*
+    HashSet<Coord> output = this.ss.getDependentHashSet(this.refCoord);
+    if (output == null) {
+      return new HashSet<Coord>();
+    }
+    return output;
+  }*/
+  }
 }
