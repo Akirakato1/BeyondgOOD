@@ -7,16 +7,17 @@ import java.io.FileReader;
 import java.io.PrintWriter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+import edu.cs3500.spreadsheets.controller.SpreadsheetController;
 import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.model.ISpreadsheetModel;
+import edu.cs3500.spreadsheets.model.SpreadsheetModelViewOnly;
 import edu.cs3500.spreadsheets.model.Value;
 import edu.cs3500.spreadsheets.model.WorksheetBuilderImpl;
 import edu.cs3500.spreadsheets.model.WorksheetReader;
 import edu.cs3500.spreadsheets.model.WorksheetReader.WorksheetBuilder;
 import edu.cs3500.spreadsheets.view.SpreadsheetView;
 import edu.cs3500.spreadsheets.view.TextualView;
-import edu.cs3500.spreadsheets.view.VisualView;
+import edu.cs3500.spreadsheets.view.VisualViewWithEdit;
 
 /**
  * The main class for our program where users can access the spreadsheet.
@@ -30,6 +31,7 @@ public class BeyondGood {
    */
   public static void main(String[] args) {
     WorksheetBuilder<ISpreadsheetModel> builder = new WorksheetBuilderImpl();
+    SpreadsheetController controller;
     File outputFile;
     ISpreadsheetModel ss;
     SpreadsheetView vv;
@@ -45,7 +47,8 @@ public class BeyondGood {
           case 0:
             if (args[counter].equals("-gui") && args.length == 1) {
               ss = builder.createWorksheet();
-              vv = new VisualView("New Blank", ss, 1000, 500);
+              vv = new VisualViewWithEdit("New Blank", new SpreadsheetModelViewOnly(ss), 1000, 500);
+              controller=new SpreadsheetController(ss,vv);
               vv.render();
               loopCondition = false;
               break;
@@ -66,7 +69,8 @@ public class BeyondGood {
           case 2:
             ss = builder.createWorksheet();
             if (args[counter].equals("-gui") && args.length == 3) {
-              vv = new VisualView(args[1], ss, 1000, 500);
+              vv = new VisualViewWithEdit(args[1], new SpreadsheetModelViewOnly(ss), 1000, 500);
+              controller=new SpreadsheetController(ss,vv);
               vv.render();
               loopCondition = false;
               break;
@@ -79,7 +83,8 @@ public class BeyondGood {
               outputFile.delete();
               outputFile = new File(".\\" + args[3]);
               writeFile = new PrintWriter(new FileOutputStream(outputFile, true));
-              tv = new TextualView(writeFile, ss);
+              tv = new TextualView(writeFile, new SpreadsheetModelViewOnly(ss));
+              controller=new SpreadsheetController(ss,tv);
               tv.render();
               writeFile.flush();
               writeFile.close();

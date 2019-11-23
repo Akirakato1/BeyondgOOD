@@ -12,6 +12,7 @@ import edu.cs3500.spreadsheets.model.Bool;
 import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.model.Num;
 import edu.cs3500.spreadsheets.model.SpreadsheetModel;
+import edu.cs3500.spreadsheets.model.SpreadsheetModelViewOnly;
 import edu.cs3500.spreadsheets.model.Str;
 import edu.cs3500.spreadsheets.model.Value;
 import edu.cs3500.spreadsheets.model.WorksheetBuilderImpl;
@@ -46,7 +47,7 @@ public class TestSpreadsheet {
       File outputFile = new File("C:\\Users\\BeiBei\\Desktop\\BeyondgOOD\\" + filename2);
       PrintWriter writeFile;
       writeFile = new PrintWriter(new FileOutputStream(outputFile, true));
-      SpreadsheetView tv = new TextualView(writeFile, ss1);
+      SpreadsheetView tv = new TextualView(writeFile, new SpreadsheetModelViewOnly(ss1));
       tv.render();
       writeFile.flush();
       writeFile.close();
@@ -78,7 +79,7 @@ public class TestSpreadsheet {
       File outputFile = new File("C:\\Users\\BeiBei\\Desktop\\BeyondgOOD\\" + filename2);
       PrintWriter writeFile;
       writeFile = new PrintWriter(new FileOutputStream(outputFile, true));
-      SpreadsheetView tv = new TextualView(writeFile, ss1);
+      SpreadsheetView tv = new TextualView(writeFile,  new SpreadsheetModelViewOnly(ss1));
       tv.render();
       writeFile.flush();
       writeFile.close();
@@ -112,7 +113,7 @@ public class TestSpreadsheet {
       File outputFile = new File("C:\\Users\\BeiBei\\Desktop\\BeyondgOOD\\" + filename2);
       PrintWriter writeFile;
       writeFile = new PrintWriter(new FileOutputStream(outputFile, true));
-      SpreadsheetView tv = new TextualView(writeFile, ss1);
+      SpreadsheetView tv = new TextualView(writeFile,  new SpreadsheetModelViewOnly(ss1));
       tv.render();
       writeFile.flush();
       writeFile.close();
@@ -143,7 +144,7 @@ public class TestSpreadsheet {
       PrintWriter writeFile;
 
       writeFile = new PrintWriter(out);
-      SpreadsheetView tv = new TextualView(writeFile, ss1);
+      SpreadsheetView tv = new TextualView(writeFile,  new SpreadsheetModelViewOnly(ss1));
       tv.render();
       writeFile.flush();
       writeFile.close();
@@ -171,7 +172,7 @@ public class TestSpreadsheet {
       PrintWriter writeFile;
 
       writeFile = new PrintWriter(out);
-      SpreadsheetView tv = new TextualView(writeFile, ss1);
+      SpreadsheetView tv = new TextualView(writeFile,  new SpreadsheetModelViewOnly(ss1));
       tv.render();
       writeFile.flush();
       writeFile.close();
@@ -202,7 +203,7 @@ public class TestSpreadsheet {
       PrintWriter writeFile;
 
       writeFile = new PrintWriter(out);
-      SpreadsheetView tv = new TextualView(writeFile, ss1);
+      SpreadsheetView tv = new TextualView(writeFile,  new SpreadsheetModelViewOnly(ss1));
       tv.render();
       writeFile.flush();
       writeFile.close();
@@ -227,7 +228,7 @@ public class TestSpreadsheet {
     StringWriter out = new StringWriter();
     PrintWriter writeFile;
     writeFile = new PrintWriter(out);
-    SpreadsheetView tv = new TextualView(writeFile, ss1);
+    SpreadsheetView tv = new TextualView(writeFile,  new SpreadsheetModelViewOnly(ss1));
 
     tv.render();
     writeFile.flush();
@@ -254,7 +255,7 @@ public class TestSpreadsheet {
     StringWriter out = new StringWriter();
     PrintWriter writeFile;
     writeFile = new PrintWriter(out);
-    SpreadsheetView tv = new TextualView(writeFile, ss1);
+    SpreadsheetView tv = new TextualView(writeFile,  new SpreadsheetModelViewOnly(ss1));
 
     tv.render();
     writeFile.flush();
@@ -280,7 +281,7 @@ public class TestSpreadsheet {
     StringWriter out = new StringWriter();
     PrintWriter writeFile;
     writeFile = new PrintWriter(out);
-    SpreadsheetView tv = new TextualView(writeFile, ss1);
+    SpreadsheetView tv = new TextualView(writeFile,  new SpreadsheetModelViewOnly(ss1));
 
     tv.render();
     writeFile.flush();

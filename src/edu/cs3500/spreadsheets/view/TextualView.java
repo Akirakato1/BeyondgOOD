@@ -2,9 +2,10 @@ package edu.cs3500.spreadsheets.view;
 
 import java.io.IOException;
 import java.util.List;
-
+import edu.cs3500.spreadsheets.controller.Features;
 import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.model.ISpreadsheetModel;
+import edu.cs3500.spreadsheets.model.ISpreadsheetViewOnly;
 
 /**
  * To represent a textual view. This renders the spreadsheet where it goes through the spreadsheet
@@ -16,12 +17,12 @@ import edu.cs3500.spreadsheets.model.ISpreadsheetModel;
 public class TextualView implements SpreadsheetView {
 
   Appendable outputFile;
-  ISpreadsheetModel ss;
+  ISpreadsheetViewOnly ss;
 
   /**
    * Constructor to create a textual view.
    */
-  public TextualView(Appendable app, ISpreadsheetModel ss) {
+  public TextualView(Appendable app, ISpreadsheetViewOnly ss) {
     outputFile = app;
     this.ss = ss;
   }
@@ -41,6 +42,43 @@ public class TextualView implements SpreadsheetView {
         throw new IllegalStateException("Something went wrong with append in Textual View render");
       }
     }
+  }
+
+
+  @Override
+  public void refresh() {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public void addFeatures(Features f) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public void setFormulaDisplay(String formula) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public void updateCellValue(String value, int row, int col) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public void increaseRow() {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public void increaseCol() {
+    // TODO Auto-generated method stub
+    
   }
 
 

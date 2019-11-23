@@ -1,29 +1,31 @@
 package edu.cs3500.spreadsheets.view;
 
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.EventObject;
 import java.util.List;
-
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.event.CellEditorListener;
 import javax.swing.table.DefaultTableModel;
-
+import javax.swing.table.TableCellEditor;
+import edu.cs3500.spreadsheets.controller.Features;
 import edu.cs3500.spreadsheets.model.Coord;
-import edu.cs3500.spreadsheets.model.ISpreadsheetModel;
+import edu.cs3500.spreadsheets.model.ISpreadsheetViewOnly;
 
 /**
- * To represent a spreadsheet table to be rendered.
- * It has rows and columns and converts the model into a graphical view.
- * The default spreadsheet size is 100 x 100 cells, and row headers are gray and
- * uneditable.
+ * To represent a spreadsheet table to be rendered. It has rows and columns and converts the model
+ * into a graphical view. The default spreadsheet size is 100 x 100 cells, and row headers are gray
+ * and uneditable.
  */
 public class SpreadsheetTable extends JPanel {
   private JTable table;
-  private final ISpreadsheetModel ss;
-  private static final int MINIMUM_COLUMNS = 100;
-  private static final int MINIMUM_ROWS = 100;
-  private int col;
-  private int row;
+  private final ISpreadsheetViewOnly ss;
   private final int windowWidth;
   private final int windowHeight;
 
@@ -34,14 +36,10 @@ public class SpreadsheetTable extends JPanel {
    * @param ww window width
    * @param wh window height
    */
-  public SpreadsheetTable(ISpreadsheetModel ss, int ww, int wh) {
+  public SpreadsheetTable(ISpreadsheetViewOnly ss, int ww, int wh) {
     this.ss = ss;
     this.windowHeight = wh;
     this.windowWidth = ww;
-    this.col = MINIMUM_COLUMNS;
-    this.row = MINIMUM_ROWS;
-    this.calculateRowCol();
-
     this.createTable();
   }
 
@@ -49,21 +47,18 @@ public class SpreadsheetTable extends JPanel {
    * Creates the JTable for the GUI to use. (Used in SpreadsheetTable constructor).
    */
   private void createTable() {
-
     String[] header = this.generateHeader();
     String[][] data = this.generateContent();
 
 
     DefaultTableModel model = new DefaultTableModel(data, header);
-
     table = new JTable(model);
-
     table.setPreferredScrollableViewportSize(
-            new Dimension(this.windowWidth - 100, this.windowHeight - 100));
+        new Dimension(this.windowWidth - 150, this.windowHeight - 150));
     table.setFillsViewportHeight(true);
 
     JScrollPane js = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-            JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
     js.setVisible(true);
     add(js);
@@ -71,23 +66,9 @@ public class SpreadsheetTable extends JPanel {
     table.getColumnModel().getColumn(0).setPreferredWidth(50);
     table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
     FixedColumnTable fct = new FixedColumnTable(1, js);
-    this.table = fct.getFixedTable();
-  }
-
-  /**
-   * Calculates the maximum row column size.
-   */
-  private void calculateRowCol() {
-    List<Coord> coords = ss.getOccupiedCoords();
-    for (Coord c : coords) {
-      if (c.col > this.col) {
-        this.col = c.col;
-      }
-      if (c.row > this.row) {
-        this.row = c.row;
-      }
-    }
-    col++;
+    // this.table = fct.getFixedTable();
+    System.out.println("created new table");
+    System.out.println("view only : " + ss.getCol());
   }
 
   /**
@@ -96,9 +77,9 @@ public class SpreadsheetTable extends JPanel {
    * @return array of string having the coordinate columns.
    */
   private String[] generateHeader() {
-    String[] header = new String[col];
+    String[] header = new String[ss.getCol()];
     header[0] = "";
-    for (int i = 1; i < col; i++) {
+    for (int i = 1; i < ss.getCol(); i++) {
       header[i] = Coord.colIndexToName(i);
     }
     return header;
@@ -109,9 +90,9 @@ public class SpreadsheetTable extends JPanel {
    * string, which will represent our data in the view.
    */
   private String[][] generateContent() {
-    String[][] content = new String[row][col];
+    String[][] content = new String[ss.getRow()][ss.getCol() + 1];
     List<Coord> coords = ss.getOccupiedCoords();
-    for (int i = 0; i < row; i++) {
+    for (int i = 0; i < ss.getRow(); i++) {
       content[i][0] = i + 1 + "";
     }
     for (Coord c : coords) {
@@ -124,6 +105,30 @@ public class SpreadsheetTable extends JPanel {
     return content;
   }
 
+  public void addFeatures(Features f) {
+    table.addMouseListener(new java.awt.event.MouseAdapter() {
+      @Override
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        int row = table.rowAtPoint(evt.getPoint()) + 1;
+        int col = table.columnAtPoint(evt.getPoint()) + 1;
+        System.out.println("mouse clicked");
+        f.displayFormula(row, col);
+
+      }
+    });
+    /*
+     * this.table.addFocusListener(new FocusListener() {
+     * 
+     * @Override public void focusGained(FocusEvent arg0) { int row =
+     * table.getSelectionModel().getLeadSelectionIndex(); int col =
+     * table.getColumnModel().getSelectionModel().getLeadSelectionIndex();
+     * System.out.println("gain focus"); f.displayFormula(row, col); }
+     * 
+     * @Override public void focusLost(FocusEvent arg0) { System.out.println("lose focus");
+     * f.displayFormula(0, 0); } });
+     */
+  }
+
   /**
    * Gets the table of the spreadsheet view. May be helpful in future assignments.
    *
@@ -131,7 +136,24 @@ public class SpreadsheetTable extends JPanel {
    */
   JTable getTable() {
     return table;
-
   }
 
+  protected void rebuildTable() {
+    //this.createTable();
+  }
+
+  protected void updateCellValue(String value,int row,int col) {
+    this.table.setValueAt(value, row-1, col);
+  }
+  
+  protected void increaseRow() {
+    DefaultTableModel model = (DefaultTableModel) table.getModel();
+    model.addRow(this.generateHeader());
+  }
+  
+  protected void increaseCol() {
+    DefaultTableModel model = (DefaultTableModel) table.getModel();
+    model.addColumn("something");
+    table.setModel(model);
+  }
 }

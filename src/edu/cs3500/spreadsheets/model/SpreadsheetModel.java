@@ -17,11 +17,35 @@ import edu.cs3500.spreadsheets.sexp.Parser;
  * introduces a cycle in B1/refers to A1, the model will throw an error.
  */
 public class SpreadsheetModel implements ISpreadsheetModel {
+  int row;
+  int col;
   private HashMap<Coord, Formula> cells = new HashMap<>();
   private HashMap<Coord, Value> values = new HashMap<>();
   // update these before validation
   private HashMap<Coord, HashSet<Coord>> dependents = new HashMap<>();
   private HashMap<Coord, HashSet<Coord>> dependee = new HashMap<>();
+  private int DEFAULT_ROW = 20;
+  private int DEFAULT_COL = 20;
+
+
+  public SpreadsheetModel() {
+    this.row = this.DEFAULT_ROW;
+    this.col = this.DEFAULT_COL;
+  }
+
+  public SpreadsheetModel(int r, int c) {
+    this.row = r;
+    this.col = c;
+  }
+
+  private void calculateRowCol(Coord coord) {
+    if (coord.col > col) {
+      col = coord.col;
+    }
+    if (coord.row > row) {
+      row = coord.row;
+    }
+  }
 
   @Override
   public void updateCell(Coord coord, String sexp) {
@@ -29,7 +53,7 @@ public class SpreadsheetModel implements ISpreadsheetModel {
     if (exp.substring(0, 1).equals("=")) {
       exp = exp.substring(1, exp.length());
     }
-
+    this.calculateRowCol(coord);
     try {
       Formula formula = Parser.parse(exp).accept(new TranslateSexp(this));
       cells.put(coord, formula);
@@ -40,6 +64,9 @@ public class SpreadsheetModel implements ISpreadsheetModel {
       if (cyclePresent(coord, formula)) {
         values.put(coord, Error.REF);
       } else {
+        if (values.containsKey(coord)) {
+          values.remove(coord);
+        }
         this.evaluateCell(coord);
       }
       this.reevaluateValueMap(coord);
@@ -67,29 +94,29 @@ public class SpreadsheetModel implements ISpreadsheetModel {
    * Re-evalutes the hashmap and puts in the REF Error values.
    */
   private void reevaluateValueMap(Coord c) {
-    System.out.println("outside if");
+    //// System.out.println("outside if");
     if (this.cells.get(c) == null) {
       for (Coord dependeeCell : this.dependee.get(c)) {
         this.reevaluateValueMap(dependeeCell);
       }
       return;
     }
-    System.out.println("after if");
+    //// System.out.println("after if");
     boolean cIsError = this.checkIfErrorValue(c);
-    System.out.println(c+" "+cIsError);
+    //// System.out.println(c + " " + cIsError);
     // delete all values maps of dependee IF it is not error
     // try to get deep copy of the keys of values hashmap
     HashSet<Coord> nonErrorValueCoords = new HashSet<>();
-    System.out.println(this.dependee.get(c));
+    // System.out.println(this.dependee.get(c));
     for (Coord dependeeCell : this.dependee.get(c)) {
       if (!this.checkIfErrorValue(dependeeCell)) {
         nonErrorValueCoords.add(dependeeCell);
         values.remove(dependeeCell);
-        System.out.println("Delete and reevaluated for "+c+":"+dependeeCell);
+        // System.out.println("Delete and reevaluated for " + c + ":" + dependeeCell);
       }
     }
-    
-    System.out.println(nonErrorValueCoords);
+
+    // System.out.println(nonErrorValueCoords);
 
     for (Coord nonErrorDependee : nonErrorValueCoords) {
       if (cIsError) {
@@ -99,6 +126,7 @@ public class SpreadsheetModel implements ISpreadsheetModel {
       }
       this.reevaluateValueMap(nonErrorDependee);
     }
+
   }
 
   @Override
@@ -145,17 +173,20 @@ public class SpreadsheetModel implements ISpreadsheetModel {
       this.dependents.put(coord, new HashSet<Coord>());
       return;
     }
-    System.out.println("Coord: "+coord+"\n");
+    // System.out.println("Coord: " + coord + "\n");
     HashSet<Coord> newDependent = this.getDependent(coord);
-    System.out.println("HashSet<Coord> newDependent = this.getDependent(coord);"+newDependent);
+    // System.out.println("HashSet<Coord> newDependent = this.getDependent(coord);" + newDependent);
     HashSet<Coord> newDependentCopy = (HashSet) newDependent.clone();
-    System.out.println("HashSet<Coord> newDependentCopy = (HashSet) newDependent.clone();"+newDependentCopy);
+    // System.out.println(
+    // "HashSet<Coord> newDependentCopy = (HashSet) newDependent.clone();" + newDependentCopy);
     HashSet<Coord> oldDependent = (HashSet) this.dependents.get(coord).clone();
-    System.out.println("HashSet<Coord> oldDependent = (HashSet) this.dependents.get(coord).clone();"+oldDependent);
+    // System.out.println("HashSet<Coord> oldDependent = (HashSet)
+    // this.dependents.get(coord).clone();"
+    // + oldDependent);
     oldDependent.removeAll(newDependent);
-    System.out.println("oldDependent.removeAll(newDependent);"+oldDependent);
+    // System.out.println("oldDependent.removeAll(newDependent);" + oldDependent);
     newDependent.removeAll(this.dependents.get(coord));
-    System.out.println("newDependent.removeAll(this.dependents.get(coord));"+newDependent);
+    // System.out.println("newDependent.removeAll(this.dependents.get(coord));" + newDependent);
 
     for (Coord c : newDependent) {
       this.initDependee(c);
@@ -180,20 +211,6 @@ public class SpreadsheetModel implements ISpreadsheetModel {
     if (!this.dependents.containsKey(c)) {
       this.dependents.put(c, new HashSet<Coord>());
     }
-  }
-
-
-  @Override
-  public HashSet<Coord> getDependentHashSet(Coord coord) {
-    if(this.dependents.get(coord)==null) {
-      return null;
-    }
-    return (HashSet) this.dependents.get(coord).clone();
-  }
-
-  @Override
-  public boolean dependentHasCoord(Coord c) {
-    return this.dependents.containsKey(c);
   }
 
   /**
@@ -235,6 +252,7 @@ public class SpreadsheetModel implements ISpreadsheetModel {
         }
       }
     }
+    System.out.println(this.col + " " + this.row);
     return errorMessages;
   }
 
@@ -269,6 +287,27 @@ public class SpreadsheetModel implements ISpreadsheetModel {
   @Override
   public int hashCode() {
     return Objects.hash(cells, values);
+  }
+
+  @Override
+  public int getCol() {
+    return this.col;
+  }
+
+  @Override
+  public int getRow() {
+    // TODO Auto-generated method stub
+    return this.row;
+  }
+
+  @Override
+  public void addCol() {
+    this.col++;
+  }
+
+  @Override
+  public void addRow() {
+    this.row++;
   }
 
 }
