@@ -3,11 +3,14 @@ package edu.cs3500.spreadsheets.view;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.table.DefaultTableModel;
 import edu.cs3500.spreadsheets.controller.Features;
-import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.model.ISpreadsheetViewOnly;
 
+/**
+ * To represent a visual view that allows the user to see a textbox so
+ * they can edit the contents of a cell. The view also contains buttons
+ * that allow the user to add more columns/rows to the view.
+ */
 public class VisualViewWithEdit implements SpreadsheetView {
   private ISpreadsheetViewOnly ss;
   private String name;
@@ -50,9 +53,6 @@ public class VisualViewWithEdit implements SpreadsheetView {
 
   @Override
   public void refresh() {
-   // this.jf.setVisible(false);
-   // this.render();
-    //this.table = new SpreadsheetTable(ss, windowWidth, windowHeight);
     this.table.rebuildTable();
   }
 

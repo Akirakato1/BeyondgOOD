@@ -1,19 +1,25 @@
 package edu.cs3500.spreadsheets.controller;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.FocusEvent;
-import java.awt.event.KeyEvent;
 import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.model.ISpreadsheetModel;
 import edu.cs3500.spreadsheets.view.SpreadsheetView;
 
+/**
+ * To represent a controller for the spreadsheet model. This controller communicates
+ * with the view and the model so if the view has any events happening, the model
+ * will get updated as well.
+ */
 public class SpreadsheetController implements Features {
-  ISpreadsheetModel ss;
-  SpreadsheetView view;
-  int currentCol;
-  int currentRow;
-  boolean cellSelected;
-
+  private ISpreadsheetModel ss;
+  private SpreadsheetView view;
+  private int currentCol;
+  private int currentRow;
+  private boolean cellSelected;
+  /**
+   * Constructor to create a spreadsheet controller.
+   * @param ss spreadsheet model
+   * @param view model view
+   */
   public SpreadsheetController(ISpreadsheetModel ss, SpreadsheetView view) {
     this.ss = ss;
     this.view = view;
@@ -41,14 +47,12 @@ public class SpreadsheetController implements Features {
 
   @Override
   public void addRow() {
-    System.out.println("addrow" + ss.getRow());
     ss.addRow();
     view.increaseRow();
   }
 
   @Override
   public void addCol() {
-    System.out.println("addcol" + ss.getCol());
     ss.addCol();
     view.increaseCol();
   }
@@ -65,7 +69,6 @@ public class SpreadsheetController implements Features {
     }
     this.cellSelected = true;
     // might have index issue, check later
-    System.out.println(new Coord(col, row));
     String formula = ss.getFormulaAtCoord(new Coord(col, row)).toString();
     view.setFormulaDisplay(formula);
   }

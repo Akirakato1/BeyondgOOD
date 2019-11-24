@@ -57,13 +57,5 @@ class SingleRef implements Ref {
     HashSet<Coord> output = new HashSet<>();
     output.add(refCoord);
     return output;
- 
-    /*
-    HashSet<Coord> output = this.ss.getDependentHashSet(this.refCoord);
-    if (output == null) {
-      return new HashSet<Coord>();
-    }
-    return output;
-  }*/
   }
 }

@@ -44,6 +44,10 @@ public interface Formula {
   void validateFormula();
 
 
+  /**
+   * Gets the set of coordinates that are dependent on another cell.
+   * @return set of coordinates that are dependent on another cell
+   */
   HashSet<Coord> getDependent();
 
 }

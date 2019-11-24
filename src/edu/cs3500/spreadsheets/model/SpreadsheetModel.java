@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
+
 import edu.cs3500.spreadsheets.sexp.Parser;
 
 /**
@@ -17,27 +17,40 @@ import edu.cs3500.spreadsheets.sexp.Parser;
  * introduces a cycle in B1/refers to A1, the model will throw an error.
  */
 public class SpreadsheetModel implements ISpreadsheetModel {
-  int row;
-  int col;
+  private int row;
+  private int col;
   private HashMap<Coord, Formula> cells = new HashMap<>();
   private HashMap<Coord, Value> values = new HashMap<>();
-  // update these before validation
   private HashMap<Coord, HashSet<Coord>> dependents = new HashMap<>();
   private HashMap<Coord, HashSet<Coord>> dependee = new HashMap<>();
   private int DEFAULT_ROW = 20;
   private int DEFAULT_COL = 20;
 
 
+  /**
+   * Default constructor for spreadsheet model.
+   */
   public SpreadsheetModel() {
     this.row = this.DEFAULT_ROW;
     this.col = this.DEFAULT_COL;
   }
 
+  /**
+   * Construct a spreadsheet model given row and column numbers
+   *
+   * @param r row size
+   * @param c column size
+   */
   public SpreadsheetModel(int r, int c) {
     this.row = r;
     this.col = c;
   }
 
+  /**
+   * Sets the max row and column given a coordinate.
+   *
+   * @param coord cell coordinate
+   */
   private void calculateRowCol(Coord coord) {
     if (coord.col > col) {
       col = coord.col;
@@ -80,6 +93,12 @@ public class SpreadsheetModel implements ISpreadsheetModel {
     }
   }
 
+  /**
+   * Checks the current coordinate for any errors.
+   *
+   * @param c coordinate
+   * @return boolean representing if current coordinate is an error
+   */
   private boolean checkIfErrorValue(Coord c) {
     List<Error> errorList = Arrays.asList(Error.values());
     for (Error err : errorList) {
@@ -94,29 +113,20 @@ public class SpreadsheetModel implements ISpreadsheetModel {
    * Re-evalutes the hashmap and puts in the REF Error values.
    */
   private void reevaluateValueMap(Coord c) {
-    //// System.out.println("outside if");
     if (this.cells.get(c) == null) {
       for (Coord dependeeCell : this.dependee.get(c)) {
         this.reevaluateValueMap(dependeeCell);
       }
       return;
     }
-    //// System.out.println("after if");
     boolean cIsError = this.checkIfErrorValue(c);
-    //// System.out.println(c + " " + cIsError);
-    // delete all values maps of dependee IF it is not error
-    // try to get deep copy of the keys of values hashmap
     HashSet<Coord> nonErrorValueCoords = new HashSet<>();
-    // System.out.println(this.dependee.get(c));
     for (Coord dependeeCell : this.dependee.get(c)) {
       if (!this.checkIfErrorValue(dependeeCell)) {
         nonErrorValueCoords.add(dependeeCell);
         values.remove(dependeeCell);
-        // System.out.println("Delete and reevaluated for " + c + ":" + dependeeCell);
       }
     }
-
-    // System.out.println(nonErrorValueCoords);
 
     for (Coord nonErrorDependee : nonErrorValueCoords) {
       if (cIsError) {
@@ -164,29 +174,29 @@ public class SpreadsheetModel implements ISpreadsheetModel {
     }
   }
 
+  /**
+   * Gets the coordinates the current coord is dependent on (EG if A1= A2+1, set should return A2).
+   * @param coord cell coordinate
+   * @return set of coordinates that current cell is dependent on
+   */
   private HashSet<Coord> getDependent(Coord coord) {
     return this.cells.get(coord).getDependent();
   }
 
+  /**
+   * If a coord is updated, use this to update the dependees of a cell.
+   * @param coord given cell coordinate
+   */
   private void updateDependentDependee(Coord coord) {
     if (this.cells.get(coord) == null) {
       this.dependents.put(coord, new HashSet<Coord>());
       return;
     }
-    // System.out.println("Coord: " + coord + "\n");
     HashSet<Coord> newDependent = this.getDependent(coord);
-    // System.out.println("HashSet<Coord> newDependent = this.getDependent(coord);" + newDependent);
     HashSet<Coord> newDependentCopy = (HashSet) newDependent.clone();
-    // System.out.println(
-    // "HashSet<Coord> newDependentCopy = (HashSet) newDependent.clone();" + newDependentCopy);
     HashSet<Coord> oldDependent = (HashSet) this.dependents.get(coord).clone();
-    // System.out.println("HashSet<Coord> oldDependent = (HashSet)
-    // this.dependents.get(coord).clone();"
-    // + oldDependent);
     oldDependent.removeAll(newDependent);
-    // System.out.println("oldDependent.removeAll(newDependent);" + oldDependent);
     newDependent.removeAll(this.dependents.get(coord));
-    // System.out.println("newDependent.removeAll(this.dependents.get(coord));" + newDependent);
 
     for (Coord c : newDependent) {
       this.initDependee(c);
@@ -198,15 +208,22 @@ public class SpreadsheetModel implements ISpreadsheetModel {
       this.dependee.get(c).remove(coord);
     }
     this.dependents.put(coord, newDependentCopy);
-
   }
 
+  /**
+   * Puts a new empty hashset into dependee if current coordinate has no dependees.
+   * @param c cell coordinate
+   */
   private void initDependee(Coord c) {
     if (!this.dependee.containsKey(c)) {
       this.dependee.put(c, new HashSet<Coord>());
     }
   }
 
+  /**
+   * Puts a new empty hashset into dependents if current coordinate has no cell it depends on.
+   * @param c cell coordinate
+   */
   private void initDependent(Coord c) {
     if (!this.dependents.containsKey(c)) {
       this.dependents.put(c, new HashSet<Coord>());
@@ -217,7 +234,7 @@ public class SpreadsheetModel implements ISpreadsheetModel {
    * Returns true if it was successful in putting the corresponding error message into the hashmap.
    *
    * @param exceptionMsg given error message
-   * @param coord given coordinate
+   * @param coord        given coordinate
    * @return representing whether function successfully put in the error
    */
   private boolean handleErrorValue(String exceptionMsg, Coord coord) {
@@ -235,7 +252,7 @@ public class SpreadsheetModel implements ISpreadsheetModel {
    * Checks if there is a cycle at the given coordinate and formula.
    *
    * @param currentCoord current coordinate
-   * @param formula formula to be evaluated
+   * @param formula      formula to be evaluated
    */
   private boolean cyclePresent(Coord currentCoord, Formula formula) {
     return formula.cyclePresent(currentCoord, new HashSet<Coord>());
@@ -296,7 +313,6 @@ public class SpreadsheetModel implements ISpreadsheetModel {
 
   @Override
   public int getRow() {
-    // TODO Auto-generated method stub
     return this.row;
   }
 

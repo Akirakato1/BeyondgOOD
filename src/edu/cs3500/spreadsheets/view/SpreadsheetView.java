@@ -14,6 +14,10 @@ public interface SpreadsheetView {
    */
   void render();
 
+  /**
+   *
+   * @param f
+   */
   void addFeatures(Features f);
   
   void refresh();

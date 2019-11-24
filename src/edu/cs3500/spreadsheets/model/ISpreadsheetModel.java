@@ -55,12 +55,26 @@ public interface ISpreadsheetModel {
    * @return list of Coord.
    */
   List<Coord> getOccupiedCoords();
-  
+
+  /**
+   * Gets the number of columns of the spreadsheet model.
+   * @return column count
+   */
   int getCol();
-  
+
+  /**
+   * Gets the number of rows of the spreadsheet model.
+   * @return row count
+   */
   int getRow();
-  
+
+  /**
+   * Adds a blank column to the spreadsheet model.
+   */
   void addCol();
-  
+
+  /**
+   * Adds a blank row to the spreadsheet model.
+   */
   void addRow();
 }

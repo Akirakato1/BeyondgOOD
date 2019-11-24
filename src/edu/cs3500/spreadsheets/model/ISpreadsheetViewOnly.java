@@ -32,9 +32,17 @@ public interface ISpreadsheetViewOnly {
    * @return list of Coord.
    */
   List<Coord> getOccupiedCoords();
-  
+
+  /**
+   * Gets the number of columns displayed in the spreadsheet view.
+   * @return
+   */
   int getCol();
-  
+
+  /**
+   * Gets the number of rows displayed in the spreadsheet view.
+   * @return
+   */
   int getRow();
   
 }

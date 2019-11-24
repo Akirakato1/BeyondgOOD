@@ -65,7 +65,7 @@ public class SpreadsheetTable extends JPanel {
     table.getColumnModel().getColumn(0).setCellRenderer(new GrayBackground());
     table.getColumnModel().getColumn(0).setPreferredWidth(50);
     table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-    FixedColumnTable fct = new FixedColumnTable(1, js);
+//    FixedColumnTable fct = new FixedColumnTable(1, js);
     // this.table = fct.getFixedTable();
     System.out.println("created new table");
     System.out.println("view only : " + ss.getCol());
@@ -111,22 +111,10 @@ public class SpreadsheetTable extends JPanel {
       public void mouseClicked(java.awt.event.MouseEvent evt) {
         int row = table.rowAtPoint(evt.getPoint()) + 1;
         int col = table.columnAtPoint(evt.getPoint()) + 1;
-        System.out.println("mouse clicked");
         f.displayFormula(row, col);
 
       }
     });
-    /*
-     * this.table.addFocusListener(new FocusListener() {
-     * 
-     * @Override public void focusGained(FocusEvent arg0) { int row =
-     * table.getSelectionModel().getLeadSelectionIndex(); int col =
-     * table.getColumnModel().getSelectionModel().getLeadSelectionIndex();
-     * System.out.println("gain focus"); f.displayFormula(row, col); }
-     * 
-     * @Override public void focusLost(FocusEvent arg0) { System.out.println("lose focus");
-     * f.displayFormula(0, 0); } });
-     */
   }
 
   /**
@@ -153,7 +141,7 @@ public class SpreadsheetTable extends JPanel {
   
   protected void increaseCol() {
     DefaultTableModel model = (DefaultTableModel) table.getModel();
-    model.addColumn("something");
+    model.addColumn("something", this.generateHeader());
     table.setModel(model);
   }
 }
