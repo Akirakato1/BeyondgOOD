@@ -23,7 +23,7 @@ public class EditBoxAndExpand extends JPanel{
   }
 
   /**
-   * Initializes the textbox.
+   * Initializes the textbox and button panel.
    */
   private void addTextbox() {
     textbox=new JTextField(30);
@@ -73,6 +73,5 @@ public class EditBoxAndExpand extends JPanel{
     cancel.setActionCommand("cancel");
     addRow.setActionCommand("addRow");
     addCol.setActionCommand("addCol");
-    
   }
 }

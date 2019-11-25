@@ -20,6 +20,13 @@ public class VisualViewWithEdit implements SpreadsheetView {
   private EditBoxAndExpand editUI;
   JFrame jf = new JFrame();
 
+  /**
+   * Controller for the editable visual view
+   * @param name name of file
+   * @param ss spreadsheet model
+   * @param windowWidth width of window
+   * @param windowHeight height of window
+   */
   public VisualViewWithEdit(String name, ISpreadsheetViewOnly ss, int windowWidth,
       int windowHeight) {
     this.table = new SpreadsheetTable(ss, windowWidth, windowHeight);
@@ -64,6 +71,7 @@ public class VisualViewWithEdit implements SpreadsheetView {
   @Override
   public void updateCellValue(String value,int row,int col) {
     this.table.updateCellValue(value, row, col);
+    this.refresh();
   }
   
   @Override

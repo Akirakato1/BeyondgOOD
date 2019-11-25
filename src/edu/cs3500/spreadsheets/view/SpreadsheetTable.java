@@ -50,7 +50,6 @@ public class SpreadsheetTable extends JPanel {
     String[] header = this.generateHeader();
     String[][] data = this.generateContent();
 
-
     DefaultTableModel model = new DefaultTableModel(data, header);
     table = new JTable(model);
     table.setPreferredScrollableViewportSize(
@@ -62,13 +61,10 @@ public class SpreadsheetTable extends JPanel {
     table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
     js.setVisible(true);
     add(js);
+
     table.getColumnModel().getColumn(0).setCellRenderer(new GrayBackground());
     table.getColumnModel().getColumn(0).setPreferredWidth(50);
     table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-//    FixedColumnTable fct = new FixedColumnTable(1, js);
-    // this.table = fct.getFixedTable();
-    System.out.println("created new table");
-    System.out.println("view only : " + ss.getCol());
   }
 
   /**
@@ -112,7 +108,6 @@ public class SpreadsheetTable extends JPanel {
         int row = table.rowAtPoint(evt.getPoint()) + 1;
         int col = table.columnAtPoint(evt.getPoint()) + 1;
         f.displayFormula(row, col);
-
       }
     });
   }
@@ -127,7 +122,7 @@ public class SpreadsheetTable extends JPanel {
   }
 
   protected void rebuildTable() {
-    //this.createTable();
+    this.createTable();
   }
 
   protected void updateCellValue(String value,int row,int col) {

@@ -68,7 +68,6 @@ public class SpreadsheetController implements Features {
       return;
     }
     this.cellSelected = true;
-    // might have index issue, check later
     String formula = ss.getFormulaAtCoord(new Coord(col, row)).toString();
     view.setFormulaDisplay(formula);
   }
