@@ -1,5 +1,6 @@
 package edu.cs3500.spreadsheets.view;
 
+import java.awt.BorderLayout;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -41,7 +42,7 @@ public class VisualViewWithEdit implements SpreadsheetView {
     container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
     container.add(editUI);
     container.add(table);
-    jf.add(container);
+    jf.add(container, BorderLayout.CENTER);
     System.out.println(container + " " + table + " " + editUI);
   }
 

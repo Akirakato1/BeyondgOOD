@@ -5,9 +5,8 @@ import edu.cs3500.spreadsheets.model.ISpreadsheetModel;
 import edu.cs3500.spreadsheets.view.SpreadsheetView;
 
 /**
- * To represent a controller for the spreadsheet model. This controller communicates
- * with the view and the model so if the view has any events happening, the model
- * will get updated as well.
+ * To represent a controller for the spreadsheet model. This controller communicates with the view
+ * and the model so if the view has any events happening, the model will get updated as well.
  */
 public class SpreadsheetController implements Features {
   private ISpreadsheetModel ss;
@@ -15,8 +14,10 @@ public class SpreadsheetController implements Features {
   private int currentCol;
   private int currentRow;
   private boolean cellSelected;
+
   /**
    * Constructor to create a spreadsheet controller.
+   * 
    * @param ss spreadsheet model
    * @param view model view
    */
@@ -31,10 +32,17 @@ public class SpreadsheetController implements Features {
   public void submit(String newFormula) {
     if (currentCol > 0 && currentRow > 0 && currentCol <= ss.getCol()
         && currentRow <= ss.getRow()) {
-      ss.updateCell(new Coord(currentCol, currentRow), newFormula);
+      if (newFormula.equals("")) {
+        System.out.println("The new formula: " + newFormula);
+        ss.deleteCell(new Coord(currentCol, currentRow));
+        view.updateCellValue("", currentRow, currentCol);
+      } else {
+        ss.updateCell(new Coord(currentCol, currentRow), newFormula);
+      }
     }
-    view.updateCellValue(ss.evaluateCell(new Coord(currentCol, currentRow)).toString(), currentRow,
-        currentCol);
+    for (Coord c : ss.getOccupiedCoords()) {
+      view.updateCellValue(ss.evaluateCell(c).toString(), c.row, c.col);
+    }
   }
 
   @Override
@@ -70,6 +78,9 @@ public class SpreadsheetController implements Features {
     this.cellSelected = true;
     // might have index issue, check later
     String formula = ss.getFormulaAtCoord(new Coord(col, row)).toString();
+    if (formula.length() > 0 && formula.charAt(0) == '(') {
+      formula = "=" + formula;
+    }
     view.setFormulaDisplay(formula);
   }
 
