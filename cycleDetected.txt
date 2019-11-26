@@ -11,3 +11,7 @@ A1 A1
 A1 A1
 A1 =(PRODUCT (SUM (CONCAT "STR" 3.24) true) A1)
 A10 "new line"
+E1 1.3
+E2 E1
+E3 E2
+E4 E3
