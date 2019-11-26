@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.event.CellEditorListener;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import edu.cs3500.spreadsheets.controller.Features;
@@ -50,7 +51,8 @@ public class SpreadsheetTable extends JPanel {
     String[] header = this.generateHeader();
     String[][] data = this.generateContent();
 
-    DefaultTableModel model = new DefaultTableModel(data, header);
+
+    CellUneditable model = new CellUneditable(data, header);
     table = new JTable(model);
     table.setPreferredScrollableViewportSize(
         new Dimension(this.windowWidth - 150, this.windowHeight - 150));
@@ -58,13 +60,11 @@ public class SpreadsheetTable extends JPanel {
 
     JScrollPane js = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
         JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-    table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
     js.setVisible(true);
     add(js);
-
     table.getColumnModel().getColumn(0).setCellRenderer(new GrayBackground());
-    table.getColumnModel().getColumn(0).setPreferredWidth(50);
     table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+
   }
 
   /**
@@ -106,8 +106,9 @@ public class SpreadsheetTable extends JPanel {
       @Override
       public void mouseClicked(java.awt.event.MouseEvent evt) {
         int row = table.rowAtPoint(evt.getPoint()) + 1;
-        int col = table.columnAtPoint(evt.getPoint()) + 1;
+        int col = table.columnAtPoint(evt.getPoint());
         f.displayFormula(row, col);
+
       }
     });
   }
@@ -121,22 +122,39 @@ public class SpreadsheetTable extends JPanel {
     return table;
   }
 
-  protected void rebuildTable() {
-    this.createTable();
+  void rebuildTable() {
+    // this.createTable();
   }
 
-  protected void updateCellValue(String value,int row,int col) {
-    this.table.setValueAt(value, row-1, col);
+  void updateCellValue(String value, int row, int col) {
+    this.table.setValueAt(value, row - 1, col);
   }
-  
-  protected void increaseRow() {
-    DefaultTableModel model = (DefaultTableModel) table.getModel();
-    model.addRow(this.generateHeader());
+
+  void increaseRow() {
+    CellUneditable model = (CellUneditable) table.getModel();
+    String[] rh = new String[1];
+    rh[0] = ss.getRow() + "";
+    model.addRow(rh);
   }
-  
-  protected void increaseCol() {
-    DefaultTableModel model = (DefaultTableModel) table.getModel();
-    model.addColumn("something", this.generateHeader());
+
+  void increaseCol() {
+    CellUneditable model = (CellUneditable) table.getModel();
+    model.addColumn(Coord.colIndexToName(ss.getCol() - 1), new String[0]);
     table.setModel(model);
+    table.getColumnModel().getColumn(0).setCellRenderer(new GrayBackground());
+    table.getColumnModel().getColumn(0).setPreferredWidth(50);
+  }
+
+  class CellUneditable extends DefaultTableModel {
+
+    CellUneditable(String[][] data, String[] header) {
+      super(data, header);
+    }
+
+    @Override
+    public boolean isCellEditable(int row, int column) {
+      return false;
+    }
+
   }
 }

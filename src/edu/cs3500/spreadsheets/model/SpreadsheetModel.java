@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-
 import edu.cs3500.spreadsheets.sexp.Parser;
 
 /**
@@ -79,6 +78,7 @@ public class SpreadsheetModel implements ISpreadsheetModel {
       } else {
         if (values.containsKey(coord)) {
           values.remove(coord);
+          this.deleteDependeeValue(coord);
         }
         this.evaluateCell(coord);
       }
@@ -101,6 +101,9 @@ public class SpreadsheetModel implements ISpreadsheetModel {
    */
   private boolean checkIfErrorValue(Coord c) {
     List<Error> errorList = Arrays.asList(Error.values());
+    if (c == null) {
+      return false;
+    }
     for (Error err : errorList) {
       if (values.get(c).toString().equals(err.toString())) {
         return true;
@@ -109,20 +112,31 @@ public class SpreadsheetModel implements ISpreadsheetModel {
     return false;
   }
 
+  private void deleteDependeeValue(Coord c) {
+    for (Coord dependeeCell : this.dependee.get(c)) {
+      values.remove(dependeeCell);
+    }
+
+  }
+
   /**
    * Re-evalutes the hashmap and puts in the REF Error values.
    */
   private void reevaluateValueMap(Coord c) {
+    System.out.println(this.dependee.get(c));
     if (this.cells.get(c) == null) {
+      this.deleteDependeeValue(c);
       for (Coord dependeeCell : this.dependee.get(c)) {
+        this.evaluateCell(dependeeCell);
         this.reevaluateValueMap(dependeeCell);
       }
       return;
     }
+
     boolean cIsError = this.checkIfErrorValue(c);
     HashSet<Coord> nonErrorValueCoords = new HashSet<>();
     for (Coord dependeeCell : this.dependee.get(c)) {
-      if (!this.checkIfErrorValue(dependeeCell)) {
+      if (values.get(dependeeCell) == null || !this.checkIfErrorValue(dependeeCell)) {
         nonErrorValueCoords.add(dependeeCell);
         values.remove(dependeeCell);
       }
@@ -132,22 +146,24 @@ public class SpreadsheetModel implements ISpreadsheetModel {
       if (cIsError) {
         values.put(nonErrorDependee, values.get(c));
       } else {
+        System.out.println(nonErrorDependee);
         this.evaluateCell(nonErrorDependee);
       }
       this.reevaluateValueMap(nonErrorDependee);
     }
+    System.out.println("value map: " + this.values.values());
 
   }
 
   @Override
   public void deleteCell(Coord coord) {
     if (!cells.containsKey(coord)) {
-      throw new IllegalArgumentException("Coord is not mapped");
+      return;
     }
     cells.remove(coord);
     values.remove(coord);
-    this.updateDependentDependee(coord);
     this.reevaluateValueMap(coord);
+    this.updateDependentDependee(coord);
   }
 
   @Override
@@ -176,6 +192,7 @@ public class SpreadsheetModel implements ISpreadsheetModel {
 
   /**
    * Gets the coordinates the current coord is dependent on (EG if A1= A2+1, set should return A2).
+   * 
    * @param coord cell coordinate
    * @return set of coordinates that current cell is dependent on
    */
@@ -185,6 +202,7 @@ public class SpreadsheetModel implements ISpreadsheetModel {
 
   /**
    * If a coord is updated, use this to update the dependees of a cell.
+   * 
    * @param coord given cell coordinate
    */
   private void updateDependentDependee(Coord coord) {
@@ -212,6 +230,7 @@ public class SpreadsheetModel implements ISpreadsheetModel {
 
   /**
    * Puts a new empty hashset into dependee if current coordinate has no dependees.
+   * 
    * @param c cell coordinate
    */
   private void initDependee(Coord c) {
@@ -222,6 +241,7 @@ public class SpreadsheetModel implements ISpreadsheetModel {
 
   /**
    * Puts a new empty hashset into dependents if current coordinate has no cell it depends on.
+   * 
    * @param c cell coordinate
    */
   private void initDependent(Coord c) {
@@ -234,7 +254,7 @@ public class SpreadsheetModel implements ISpreadsheetModel {
    * Returns true if it was successful in putting the corresponding error message into the hashmap.
    *
    * @param exceptionMsg given error message
-   * @param coord        given coordinate
+   * @param coord given coordinate
    * @return representing whether function successfully put in the error
    */
   private boolean handleErrorValue(String exceptionMsg, Coord coord) {
@@ -252,7 +272,7 @@ public class SpreadsheetModel implements ISpreadsheetModel {
    * Checks if there is a cycle at the given coordinate and formula.
    *
    * @param currentCoord current coordinate
-   * @param formula      formula to be evaluated
+   * @param formula formula to be evaluated
    */
   private boolean cyclePresent(Coord currentCoord, Formula formula) {
     return formula.cyclePresent(currentCoord, new HashSet<Coord>());

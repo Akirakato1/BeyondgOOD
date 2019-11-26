@@ -11,8 +11,7 @@ import edu.cs3500.spreadsheets.model.ISpreadsheetViewOnly;
  * To represent a visual view. A user can use this to see the actual GUI/spreadsheet with all its
  * cells. It uses JTable to display the cells and we made it so that if we scroll horizontally, the
  * row column header also scrolls with the table (meaning that it is fixed). Current implementation
- * does not show formulas (shows only values). This is view only, as the model passed in
- * cannot be mutated.
+ * does not show formulas (shows only values).
  */
 public class VisualView implements SpreadsheetView {
   private ISpreadsheetViewOnly ss;

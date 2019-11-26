@@ -16,8 +16,8 @@ import edu.cs3500.spreadsheets.model.ISpreadsheetViewOnly;
  */
 public class TextualView implements SpreadsheetView {
 
-  Appendable outputFile;
-  ISpreadsheetViewOnly ss;
+  private Appendable outputFile;
+  private ISpreadsheetViewOnly ss;
 
   /**
    * Constructor to create a textual view.

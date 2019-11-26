@@ -1,5 +1,9 @@
 package edu.cs3500.spreadsheets.view;
 
+import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -20,13 +24,6 @@ public class VisualViewWithEdit implements SpreadsheetView {
   private EditBoxAndExpand editUI;
   JFrame jf = new JFrame();
 
-  /**
-   * Controller for the editable visual view
-   * @param name name of file
-   * @param ss spreadsheet model
-   * @param windowWidth width of window
-   * @param windowHeight height of window
-   */
   public VisualViewWithEdit(String name, ISpreadsheetViewOnly ss, int windowWidth,
       int windowHeight) {
     this.table = new SpreadsheetTable(ss, windowWidth, windowHeight);
@@ -44,12 +41,23 @@ public class VisualViewWithEdit implements SpreadsheetView {
     jf.setSize(this.windowWidth, this.windowHeight);
     jf.setVisible(true);
     jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    JPanel container = new JPanel();
+    JPanel container = new JPanel(new GridBagLayout());
     container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
     container.add(editUI);
     container.add(table);
-    jf.add(container);
-    System.out.println(container + " " + table + " " + editUI);
+    jf.add(container, BorderLayout.CENTER);
+    jf.addComponentListener(new ComponentAdapter() {
+      public void componentResized(ComponentEvent componentEvent) {
+        Rectangle r = jf.getBounds();
+        table.getTable().setPreferredScrollableViewportSize(
+                new Dimension(r.width - 150, r.height - 150));
+        table.getTable().setFillsViewportHeight(true);
+
+        jf.setPreferredSize(jf.getSize());
+
+        System.out.println("w:" + r.width + "h:" + r.height);
+      }
+    });
   }
 
   @Override
@@ -71,7 +79,6 @@ public class VisualViewWithEdit implements SpreadsheetView {
   @Override
   public void updateCellValue(String value,int row,int col) {
     this.table.updateCellValue(value, row, col);
-    this.refresh();
   }
   
   @Override

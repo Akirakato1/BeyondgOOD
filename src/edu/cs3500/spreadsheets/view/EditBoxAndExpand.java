@@ -23,7 +23,7 @@ public class EditBoxAndExpand extends JPanel{
   }
 
   /**
-   * Initializes the textbox and button panel.
+   * Initializes the textbox.
    */
   private void addTextbox() {
     textbox=new JTextField(30);
@@ -48,7 +48,7 @@ public class EditBoxAndExpand extends JPanel{
    * Gets the text inside the textbox.
    * @return string of text inside textbox
    */
-  public String getTextbox() {
+  String getTextbox() {
     return this.textbox.getText();
   }
 
@@ -56,15 +56,15 @@ public class EditBoxAndExpand extends JPanel{
    * Sets the textbox text.
    * @param s
    */
-  public void setTextbox(String s) {
+  void setTextbox(String s) {
     this.textbox.setText(s);
   }
 
   /**
    * Adds the functionality of each button given a Feature.
-   * @param f feature
+   * @param f feature controller
    */
-  public void addFeatures(Features f) {
+  void addFeatures(Features f) {
     submit.addActionListener(evt -> f.submit(this.textbox.getText()));
     cancel.addActionListener(evt -> f.cancel());
     addRow.addActionListener(evt -> f.addRow());
