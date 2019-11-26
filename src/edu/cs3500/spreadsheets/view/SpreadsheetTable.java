@@ -4,6 +4,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.EventObject;
@@ -24,7 +26,7 @@ import edu.cs3500.spreadsheets.model.ISpreadsheetViewOnly;
  * into a graphical view. The default spreadsheet size is 100 x 100 cells, and row headers are gray
  * and uneditable.
  */
-public class SpreadsheetTable extends JPanel {
+class SpreadsheetTable extends JPanel {
   private JTable table;
   private final ISpreadsheetViewOnly ss;
   private final int windowWidth;
@@ -37,7 +39,7 @@ public class SpreadsheetTable extends JPanel {
    * @param ww window width
    * @param wh window height
    */
-  public SpreadsheetTable(ISpreadsheetViewOnly ss, int ww, int wh) {
+  SpreadsheetTable(ISpreadsheetViewOnly ss, int ww, int wh) {
     this.ss = ss;
     this.windowHeight = wh;
     this.windowWidth = ww;
@@ -101,13 +103,52 @@ public class SpreadsheetTable extends JPanel {
     return content;
   }
 
-  public void addFeatures(Features f) {
+  void addFeatures(Features f) {
     table.addMouseListener(new java.awt.event.MouseAdapter() {
       @Override
       public void mouseClicked(java.awt.event.MouseEvent evt) {
         int row = table.rowAtPoint(evt.getPoint()) + 1;
         int col = table.columnAtPoint(evt.getPoint());
         f.displayFormula(row, col);
+
+      }
+    });
+    table.addKeyListener(new KeyListener() {
+
+      @Override
+      public void keyPressed(KeyEvent e) {
+        switch (e.getKeyCode()) {
+          case KeyEvent.VK_BACK_SPACE:
+            System.out.println("reach delete in table");
+            f.submit("");
+            break;
+          case KeyEvent.VK_LEFT: 
+            System.out.println("rech left");
+            f.move("left");
+            break;
+          case KeyEvent.VK_RIGHT:
+            f.move("right");
+            break;
+          case KeyEvent.VK_UP:
+            f.move("up");
+            break;
+          case KeyEvent.VK_DOWN:
+            f.move("down");
+            break;
+          default:
+            break;
+        }
+      }
+
+      @Override
+      public void keyReleased(KeyEvent e) {
+        // TODO Auto-generated method stub
+
+      }
+
+      @Override
+      public void keyTyped(KeyEvent e) {
+        // TODO Auto-generated method stub
 
       }
     });

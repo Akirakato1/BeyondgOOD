@@ -114,7 +114,10 @@ public class SpreadsheetModel implements ISpreadsheetModel {
 
   private void deleteDependeeValue(Coord c) {
     for (Coord dependeeCell : this.dependee.get(c)) {
-      values.remove(dependeeCell);
+      if (this.values.containsKey(dependeeCell)) {
+        values.remove(dependeeCell);
+        this.deleteDependeeValue(dependeeCell);
+      }
     }
 
   }

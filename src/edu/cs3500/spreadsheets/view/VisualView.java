@@ -23,9 +23,9 @@ public class VisualView implements SpreadsheetView {
    * Constructor for the visual view.
    *
    * @param filename file name of the spreadsheet to be created
-   * @param ss       spreadsheet model
-   * @param ww       width of gui window
-   * @param wh       height of gui window
+   * @param ss spreadsheet model
+   * @param ww width of gui window
+   * @param wh height of gui window
    */
   public VisualView(String filename, ISpreadsheetViewOnly ss, int ww, int wh) {
     this.ss = ss;
@@ -37,7 +37,7 @@ public class VisualView implements SpreadsheetView {
   @Override
   public void render() {
     JFrame jf = new JFrame();
-    
+
     SpreadsheetTable tab = new SpreadsheetTable(ss, this.windowWidth, this.windowHeight);
     jf.setTitle(name);
     jf.setSize(this.windowWidth, this.windowHeight);
@@ -49,17 +49,10 @@ public class VisualView implements SpreadsheetView {
     jf.add(container);
   }
 
-
-  @Override
-  public void refresh() {
-    // TODO Auto-generated method stub
-    
-  }
-
   @Override
   public void addFeatures(Features f) {
     // TODO Auto-generated method stub
-    
+
   }
 
   @Override
@@ -70,21 +63,27 @@ public class VisualView implements SpreadsheetView {
   @Override
   public void updateCellValue(String value, int row, int col) {
     // TODO Auto-generated method stub
-    
+
   }
 
   @Override
   public void increaseRow() {
     // TODO Auto-generated method stub
-    
+
   }
 
   @Override
   public void increaseCol() {
     // TODO Auto-generated method stub
-    
+
   }
-  
-  
+
+  @Override
+  public void close() {
+    // TODO Auto-generated method stub
+
+  }
+
+
 
 }

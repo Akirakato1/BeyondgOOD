@@ -10,9 +10,8 @@ import edu.cs3500.spreadsheets.model.ISpreadsheetViewOnly;
 /**
  * To represent a textual view. This renders the spreadsheet where it goes through the spreadsheet
  * and outputs the formulas (not values) of each cell. The output is not ordered, but the formulas
- * are rendered correctly.
- * Implementation takes a model and an Appendable and renders the model into the Appendable in the
- * same format as we read files in HW5.
+ * are rendered correctly. Implementation takes a model and an Appendable and renders the model into
+ * the Appendable in the same format as we read files in HW5.
  */
 public class TextualView implements SpreadsheetView {
 
@@ -44,41 +43,40 @@ public class TextualView implements SpreadsheetView {
     }
   }
 
-
-  @Override
-  public void refresh() {
-    // TODO Auto-generated method stub
-    
-  }
-
   @Override
   public void addFeatures(Features f) {
     // TODO Auto-generated method stub
-    
+
   }
 
   @Override
   public void setFormulaDisplay(String formula) {
     // TODO Auto-generated method stub
-    
+
   }
 
   @Override
   public void updateCellValue(String value, int row, int col) {
     // TODO Auto-generated method stub
-    
+
   }
 
   @Override
   public void increaseRow() {
     // TODO Auto-generated method stub
-    
+
   }
 
   @Override
   public void increaseCol() {
     // TODO Auto-generated method stub
-    
+
+  }
+
+  @Override
+  public void close() {
+    // TODO Auto-generated method stub
+
   }
 
 

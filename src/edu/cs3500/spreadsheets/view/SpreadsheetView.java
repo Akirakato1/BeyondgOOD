@@ -19,8 +19,6 @@ public interface SpreadsheetView {
    * @param f
    */
   void addFeatures(Features f);
-  
-  void refresh();
 
   void setFormulaDisplay(String formula);
 
@@ -29,5 +27,7 @@ public interface SpreadsheetView {
   void increaseRow();
 
   void increaseCol();
+
+  void close();
 
 }

@@ -10,14 +10,14 @@ import edu.cs3500.spreadsheets.controller.Features;
  * several buttons that allows the user to add columns, submit the current edits, cancel the edits,
  * and add more rows to the spreadsheet.
  */
-class EditBoxAndExpand extends JPanel {
-  private JButton submit, cancel, addRow, addCol;
+class SaveOpen extends JPanel {
+  private JButton save, open;
   private JTextField textbox;
 
   /**
    * Constructor for the text box and button panel.
    */
-  EditBoxAndExpand() {
+  SaveOpen() {
     this.addTextbox();
     this.addButtons();
   }
@@ -34,24 +34,10 @@ class EditBoxAndExpand extends JPanel {
    * Adds the submit/cancel/addRow/addCol buttons to the panel.
    */
   private void addButtons() {
-    submit = new JButton("Submit");
-    cancel = new JButton("Cancel");
-    addRow = new JButton("Add a Row");
-    addCol = new JButton("Add a Column");
-    add(submit);
-    add(cancel);
-    add(addRow);
-    add(addCol);
-  }
-
-
-  /**
-   * Sets the textbox text.
-   * 
-   * @param s
-   */
-  void setTextbox(String s) {
-    this.textbox.setText(s);
+    save = new JButton("save");
+    open = new JButton("open");
+    add(save);
+    add(open);
   }
 
   /**
@@ -60,13 +46,9 @@ class EditBoxAndExpand extends JPanel {
    * @param f feature controller
    */
   void addFeatures(Features f) {
-    submit.addActionListener(evt -> f.submit(this.textbox.getText()));
-    cancel.addActionListener(evt -> f.cancel());
-    addRow.addActionListener(evt -> f.addRow());
-    addCol.addActionListener(evt -> f.addCol());
-    submit.setActionCommand("submit");
-    cancel.setActionCommand("cancel");
-    addRow.setActionCommand("addRow");
-    addCol.setActionCommand("addCol");
+    save.addActionListener(evt -> f.save(this.textbox.getText()));
+    open.addActionListener(evt -> f.open(this.textbox.getText()));
+    save.setActionCommand("save");
+    open.setActionCommand("open");
   }
 }

@@ -17,6 +17,7 @@ import edu.cs3500.spreadsheets.model.WorksheetReader;
 import edu.cs3500.spreadsheets.model.WorksheetReader.WorksheetBuilder;
 import edu.cs3500.spreadsheets.view.SpreadsheetView;
 import edu.cs3500.spreadsheets.view.TextualView;
+import edu.cs3500.spreadsheets.view.VisualView;
 import edu.cs3500.spreadsheets.view.VisualViewWithEdit;
 
 /**
@@ -47,8 +48,8 @@ public class BeyondGood {
           case 0:
             if (args[counter].equals("-gui") && args.length == 1) {
               ss = builder.createWorksheet();
-              vv = new VisualViewWithEdit("New Blank", new SpreadsheetModelViewOnly(ss), 1000, 500);
-              controller=new SpreadsheetController(ss,vv);
+              vv = new VisualView("New Blank", new SpreadsheetModelViewOnly(ss), 1000, 500);
+              controller = new SpreadsheetController(ss, vv);
               vv.render();
               loopCondition = false;
               break;
@@ -69,11 +70,16 @@ public class BeyondGood {
           case 2:
             ss = builder.createWorksheet();
             if (args[counter].equals("-gui") && args.length == 3) {
-              vv = new VisualViewWithEdit(args[1], new SpreadsheetModelViewOnly(ss), 1000, 500);
-              controller=new SpreadsheetController(ss,vv);
+              vv = new VisualView(args[1], new SpreadsheetModelViewOnly(ss), 1000, 500);
+              controller = new SpreadsheetController(ss, vv);
               vv.render();
               loopCondition = false;
               break;
+            } else if (args[counter].equals("-edit") && args.length == 3) {
+              vv = new VisualViewWithEdit(args[1], new SpreadsheetModelViewOnly(ss), 1000, 500);
+              controller = new SpreadsheetController(ss, vv);
+              vv.render();
+              loopCondition = false;
             } else if (args[counter].equals("-eval") && args.length == 4) {
               Value result = ss.evaluateCell(nameToCoord(args[3]));
               System.out.println("Evaluated " + args[3] + ": " + result.toString());
@@ -84,7 +90,6 @@ public class BeyondGood {
               outputFile = new File(".\\" + args[3]);
               writeFile = new PrintWriter(new FileOutputStream(outputFile, true));
               tv = new TextualView(writeFile, new SpreadsheetModelViewOnly(ss));
-              controller=new SpreadsheetController(ss,tv);
               tv.render();
               writeFile.flush();
               writeFile.close();
@@ -127,4 +132,5 @@ public class BeyondGood {
     }
     return new Coord(col, row);
   }
+  
 }

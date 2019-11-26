@@ -11,4 +11,10 @@ public interface Features {
 
   void displayFormula(int row, int col);
 
+  void save(String filename);
+
+  void open(String filename);
+
+  void move(String dir);
+
 }
