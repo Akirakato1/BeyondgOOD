@@ -3,20 +3,21 @@ package edu.cs3500.spreadsheets.model;
 import java.util.List;
 
 /**
- * To represent a view only model. None of the methods in this interface can
- * modify/mutate the model.
+ * To represent a view only model. None of the methods in this interface can modify/mutate the
+ * model.
  */
-public class SpreadsheetModelViewOnly implements ISpreadsheetViewOnly{
+public class SpreadsheetModelViewOnly implements ISpreadsheetViewOnly {
   ISpreadsheetModel ss;
 
   /**
    * Constructor for a view only spreadsheet.
+   *
    * @param ss spreadsheet model
    */
   public SpreadsheetModelViewOnly(ISpreadsheetModel ss) {
-    this.ss=ss;
+    this.ss = ss;
   }
-  
+
   @Override
   public Formula getFormulaAtCoord(Coord coord) {
     return ss.getFormulaAtCoord(coord);
@@ -47,5 +48,5 @@ public class SpreadsheetModelViewOnly implements ISpreadsheetViewOnly{
     return ss.getRow();
   }
 
-  
+
 }

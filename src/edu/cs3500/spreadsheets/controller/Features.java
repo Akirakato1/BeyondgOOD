@@ -38,7 +38,7 @@ public interface Features {
   void displayFormula(int row, int col);
 
   /**
-   * Saves the spreadsheet into a textual view file (the same text format as in HW5/6)
+   * Saves the spreadsheet into a textual view file (the same text format as in HW5/6).
    * @param filename file name of new file
    */
   void save(String filename);

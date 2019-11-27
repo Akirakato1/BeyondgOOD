@@ -12,7 +12,10 @@ import edu.cs3500.spreadsheets.controller.Features;
  * and add more rows to the spreadsheet.
  */
 class EditBoxAndExpand extends JPanel {
-  private JButton submit, cancel, addRow, addCol;
+  private JButton submit;
+  private JButton cancel;
+  private JButton addRow;
+  private JButton addCol;
   private JTextField textbox;
 
   /**
@@ -56,10 +59,8 @@ class EditBoxAndExpand extends JPanel {
   /**
    * Adds the functionality of each button given a Feature. The submit button submits the user's
    * text in the textbox field so the controller can call the corresponding mutating function.
-   *
    * The cancel button will undo the user's changes and reset the formula to the original one in the
    * textbox.
-   *
    * The addRow/addCol button will add a new row/col to the spreadsheet.
    *
    * @param f feature controller

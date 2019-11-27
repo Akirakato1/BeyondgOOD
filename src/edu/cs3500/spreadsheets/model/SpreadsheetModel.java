@@ -22,8 +22,8 @@ public class SpreadsheetModel implements ISpreadsheetModel {
   private HashMap<Coord, Value> values = new HashMap<>();
   private HashMap<Coord, HashSet<Coord>> dependents = new HashMap<>();
   private HashMap<Coord, HashSet<Coord>> dependee = new HashMap<>();
-  private int DEFAULT_ROW = 20;
-  private int DEFAULT_COL = 20;
+  private static final int DEFAULT_ROW = 20;
+  private static final int DEFAULT_COL = 20;
 
 
   /**
@@ -35,7 +35,7 @@ public class SpreadsheetModel implements ISpreadsheetModel {
   }
 
   /**
-   * Construct a spreadsheet model given row and column numbers
+   * Construct a spreadsheet model given row and column numbers.
    *
    * @param r row size
    * @param c column size

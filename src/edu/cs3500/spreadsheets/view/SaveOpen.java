@@ -3,6 +3,7 @@ package edu.cs3500.spreadsheets.view;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
 import edu.cs3500.spreadsheets.controller.Features;
 
 /**
@@ -11,7 +12,8 @@ import edu.cs3500.spreadsheets.controller.Features;
  * and add more rows to the spreadsheet.
  */
 class SaveOpen extends JPanel {
-  private JButton save, open;
+  private JButton save;
+  private JButton open;
   private JTextField textbox;
 
   /**
@@ -42,7 +44,7 @@ class SaveOpen extends JPanel {
 
   /**
    * Adds the functionality of each button given a Feature.
-   * 
+   *
    * @param f feature controller
    */
   void addFeatures(Features f) {

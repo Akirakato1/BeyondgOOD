@@ -3,6 +3,7 @@ package edu.cs3500.spreadsheets.view;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
 import edu.cs3500.spreadsheets.controller.Features;
 import edu.cs3500.spreadsheets.model.ISpreadsheetModel;
 import edu.cs3500.spreadsheets.model.ISpreadsheetViewOnly;
@@ -13,17 +14,17 @@ import edu.cs3500.spreadsheets.model.ISpreadsheetViewOnly;
  * row column header also scrolls with the table (meaning that it is fixed). Current implementation
  * does not show formulas (shows only values).
  */
-public class VisualView extends AbstractVisualView{
+public class VisualView extends AbstractVisualView {
   /**
    * Constructor for the visual view.
    *
    * @param filename file name of the spreadsheet to be created
-   * @param ss spreadsheet model
-   * @param ww width of gui window
-   * @param wh height of gui window
+   * @param ss       spreadsheet model
+   * @param ww       width of gui window
+   * @param wh       height of gui window
    */
   public VisualView(String filename, ISpreadsheetViewOnly ss, int ww, int wh) {
-    super(filename,ss,ww,wh);
+    super(filename, ss, ww, wh);
   }
 
   @Override

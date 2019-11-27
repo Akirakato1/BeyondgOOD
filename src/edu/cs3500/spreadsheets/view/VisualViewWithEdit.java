@@ -1,13 +1,10 @@
 package edu.cs3500.spreadsheets.view;
 
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+
 import javax.swing.BoxLayout;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
+
 import edu.cs3500.spreadsheets.controller.Features;
 import edu.cs3500.spreadsheets.model.ISpreadsheetViewOnly;
 
@@ -15,13 +12,20 @@ import edu.cs3500.spreadsheets.model.ISpreadsheetViewOnly;
  * To represent a visual view that allows the user to see a textbox so they can edit the contents of
  * a cell. The view also contains buttons that allow the user to add more columns/rows to the view.
  */
-public class VisualViewWithEdit extends AbstractVisualView{
+public class VisualViewWithEdit extends AbstractVisualView {
   private EditBoxAndExpand editUI;
   private SaveOpen saveopen;
 
+  /**
+   * Constructor for visual view edit.
+   * @param name name of file
+   * @param ss spreadsheet model
+   * @param windowWidth window width
+   * @param windowHeight window height
+   */
   public VisualViewWithEdit(String name, ISpreadsheetViewOnly ss, int windowWidth,
-      int windowHeight) {
-    super(name,ss,windowWidth,windowHeight);
+                            int windowHeight) {
+    super(name, ss, windowWidth, windowHeight);
     this.editUI = new EditBoxAndExpand();
     this.saveopen = new SaveOpen();
   }
