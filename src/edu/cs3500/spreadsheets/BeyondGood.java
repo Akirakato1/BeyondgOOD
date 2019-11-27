@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.PrintWriter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import edu.cs3500.spreadsheets.controller.Features;
 import edu.cs3500.spreadsheets.controller.SpreadsheetController;
 import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.model.ISpreadsheetModel;
@@ -32,7 +33,7 @@ public class BeyondGood {
    */
   public static void main(String[] args) {
     WorksheetBuilder<ISpreadsheetModel> builder = new WorksheetBuilderImpl();
-    SpreadsheetController controller;
+    Features controller;
     File outputFile;
     ISpreadsheetModel ss;
     SpreadsheetView vv;
@@ -54,7 +55,7 @@ public class BeyondGood {
               loopCondition = false;
               break;
             } else if (!args[counter].equals("-in")) {
-              System.out.println("Please make sure inputs are not malformed!");
+              System.out.println("Please make sure inputs are not malformed! in");
               loopCondition = false;
               break;
             }
@@ -80,6 +81,7 @@ public class BeyondGood {
               controller = new SpreadsheetController(ss, vv);
               vv.render();
               loopCondition = false;
+              break;
             } else if (args[counter].equals("-eval") && args.length == 4) {
               Value result = ss.evaluateCell(nameToCoord(args[3]));
               System.out.println("Evaluated " + args[3] + ": " + result.toString());
@@ -95,11 +97,11 @@ public class BeyondGood {
               writeFile.close();
               break;
             } else {
-              System.out.println("Please make sure inputs are not malformed!");
+              System.out.println("Please make sure inputs are not malformed! f");
               break;
             }
           default:
-            System.out.println("Please make sure inputs are not malformed!");
+            System.out.println("Please make sure inputs are not malformed! d");
             break;
         }
         counter++;

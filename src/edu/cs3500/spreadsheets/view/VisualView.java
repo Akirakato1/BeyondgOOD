@@ -13,12 +13,7 @@ import edu.cs3500.spreadsheets.model.ISpreadsheetViewOnly;
  * row column header also scrolls with the table (meaning that it is fixed). Current implementation
  * does not show formulas (shows only values).
  */
-public class VisualView implements SpreadsheetView {
-  private ISpreadsheetViewOnly ss;
-  private String name;
-  private int windowWidth;
-  private int windowHeight;
-
+public class VisualView extends AbstractVisualView{
   /**
    * Constructor for the visual view.
    *
@@ -28,62 +23,17 @@ public class VisualView implements SpreadsheetView {
    * @param wh height of gui window
    */
   public VisualView(String filename, ISpreadsheetViewOnly ss, int ww, int wh) {
-    this.ss = ss;
-    this.windowHeight = wh;
-    this.windowWidth = ww;
-    name = filename;
+    super(filename,ss,ww,wh);
   }
 
   @Override
   public void render() {
-    JFrame jf = new JFrame();
-
-    SpreadsheetTable tab = new SpreadsheetTable(ss, this.windowWidth, this.windowHeight);
-    jf.setTitle(name);
-    jf.setSize(this.windowWidth, this.windowHeight);
-    jf.setVisible(true);
-    jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    super.renderSetup();
     JPanel container = new JPanel();
     container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
-    container.add(tab);
+    container.add(table);
     jf.add(container);
+    jf.setVisible(true);
   }
-
-  @Override
-  public void addFeatures(Features f) {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public void setFormulaDisplay(String formula) {
-    // TODO Auto-generated method stub
-  }
-
-  @Override
-  public void updateCellValue(String value, int row, int col) {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public void increaseRow() {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public void increaseCol() {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public void close() {
-    // TODO Auto-generated method stub
-
-  }
-
-
 
 }

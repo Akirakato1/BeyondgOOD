@@ -1,22 +1,13 @@
 package edu.cs3500.spreadsheets.view;
 
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.util.EventObject;
 import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.event.CellEditorListener;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellEditor;
 import edu.cs3500.spreadsheets.controller.Features;
 import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.model.ISpreadsheetViewOnly;
@@ -163,9 +154,6 @@ class SpreadsheetTable extends JPanel {
     return table;
   }
 
-  void rebuildTable() {
-    // this.createTable();
-  }
 
   void updateCellValue(String value, int row, int col) {
     this.table.setValueAt(value, row - 1, col);

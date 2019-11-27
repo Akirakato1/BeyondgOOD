@@ -13,17 +13,16 @@ import edu.cs3500.spreadsheets.model.ISpreadsheetViewOnly;
  * are rendered correctly. Implementation takes a model and an Appendable and renders the model into
  * the Appendable in the same format as we read files in HW5.
  */
-public class TextualView implements SpreadsheetView {
+public class TextualView extends DefaultView{
 
   private Appendable outputFile;
-  private ISpreadsheetViewOnly ss;
 
   /**
    * Constructor to create a textual view.
    */
   public TextualView(Appendable app, ISpreadsheetViewOnly ss) {
+    super(ss);
     outputFile = app;
-    this.ss = ss;
   }
 
   @Override
@@ -41,42 +40,6 @@ public class TextualView implements SpreadsheetView {
         throw new IllegalStateException("Something went wrong with append in Textual View render");
       }
     }
-  }
-
-  @Override
-  public void addFeatures(Features f) {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public void setFormulaDisplay(String formula) {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public void updateCellValue(String value, int row, int col) {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public void increaseRow() {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public void increaseCol() {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public void close() {
-    // TODO Auto-generated method stub
-
   }
 
 
