@@ -1,3 +1,34 @@
+Assignment 7 changes README:
+Model:
+added dependent and dependee maps to reevalute cells upon update efficiently. Changes were made in reevalute function and helpers added to support this functionality. 
+Used adapter to create ViewOnlyModel that will be passed into the view when initilising. It does not have any access to methods that modify the model. 
+
+View: 
+Create abstract class DefaultView to make all methods optional to throw unsupportedException. Created abstract class AbstractVisualView extends DefaultView that provides fields necessary for visual views and helper for render to eliminate duplicate code in VisualView and VisualViewWithEdits. 
+
+Takes a viewonly model now. 
+
+Create JPanels, EditBoxWithExpand and SaveOpen that provides the UI to support submit, cancel, addrow, addcol, save, open functions. 
+These are used in visualviewwithedits. 
+
+All listeners are encapsulated, events are handeled, inside the view. The controller is redirected to using lambda function/classes and their parameters are not events, but contents extracted from them inside the view. 
+
+The visual views now resize to the jframe so user can change the size of the frame AND the table inside. 
+The default size is set to 1000 by 500 now but user can change freely run time. 
+
+When the user clicks on a cell to edit (or move with arrow key), the cell is selected and coord stored in controller. The user then have to click on the textbox next to submit to enter a value or edit. Blank is same as deleting. This is intuitive because when the user clicks on the cell, the content/formula is displayed in that same textbox. The textbox at top (next to save/open) is for entering filename. Enter a name and either save or open. For now, if a file is not found, nothing will happen. For future, we can open an error UI JFrame to alert user. 
+
+Controller:
+Feature interface with the possible actions done. 
+
+Extra Credit:
+All extra credit functionality are implemented:
+-Move selected cell with arrow key.
+-Save-Open function
+-delete cell content with backspace key. 
+
+
+________________________________________________________________________________________________________________________________________
 Assignment 6 changes README:
 Created Error enum that implements Value
 -can be REF, NAME, or VALUE to indicate the type of error
