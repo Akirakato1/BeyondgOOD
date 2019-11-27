@@ -13,7 +13,7 @@ class SingleRef implements Ref {
    * Constructor to make a single cell reference.
    *
    * @param coord coordinate of cell
-   * @param ss spreadsheet model
+   * @param ss    spreadsheet model
    */
   public SingleRef(Coord coord, ISpreadsheetModel ss) {
     this.refCoord = coord;

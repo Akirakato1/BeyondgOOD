@@ -4,10 +4,12 @@ import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.List;
+
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
 import edu.cs3500.spreadsheets.controller.Features;
 import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.model.ISpreadsheetViewOnly;
@@ -48,11 +50,11 @@ class SpreadsheetTable extends JPanel {
     CellUneditable model = new CellUneditable(data, header);
     table = new JTable(model);
     table.setPreferredScrollableViewportSize(
-        new Dimension(this.windowWidth - 150, this.windowHeight - 150));
+            new Dimension(this.windowWidth - 150, this.windowHeight - 150));
     table.setFillsViewportHeight(true);
 
     JScrollPane js = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-        JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+            JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     js.setVisible(true);
     add(js);
     table.getColumnModel().getColumn(0).setCellRenderer(new GrayBackground());
@@ -94,6 +96,13 @@ class SpreadsheetTable extends JPanel {
     return content;
   }
 
+  /**
+   * Adds the mouse and keyboard listening features to the table. If a user clicks a specific cell,
+   * it will highlight the cell and then display the formula. If a key is pressed, it will move the
+   * user's selected cell and display the corresponding formula.
+   *
+   * @param f controller feature
+   */
   void addFeatures(Features f) {
     table.addMouseListener(new java.awt.event.MouseAdapter() {
       @Override
@@ -113,7 +122,7 @@ class SpreadsheetTable extends JPanel {
             System.out.println("reach delete in table");
             f.submit("");
             break;
-          case KeyEvent.VK_LEFT: 
+          case KeyEvent.VK_LEFT:
             System.out.println("rech left");
             f.move("left");
             break;
@@ -133,14 +142,17 @@ class SpreadsheetTable extends JPanel {
 
       @Override
       public void keyReleased(KeyEvent e) {
-        // TODO Auto-generated method stub
+        /**
+         * Do nothing because we don't care if user released key.
+         */
 
       }
 
       @Override
       public void keyTyped(KeyEvent e) {
-        // TODO Auto-generated method stub
-
+        /**
+         * Do nothing because we already use keyPressed.
+         */
       }
     });
   }
@@ -155,10 +167,20 @@ class SpreadsheetTable extends JPanel {
   }
 
 
+  /**
+   * Updates the current cell value in the table.
+   *
+   * @param value new formula
+   * @param row   row of cell
+   * @param col   column of cell
+   */
   void updateCellValue(String value, int row, int col) {
     this.table.setValueAt(value, row - 1, col);
   }
 
+  /**
+   * Increases number of visible rows.
+   */
   void increaseRow() {
     CellUneditable model = (CellUneditable) table.getModel();
     String[] rh = new String[1];
@@ -166,6 +188,9 @@ class SpreadsheetTable extends JPanel {
     model.addRow(rh);
   }
 
+  /**
+   * Increases number of visible columns.
+   */
   void increaseCol() {
     CellUneditable model = (CellUneditable) table.getModel();
     model.addColumn(Coord.colIndexToName(ss.getCol() - 1), new String[0]);
@@ -174,8 +199,18 @@ class SpreadsheetTable extends JPanel {
     table.getColumnModel().getColumn(0).setPreferredWidth(50);
   }
 
+  /**
+   * To represent an uneditable cells. Cells that use this class cannot be editted by the user
+   * (disables double-clicking feature that is a default for jtable).
+   */
   class CellUneditable extends DefaultTableModel {
 
+    /**
+     * Constructor for uneditable cell.
+     *
+     * @param data   data in array form
+     * @param header header array to display
+     */
     CellUneditable(String[][] data, String[] header) {
       super(data, header);
     }

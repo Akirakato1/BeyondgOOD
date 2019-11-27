@@ -4,8 +4,8 @@ import java.util.HashSet;
 
 /**
  * To represent a bad function if the user inputs something that is other than the defined functions
- * (FUNC != SUM/PRODUCT/CONCAT/LESSTHAN). This was created so the spreadsheet could hold
- * bad functions (which the user can fix later).c
+ * (FUNC != SUM/PRODUCT/CONCAT/LESSTHAN). This was created so the spreadsheet could hold bad
+ * functions (which the user can fix later).c
  */
 public class BadFunc extends AbstractFunction {
   private String funcName;

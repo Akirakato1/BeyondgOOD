@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.PrintWriter;
+
 import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.model.ISpreadsheetModel;
 import edu.cs3500.spreadsheets.model.SpreadsheetModelViewOnly;
@@ -17,7 +18,8 @@ import edu.cs3500.spreadsheets.view.VisualViewWithEdit;
 
 /**
  * To represent a controller for the spreadsheet model. This controller communicates with the view
- * and the model so if the view has any events happening, the model will get updated as well.
+ * and the model so if the view has any events happening, the model will get updated as well. It is
+ * a concrete implementation of Features.
  */
 public class SpreadsheetController implements Features {
   private ISpreadsheetModel ss;
@@ -29,7 +31,7 @@ public class SpreadsheetController implements Features {
   /**
    * Constructor to create a spreadsheet controller.
    *
-   * @param ss spreadsheet model
+   * @param ss   spreadsheet model
    * @param view model view
    */
   public SpreadsheetController(ISpreadsheetModel ss, SpreadsheetView view) {
@@ -42,7 +44,7 @@ public class SpreadsheetController implements Features {
   @Override
   public void submit(String newFormula) {
     if (currentCol > 0 && currentRow > 0 && currentCol <= ss.getCol()
-        && currentRow <= ss.getRow()) {
+            && currentRow <= ss.getRow()) {
       if (newFormula.equals("")) {
         System.out.println("The new formula: " + newFormula);
         ss.deleteCell(new Coord(currentCol, currentRow));
@@ -60,7 +62,7 @@ public class SpreadsheetController implements Features {
   @Override
   public void cancel() {
     if (currentCol > 0 && currentRow > 0 && currentCol <= ss.getCol()
-        && currentRow <= ss.getRow()) {
+            && currentRow <= ss.getRow()) {
       view.setFormulaDisplay(ss.getFormulaAtCoord(new Coord(currentCol, currentRow)).toString());
     }
   }
@@ -82,7 +84,7 @@ public class SpreadsheetController implements Features {
     this.currentCol = col;
     this.currentRow = row;
     if (!(currentCol > 0 && currentRow > 0 && currentCol <= ss.getCol()
-        && currentRow <= ss.getRow())) {
+            && currentRow <= ss.getRow())) {
       this.cellSelected = false;
       view.setFormulaDisplay("");
       return;
@@ -131,26 +133,26 @@ public class SpreadsheetController implements Features {
   public void move(String dir) {
     switch (dir) {
       case "left":
-        System.out.println("currentC: "+this.currentCol+" ssC: "+ss.getCol());
-        if(this.currentCol>0) {
+        System.out.println("currentC: " + this.currentCol + " ssC: " + ss.getCol());
+        if (this.currentCol > 0) {
           this.currentCol--;
         }
         break;
       case "right":
-        System.out.println("currentC: "+this.currentCol+" ssC: "+ss.getCol());
-        if(this.currentCol<ss.getCol()) {
+        System.out.println("currentC: " + this.currentCol + " ssC: " + ss.getCol());
+        if (this.currentCol < ss.getCol()) {
           this.currentCol++;
         }
         break;
       case "up":
-        System.out.println("currentR: "+this.currentRow+" ssR: "+ss.getRow());
-        if(this.currentRow>1) {
+        System.out.println("currentR: " + this.currentRow + " ssR: " + ss.getRow());
+        if (this.currentRow > 1) {
           this.currentRow--;
         }
         break;
       case "down":
-        System.out.println("currentR: "+this.currentRow+" ssR: "+ss.getRow());
-        if(this.currentRow<ss.getRow()) {
+        System.out.println("currentR: " + this.currentRow + " ssR: " + ss.getRow());
+        if (this.currentRow < ss.getRow()) {
           this.currentRow++;
         }
         break;

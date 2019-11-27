@@ -1,6 +1,5 @@
 package edu.cs3500.spreadsheets.model;
 
-import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -38,7 +37,7 @@ public interface ISpreadsheetModel {
    * Updates the value at a given cell.
    *
    * @param coord coordinate of cell
-   * @param sexp new sexp to be inputted at given cell
+   * @param sexp  new sexp to be inputted at given cell
    */
   void updateCell(Coord coord, String sexp);
 
@@ -58,12 +57,14 @@ public interface ISpreadsheetModel {
 
   /**
    * Gets the number of columns of the spreadsheet model.
+   *
    * @return column count
    */
   int getCol();
 
   /**
    * Gets the number of rows of the spreadsheet model.
+   *
    * @return row count
    */
   int getRow();

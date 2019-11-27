@@ -1,11 +1,14 @@
 import org.junit.Test;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+
 import javax.swing.JButton;
+
 import edu.cs3500.spreadsheets.controller.Features;
 import edu.cs3500.spreadsheets.controller.SpreadsheetController;
 import edu.cs3500.spreadsheets.model.Blank;
@@ -24,15 +27,21 @@ import edu.cs3500.spreadsheets.view.TextualView;
 import edu.cs3500.spreadsheets.view.VisualViewWithEdit;
 import edu.cs3500.spreadsheets.model.Error;
 import edu.cs3500.spreadsheets.model.ISpreadsheetModel;
+
 import static org.junit.Assert.assertEquals;
 
-
+/**
+ * Test for controller class.
+ */
 public class TestControllerView {
   ISpreadsheetModel ss = new SpreadsheetModel();
   SpreadsheetView vv = new VisualViewWithEdit("test", new SpreadsheetModelViewOnly(ss), 1000, 500);
   Features controller = new SpreadsheetController(ss, vv);
   JButton submit = new JButton("submit");
 
+  /**
+   * Tests if submit button works.
+   */
   @Test
   public void testSubmit() {
 
@@ -45,6 +54,9 @@ public class TestControllerView {
     assertEquals("", ss.getFormulaAtCoord(new Coord(1, 1)).toString());
   }
 
+  /**
+   * Tests if addRow actually adds a row in the model.
+   */
   @Test
   public void testAddRow() {
     assertEquals(20, ss.getRow());
@@ -52,6 +64,9 @@ public class TestControllerView {
     assertEquals(21, ss.getRow());
   }
 
+  /**
+   * Tests if addRow actually adds a column in the model.
+   */
   @Test
   public void testAddCol() {
     assertEquals(20, ss.getCol());
@@ -59,6 +74,10 @@ public class TestControllerView {
     assertEquals(21, ss.getCol());
   }
 
+  /**
+   * Tests if move actually moves the selected cell and can modify the correct new position in the
+   * model.
+   */
   @Test
   public void testMove() {
     controller.displayFormula(1, 1);
@@ -77,6 +96,9 @@ public class TestControllerView {
     assertEquals("1.100000", ss.getFormulaAtCoord(new Coord(1, 1)).toString());
   }
 
+  /**
+   * Tests if save makes a new file with correct output.
+   */
   @Test
   public void testSave() {
     ISpreadsheetModel ss = new SpreadsheetModel();
@@ -86,12 +108,12 @@ public class TestControllerView {
       controller.displayFormula(3, 2);
       controller.submit("31415");
       controller.save("testSave.txt");
-      
+
       file = new FileReader("testSave.txt");
       WorksheetReader.read(builder, file);
-      ss=builder.createWorksheet();
-      
-      assertEquals("31415.000000",ss.getFormulaAtCoord(new Coord(2,3)).toString());
+      ss = builder.createWorksheet();
+
+      assertEquals("31415.000000", ss.getFormulaAtCoord(new Coord(2, 3)).toString());
     } catch (FileNotFoundException e) {
       System.out.println("test file not found");
     }

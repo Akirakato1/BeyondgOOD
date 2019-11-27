@@ -112,6 +112,10 @@ public class SpreadsheetModel implements ISpreadsheetModel {
     return false;
   }
 
+  /**
+   * Given a coordinate, deletes any coordinates that are dependees of this cell.
+   * @param c given cell coordinate
+   */
   private void deleteDependeeValue(Coord c) {
     for (Coord dependeeCell : this.dependee.get(c)) {
       if (this.values.containsKey(dependeeCell)) {

@@ -1,20 +1,30 @@
 package edu.cs3500.spreadsheets.view;
 
-import javax.swing.BoxLayout;
-import javax.swing.JPanel;
 import edu.cs3500.spreadsheets.controller.Features;
 import edu.cs3500.spreadsheets.model.ISpreadsheetViewOnly;
 
+/**
+ * To represent a default view. This class is primarily used for
+ * textual views to reduce any duplicated code (espiecally in throwing the
+ * unsporrted operation exceptions).
+ */
 public abstract class DefaultView implements SpreadsheetView{
   protected ISpreadsheetViewOnly ss;
-  
+
+  /**
+   * Constructor for a default view.
+   * @param ss spreadsheet model
+   */
   public DefaultView(ISpreadsheetViewOnly ss) {
     this.ss=ss;
   }
   
   @Override
   public void addFeatures(Features f) {
-    //don't do anything.
+    /**
+     * Textual views do not have buttons/views so we did not allow it to
+     * have a controller.
+     */
   }
 
   @Override

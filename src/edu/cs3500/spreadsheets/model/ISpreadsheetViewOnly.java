@@ -2,6 +2,10 @@ package edu.cs3500.spreadsheets.model;
 
 import java.util.List;
 
+/**
+ * To represent a view only spreadsheet. Users that use this interface cannot
+ * mutate the model, so it is used only so the view cannot mutate the model directly.
+ */
 public interface ISpreadsheetViewOnly {
   /**
    * Gets the formula used at a certain cell.
@@ -34,13 +38,13 @@ public interface ISpreadsheetViewOnly {
   List<Coord> getOccupiedCoords();
 
   /**
-   * Gets the number of columns displayed in the spreadsheet view.
+   * Gets the number of columns to be displayed in the spreadsheet view.
    * @return
    */
   int getCol();
 
   /**
-   * Gets the number of rows displayed in the spreadsheet view.
+   * Gets the number of rows to be displayed in the spreadsheet view.
    * @return
    */
   int getRow();

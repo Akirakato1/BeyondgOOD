@@ -7,6 +7,12 @@ import java.awt.event.ComponentEvent;
 import javax.swing.JFrame;
 import edu.cs3500.spreadsheets.model.ISpreadsheetViewOnly;
 
+/**
+ * To represent an abstract visual view. This class extends DefaultView and
+ * implements some repeated methods to reduce the amount of duplication
+ * in the visual view and visual view with edit classes. We chose to implement it like this so that
+ * when we create new visual views, they can simply override methods in this class.
+ */
 public abstract class AbstractVisualView extends DefaultView{
 
   protected String name;
@@ -14,7 +20,14 @@ public abstract class AbstractVisualView extends DefaultView{
   protected int windowHeight;
   protected JFrame jf;
   protected SpreadsheetTable table;
-  
+
+  /**
+   * Constructor for abstract visual view.
+   * @param filename filename of spreadsheet
+   * @param ss spreadsheet model
+   * @param ww window width
+   * @param wh window height
+   */
   public AbstractVisualView(String filename, ISpreadsheetViewOnly ss, int ww, int wh) {
     super(ss);
     this.windowHeight = wh;
@@ -22,7 +35,10 @@ public abstract class AbstractVisualView extends DefaultView{
     this.name = filename;
     this.table = new SpreadsheetTable(ss, windowWidth, windowHeight);
   }
-  
+
+  /**
+   * Sets up the JFrame and other settings so view can be rendered.
+   */
   protected void renderSetup() {
     jf = new JFrame();
     

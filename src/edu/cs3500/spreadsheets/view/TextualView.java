@@ -2,6 +2,7 @@ package edu.cs3500.spreadsheets.view;
 
 import java.io.IOException;
 import java.util.List;
+
 import edu.cs3500.spreadsheets.controller.Features;
 import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.model.ISpreadsheetModel;
@@ -13,7 +14,7 @@ import edu.cs3500.spreadsheets.model.ISpreadsheetViewOnly;
  * are rendered correctly. Implementation takes a model and an Appendable and renders the model into
  * the Appendable in the same format as we read files in HW5.
  */
-public class TextualView extends DefaultView{
+public class TextualView extends DefaultView {
 
   private Appendable outputFile;
 

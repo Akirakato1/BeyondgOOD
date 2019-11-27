@@ -10,7 +10,8 @@ public class Coord {
   public final int col;
 
   /**
-   * Constructor for a Coord object. 
+   * Constructor for a Coord object.
+   *
    * @param col column.
    * @param row row.
    */

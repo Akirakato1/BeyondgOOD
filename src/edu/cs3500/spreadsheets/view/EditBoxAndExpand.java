@@ -3,6 +3,7 @@ package edu.cs3500.spreadsheets.view;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
 import edu.cs3500.spreadsheets.controller.Features;
 
 /**
@@ -23,7 +24,7 @@ class EditBoxAndExpand extends JPanel {
   }
 
   /**
-   * Initializes the textbox.
+   * Initializes the text box.
    */
   private void addTextbox() {
     textbox = new JTextField(30);
@@ -47,16 +48,20 @@ class EditBoxAndExpand extends JPanel {
 
   /**
    * Sets the textbox text.
-   * 
-   * @param s
    */
   void setTextbox(String s) {
     this.textbox.setText(s);
   }
 
   /**
-   * Adds the functionality of each button given a Feature.
-   * 
+   * Adds the functionality of each button given a Feature. The submit button submits the user's
+   * text in the textbox field so the controller can call the corresponding mutating function.
+   *
+   * The cancel button will undo the user's changes and reset the formula to the original one in the
+   * textbox.
+   *
+   * The addRow/addCol button will add a new row/col to the spreadsheet.
+   *
    * @param f feature controller
    */
   void addFeatures(Features f) {
