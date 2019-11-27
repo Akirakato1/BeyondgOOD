@@ -1,7 +1,9 @@
 package edu.cs3500.spreadsheets.view;
 
-import java.awt.*;
 
+
+import java.awt.GridBagLayout;
+import java.awt.BorderLayout;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 

@@ -1,11 +1,8 @@
 package edu.cs3500.spreadsheets.view;
 
 import javax.swing.BoxLayout;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import edu.cs3500.spreadsheets.controller.Features;
-import edu.cs3500.spreadsheets.model.ISpreadsheetModel;
 import edu.cs3500.spreadsheets.model.ISpreadsheetViewOnly;
 
 /**
