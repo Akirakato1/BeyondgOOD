@@ -41,8 +41,7 @@ public class SpreadsheetController implements Features {
 
   @Override
   public void submit(String newFormula) {
-    if (currentCol > 0 && currentRow > 0 && currentCol <= ss.getCol()
-        && currentRow <= ss.getRow()) {
+    if (currentCol > 0 && currentRow > 0) {
       if (newFormula.equals("")) {
         System.out.println("The new formula: " + newFormula);
         ss.deleteCell(new Coord(currentCol, currentRow));
@@ -59,8 +58,7 @@ public class SpreadsheetController implements Features {
 
   @Override
   public void cancel() {
-    if (currentCol > 0 && currentRow > 0 && currentCol <= ss.getCol()
-        && currentRow <= ss.getRow()) {
+    if (currentCol > 0 && currentRow > 0) {
       view.setFormulaDisplay(ss.getFormulaAtCoord(new Coord(currentCol, currentRow)).toString());
     }
   }
@@ -81,8 +79,8 @@ public class SpreadsheetController implements Features {
   public void displayFormula(int row, int col) {
     this.currentCol = col;
     this.currentRow = row;
-    if (!(currentCol > 0 && currentRow > 0 && currentCol <= ss.getCol()
-        && currentRow <= ss.getRow())) {
+    view.setHighlight(row, col);
+    if (!(currentCol > 0 && currentRow > 0)) {
       this.cellSelected = false;
       view.setFormulaDisplay("");
       return;
@@ -131,26 +129,26 @@ public class SpreadsheetController implements Features {
   public void move(String dir) {
     switch (dir) {
       case "left":
-        System.out.println("currentC: "+this.currentCol+" ssC: "+ss.getCol());
-        if(this.currentCol>0) {
+        System.out.println("currentC: " + this.currentCol + " ssC: " + ss.getCol());
+        if (this.currentCol > 0) {
           this.currentCol--;
         }
         break;
       case "right":
-        System.out.println("currentC: "+this.currentCol+" ssC: "+ss.getCol());
-        if(this.currentCol<ss.getCol()) {
+        System.out.println("currentC: " + this.currentCol + " ssC: " + ss.getCol());
+        if (this.currentCol < ss.getCol()) {
           this.currentCol++;
         }
         break;
       case "up":
-        System.out.println("currentR: "+this.currentRow+" ssR: "+ss.getRow());
-        if(this.currentRow>1) {
+        System.out.println("currentR: " + this.currentRow + " ssR: " + ss.getRow());
+        if (this.currentRow > 1) {
           this.currentRow--;
         }
         break;
       case "down":
-        System.out.println("currentR: "+this.currentRow+" ssR: "+ss.getRow());
-        if(this.currentRow<ss.getRow()) {
+        System.out.println("currentR: " + this.currentRow + " ssR: " + ss.getRow());
+        if (this.currentRow < ss.getRow()) {
           this.currentRow++;
         }
         break;

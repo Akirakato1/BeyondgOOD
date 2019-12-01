@@ -22,8 +22,8 @@ public class SpreadsheetModel implements ISpreadsheetModel {
   private HashMap<Coord, Value> values = new HashMap<>();
   private HashMap<Coord, HashSet<Coord>> dependents = new HashMap<>();
   private HashMap<Coord, HashSet<Coord>> dependee = new HashMap<>();
-  private int DEFAULT_ROW = 20;
-  private int DEFAULT_COL = 20;
+  private int DEFAULT_ROW = 2;
+  private int DEFAULT_COL = 2;
 
 
   /**
@@ -51,6 +51,7 @@ public class SpreadsheetModel implements ISpreadsheetModel {
    * @param coord cell coordinate
    */
   private void calculateRowCol(Coord coord) {
+    System.out.println(coord+" current: "+ col+" "+ row);
     if (coord.col > col) {
       col = coord.col;
     }

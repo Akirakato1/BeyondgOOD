@@ -16,6 +16,13 @@ import edu.cs3500.spreadsheets.model.Value;
 import edu.cs3500.spreadsheets.model.WorksheetBuilderImpl;
 import edu.cs3500.spreadsheets.model.WorksheetReader;
 import edu.cs3500.spreadsheets.model.WorksheetReader.WorksheetBuilder;
+import edu.cs3500.spreadsheets.provider.controller.ProviderFeaturesAdapter;
+import edu.cs3500.spreadsheets.provider.controller.SpreadsheetFeatures;
+import edu.cs3500.spreadsheets.provider.model.ProviderModelAdapter;
+import edu.cs3500.spreadsheets.provider.view.OurViewAdapter;
+import edu.cs3500.spreadsheets.provider.view.ViewFactory;
+import edu.cs3500.spreadsheets.provider.view.ViewFactory.GUIViewType;
+import edu.cs3500.spreadsheets.provider.view.WorksheetView;
 import edu.cs3500.spreadsheets.view.SpreadsheetView;
 import edu.cs3500.spreadsheets.view.TextualView;
 import edu.cs3500.spreadsheets.view.VisualView;
@@ -54,6 +61,12 @@ public class BeyondGood {
               vv.render();
               loopCondition = false;
               break;
+            } else if (args[counter].equals("-provider") && args.length == 1) {
+              ss = builder.createWorksheet();
+              WorksheetView wv =
+                  ViewFactory.makeGraphical(new ProviderModelAdapter(ss), GUIViewType.STATIC);
+              loopCondition = false;
+              break;
             } else if (!args[counter].equals("-in")) {
               System.out.println("Please make sure inputs are not malformed! in");
               loopCondition = false;
@@ -80,6 +93,14 @@ public class BeyondGood {
               vv = new VisualViewWithEdit(args[1], new SpreadsheetModelViewOnly(ss), 1000, 500);
               controller = new SpreadsheetController(ss, vv);
               vv.render();
+              loopCondition = false;
+              break;
+            } else if (args[counter].equals("-provider") && args.length == 3) {
+              vv = new OurViewAdapter(
+                  ViewFactory.makeGraphical(new ProviderModelAdapter(ss), GUIViewType.EDIT));
+              controller = new SpreadsheetController(ss, vv);
+              SpreadsheetFeatures pc = new ProviderFeaturesAdapter(controller);
+
               loopCondition = false;
               break;
             } else if (args[counter].equals("-eval") && args.length == 4) {
@@ -134,5 +155,5 @@ public class BeyondGood {
     }
     return new Coord(col, row);
   }
-  
+
 }

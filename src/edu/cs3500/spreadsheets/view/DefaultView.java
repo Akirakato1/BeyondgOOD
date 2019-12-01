@@ -41,4 +41,9 @@ public abstract class DefaultView implements SpreadsheetView{
   public void close() {
     throw new UnsupportedOperationException("Close not supported");
   }
+  
+  @Override
+  public void setHighlight(int row, int col) {
+   //do nothing
+  }
 }

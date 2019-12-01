@@ -30,4 +30,6 @@ public interface SpreadsheetView {
 
   void close();
 
+  void setHighlight(int row, int col);
+
 }
