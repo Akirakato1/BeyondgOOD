@@ -18,8 +18,7 @@ import edu.cs3500.spreadsheets.view.VisualViewWithEdit;
 
 /**
  * To represent a controller for the spreadsheet model. This controller communicates with the view
- * and the model so if the view has any events happening, the model will get updated as well. It is
- * a concrete implementation of Features.
+ * and the model so if the view has any events happening, the model will get updated as well.
  */
 public class SpreadsheetController implements Features {
   private ISpreadsheetModel ss;
@@ -43,8 +42,7 @@ public class SpreadsheetController implements Features {
 
   @Override
   public void submit(String newFormula) {
-    if (currentCol > 0 && currentRow > 0 && currentCol <= ss.getCol()
-            && currentRow <= ss.getRow()) {
+    if (currentCol > 0 && currentRow > 0) {
       if (newFormula.equals("")) {
         System.out.println("The new formula: " + newFormula);
         ss.deleteCell(new Coord(currentCol, currentRow));
@@ -61,8 +59,7 @@ public class SpreadsheetController implements Features {
 
   @Override
   public void cancel() {
-    if (currentCol > 0 && currentRow > 0 && currentCol <= ss.getCol()
-            && currentRow <= ss.getRow()) {
+    if (currentCol > 0 && currentRow > 0) {
       view.setFormulaDisplay(ss.getFormulaAtCoord(new Coord(currentCol, currentRow)).toString());
     }
   }
@@ -83,8 +80,8 @@ public class SpreadsheetController implements Features {
   public void displayFormula(int row, int col) {
     this.currentCol = col;
     this.currentRow = row;
-    if (!(currentCol > 0 && currentRow > 0 && currentCol <= ss.getCol()
-            && currentRow <= ss.getRow())) {
+    view.setHighlight(row, col);
+    if (!(currentCol > 0 && currentRow > 0)) {
       this.cellSelected = false;
       view.setFormulaDisplay("");
       return;

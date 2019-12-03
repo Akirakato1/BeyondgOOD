@@ -54,6 +54,7 @@ public enum Error implements Value {
 
   @Override
   public HashSet<Coord> getDependent() {
+    // should never reach here
     return new HashSet<Coord>();
   }
 }

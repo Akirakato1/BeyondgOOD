@@ -70,7 +70,7 @@ abstract class AbstractFunction implements Function {
       arguments[i].validateFormula();
     }
   }
-
+  
   @Override
   public HashSet<Coord> getDependent() {
     HashSet<Coord> output = new HashSet<>();

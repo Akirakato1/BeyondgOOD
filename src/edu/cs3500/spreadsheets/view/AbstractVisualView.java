@@ -52,7 +52,8 @@ public abstract class AbstractVisualView extends DefaultView {
       public void componentResized(ComponentEvent componentEvent) {
         Rectangle r = jf.getBounds();
         table.getTable()
-                .setPreferredScrollableViewportSize(new Dimension(r.width - 150, r.height - 150));
+                .setPreferredScrollableViewportSize(
+                        new Dimension(r.width - 150, r.height - 150));
         table.getTable().setFillsViewportHeight(true);
 
         jf.setPreferredSize(jf.getSize());

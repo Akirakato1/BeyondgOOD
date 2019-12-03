@@ -142,17 +142,14 @@ class SpreadsheetTable extends JPanel {
 
       @Override
       public void keyReleased(KeyEvent e) {
-        /**
-         * Do nothing because we don't care if user released key.
-         */
+        // Do nothing.
 
       }
 
       @Override
       public void keyTyped(KeyEvent e) {
-        /**
-         * Do nothing because we already use keyPressed.
-         */
+        // Do nothing.
+
       }
     });
   }

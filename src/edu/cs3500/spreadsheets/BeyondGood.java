@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.PrintWriter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import edu.cs3500.spreadsheets.controller.Features;
 import edu.cs3500.spreadsheets.controller.SpreadsheetController;
 import edu.cs3500.spreadsheets.model.Coord;
@@ -16,6 +17,13 @@ import edu.cs3500.spreadsheets.model.Value;
 import edu.cs3500.spreadsheets.model.WorksheetBuilderImpl;
 import edu.cs3500.spreadsheets.model.WorksheetReader;
 import edu.cs3500.spreadsheets.model.WorksheetReader.WorksheetBuilder;
+import edu.cs3500.spreadsheets.controller.ProviderFeaturesAdapter;
+import edu.cs3500.spreadsheets.provider.controller.SpreadsheetFeatures;
+import edu.cs3500.spreadsheets.model.ProviderModelAdapter;
+import edu.cs3500.spreadsheets.provider.view.OurViewAdapter;
+import edu.cs3500.spreadsheets.provider.view.ViewFactory;
+import edu.cs3500.spreadsheets.provider.view.ViewFactory.GUIViewType;
+import edu.cs3500.spreadsheets.provider.view.WorksheetView;
 import edu.cs3500.spreadsheets.view.SpreadsheetView;
 import edu.cs3500.spreadsheets.view.TextualView;
 import edu.cs3500.spreadsheets.view.VisualView;
@@ -49,9 +57,16 @@ public class BeyondGood {
           case 0:
             if (args[counter].equals("-gui") && args.length == 1) {
               ss = builder.createWorksheet();
-              vv = new VisualView("New Blank", new SpreadsheetModelViewOnly(ss), 1000, 500);
+              vv = new VisualView("New Blank",
+                      new SpreadsheetModelViewOnly(ss), 1000, 500);
               controller = new SpreadsheetController(ss, vv);
               vv.render();
+              loopCondition = false;
+              break;
+            } else if (args[counter].equals("-provider") && args.length == 1) {
+              ss = builder.createWorksheet();
+              WorksheetView wv =
+                      ViewFactory.makeGraphical(new ProviderModelAdapter(ss), GUIViewType.STATIC);
               loopCondition = false;
               break;
             } else if (!args[counter].equals("-in")) {
@@ -77,9 +92,18 @@ public class BeyondGood {
               loopCondition = false;
               break;
             } else if (args[counter].equals("-edit") && args.length == 3) {
-              vv = new VisualViewWithEdit(args[1], new SpreadsheetModelViewOnly(ss), 1000, 500);
+              vv = new VisualViewWithEdit(args[1],
+                      new SpreadsheetModelViewOnly(ss), 1000, 500);
               controller = new SpreadsheetController(ss, vv);
               vv.render();
+              loopCondition = false;
+              break;
+            } else if (args[counter].equals("-provider") && args.length == 3) {
+              vv = new OurViewAdapter(
+                      ViewFactory.makeGraphical(new ProviderModelAdapter(ss), GUIViewType.EDIT));
+              controller = new SpreadsheetController(ss, vv);
+              SpreadsheetFeatures pc = new ProviderFeaturesAdapter(controller);
+
               loopCondition = false;
               break;
             } else if (args[counter].equals("-eval") && args.length == 4) {
@@ -134,5 +158,5 @@ public class BeyondGood {
     }
     return new Coord(col, row);
   }
-  
+
 }

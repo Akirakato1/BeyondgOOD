@@ -16,21 +16,24 @@ public interface SpreadsheetView {
 
   /**
    * Adds a controller to the view so the view can communicate to the model.
+   *
    * @param f controller features
    */
   void addFeatures(Features f);
 
   /**
    * Sets the given formula in the view's textbox.
+   *
    * @param formula given formula
    */
   void setFormulaDisplay(String formula);
 
   /**
    * Updates the view of the cell at the given coordinates.
+   *
    * @param value new formula
-   * @param row cell row
-   * @param col cell column
+   * @param row   cell row
+   * @param col   cell column
    */
   void updateCellValue(String value, int row, int col);
 
@@ -49,4 +52,15 @@ public interface SpreadsheetView {
    */
   void close();
 
+  /**
+   * Highlights a certain cell.
+   *
+   * @param row given cell row
+   * @param col given cell column
+   */
+  void setHighlight(int row, int col);
+
+
 }
+
+

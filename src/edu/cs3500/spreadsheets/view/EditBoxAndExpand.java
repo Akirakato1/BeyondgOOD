@@ -27,7 +27,7 @@ class EditBoxAndExpand extends JPanel {
   }
 
   /**
-   * Initializes the text box.
+   * Initializes the textbox.
    */
   private void addTextbox() {
     textbox = new JTextField(30);
@@ -57,11 +57,7 @@ class EditBoxAndExpand extends JPanel {
   }
 
   /**
-   * Adds the functionality of each button given a Feature. The submit button submits the user's
-   * text in the textbox field so the controller can call the corresponding mutating function.
-   * The cancel button will undo the user's changes and reset the formula to the original one in the
-   * textbox.
-   * The addRow/addCol button will add a new row/col to the spreadsheet.
+   * Adds the functionality of each button given a Feature.
    *
    * @param f feature controller
    */

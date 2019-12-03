@@ -29,7 +29,7 @@ public abstract class DefaultView implements SpreadsheetView {
 
   @Override
   public void setFormulaDisplay(String formula) {
-    throw new UnsupportedOperationException("setformuladisplay not supported");
+    throw new UnsupportedOperationException("setFormulaDisplay not supported");
   }
 
   @Override
@@ -50,5 +50,11 @@ public abstract class DefaultView implements SpreadsheetView {
   @Override
   public void close() {
     throw new UnsupportedOperationException("Close not supported");
+  }
+
+  @Override
+  public void setHighlight(int row, int col) {
+    // Do nothing because jTable already does the highlighting for us. This
+    // was placed here to more easily adapt the provider's code.
   }
 }

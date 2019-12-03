@@ -3,8 +3,6 @@ import org.junit.Test;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
-import javax.swing.JButton;
-
 import edu.cs3500.spreadsheets.controller.Features;
 import edu.cs3500.spreadsheets.controller.SpreadsheetController;
 import edu.cs3500.spreadsheets.model.Coord;
@@ -26,10 +24,9 @@ public class TestControllerView {
   ISpreadsheetModel ss = new SpreadsheetModel();
   SpreadsheetView vv = new VisualViewWithEdit("test", new SpreadsheetModelViewOnly(ss), 1000, 500);
   Features controller = new SpreadsheetController(ss, vv);
-  JButton submit = new JButton("submit");
 
   /**
-   * Tests if submit button works.
+   * Tests if submit works.
    */
   @Test
   public void testSubmit() {
