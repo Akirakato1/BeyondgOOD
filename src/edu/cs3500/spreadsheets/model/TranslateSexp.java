@@ -63,8 +63,12 @@ class TranslateSexp implements SexpVisitor<Formula> {
       Coord coord = nameToCoord(s);
       return new SingleRef(coord, ss);
     } catch (IllegalArgumentException e) {
+      List<Coord> coords = validRectangleExpander(s);
       if (isValidRectangle(s)) {
-        List<Coord> coords = validRectangleExpander(s);
+        if (coords.get(coords.size() - 1) == null) {
+          coords.remove(coords.size() - 1);
+          return new ColumnRef(coords.get(0), coords.get(1), ss);
+        }
         return new RectangleRef(coords.get(0), coords.get(1), ss);
       } else {
         return new BadRef(s);
@@ -84,13 +88,14 @@ class TranslateSexp implements SexpVisitor<Formula> {
    * @param name A string representing the range of cells
    * @return a list containing the first and last coordinates of the rectangle
    */
-  private static List<Coord> validRectangleExpander(String name) {
+  private List<Coord> validRectangleExpander(String name) {
     int colonIndex = name.indexOf(':');
     if (colonIndex < 0) {
       return null;
     }
     String cell1 = name.substring(0, colonIndex);
     String cell2 = name.substring(colonIndex + 1, name.length());
+
     try {
       Coord cell1Coord = nameToCoord(cell1);
       Coord cell2Coord = nameToCoord(cell2);
@@ -100,7 +105,20 @@ class TranslateSexp implements SexpVisitor<Formula> {
       return null;
 
     } catch (IllegalArgumentException e) {
-      return null;
+      if (e.getMessage().equals("For input string: \"\"")) {
+        cell1 += 1;
+        cell2 += ss.getRow();
+        Coord cell1Coord = nameToCoord(cell1);
+        Coord cell2Coord = nameToCoord(cell2);
+        if (cell1Coord.col <= cell2Coord.col && cell1Coord.row <= cell2Coord.row) {
+          List<Coord> answer = new ArrayList<>(Arrays.asList(cell1Coord, cell2Coord));
+          answer.add(null);
+          return answer;
+        }
+        return null;
+      } else {
+        return null;
+      }
     }
 
   }
@@ -111,7 +129,7 @@ class TranslateSexp implements SexpVisitor<Formula> {
    * @param name given range of cells (eg. "A1:B3"
    * @return boolean of whether given string is a valid rectangle representation
    */
-  private static boolean isValidRectangle(String name) {
+  private boolean isValidRectangle(String name) {
     return validRectangleExpander(name) != null;
   }
 
@@ -163,5 +181,4 @@ class TranslateSexp implements SexpVisitor<Formula> {
     return new Coord(Coord.colNameToIndex(name.substring(0, index)),
             Integer.parseInt(name.substring(index, name.length())));
   }
-
 }

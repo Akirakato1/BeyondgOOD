@@ -57,8 +57,7 @@ public class BeyondGood {
           case 0:
             if (args[counter].equals("-gui") && args.length == 1) {
               ss = builder.createWorksheet();
-              vv = new VisualView("New Blank",
-                      new SpreadsheetModelViewOnly(ss), 1000, 500);
+              vv = new VisualView("New Blank", new SpreadsheetModelViewOnly(ss), 1000, 500);
               controller = new SpreadsheetController(ss, vv);
               vv.render();
               loopCondition = false;

@@ -133,12 +133,14 @@ public class SpreadsheetModel implements ISpreadsheetModel {
    * Re-evalutes the hashmap and puts in the REF Error values.
    */
   private void reevaluateValueMap(Coord c) {
-    System.out.println(this.dependee.get(c));
+    System.out.println("dependee" + this.dependee.get(c));
     if (this.cells.get(c) == null) {
       this.deleteDependeeValue(c);
       for (Coord dependeeCell : this.dependee.get(c)) {
         this.evaluateCell(dependeeCell);
-        this.reevaluateValueMap(dependeeCell);
+        if (!this.dependee.get(c).contains(c)) {
+          this.reevaluateValueMap(dependeeCell);
+        }
       }
       return;
     }
