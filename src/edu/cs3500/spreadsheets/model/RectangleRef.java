@@ -6,9 +6,9 @@ import java.util.HashSet;
  * To represent a rectangle of references (used when user inputs something like A1:B3).
  */
 class RectangleRef implements Ref {
-  private final Coord first;
-  private final Coord second;
-  private ISpreadsheetModel ss;
+  protected final Coord first;
+  protected final Coord second;
+  protected ISpreadsheetModel ss;
 
 
   /**
