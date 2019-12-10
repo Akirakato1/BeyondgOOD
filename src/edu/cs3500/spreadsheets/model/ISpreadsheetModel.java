@@ -1,5 +1,6 @@
 package edu.cs3500.spreadsheets.model;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -78,4 +79,8 @@ public interface ISpreadsheetModel {
    * Adds a blank row to the spreadsheet model.
    */
   void addRow();
+
+  int getColWidth(String colHeader);
+
+  void setColHeaderWidths(HashMap<String, Integer> map);
 }

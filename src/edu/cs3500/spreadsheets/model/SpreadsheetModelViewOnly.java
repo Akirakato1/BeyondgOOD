@@ -47,6 +47,11 @@ public class SpreadsheetModelViewOnly implements ISpreadsheetViewOnly {
   public int getRow() {
     return ss.getRow();
   }
+  
+  @Override
+  public int getColWidth(String colHeader) {
+    return ss.getColWidth(colHeader);
+  }
 
 
 }

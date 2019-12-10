@@ -57,4 +57,9 @@ public enum Error implements Value {
     // should never reach here
     return new HashSet<Coord>();
   }
+
+  @Override
+  public boolean hasColumnRef() {
+    return false;
+  }
 }

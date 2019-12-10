@@ -70,7 +70,7 @@ abstract class AbstractFunction implements Function {
       arguments[i].validateFormula();
     }
   }
-  
+
   @Override
   public HashSet<Coord> getDependent() {
     HashSet<Coord> output = new HashSet<>();
@@ -80,4 +80,13 @@ abstract class AbstractFunction implements Function {
     return output;
   }
 
+  @Override
+  public boolean hasColumnRef() {
+    for (Formula r : arguments) {
+      if (r.hasColumnRef()) {
+        return true;
+      }
+    }
+    return false;
+  }
 }

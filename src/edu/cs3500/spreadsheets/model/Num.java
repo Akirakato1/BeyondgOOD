@@ -72,4 +72,9 @@ public class Num implements Value {
   public HashSet<Coord> getDependent() {
     return new HashSet<Coord>();
   }
+
+  @Override
+  public boolean hasColumnRef() {
+    return false;
+  }
 }

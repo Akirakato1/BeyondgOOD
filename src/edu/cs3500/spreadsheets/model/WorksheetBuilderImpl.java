@@ -1,5 +1,6 @@
 package edu.cs3500.spreadsheets.model;
 
+import java.util.HashMap;
 import edu.cs3500.spreadsheets.model.WorksheetReader.WorksheetBuilder;
 
 /**
@@ -25,6 +26,12 @@ public class WorksheetBuilderImpl implements WorksheetBuilder<ISpreadsheetModel>
   @Override
   public ISpreadsheetModel createWorksheet() {
     return ss;
+  }
+
+  @Override
+  public WorksheetBuilder<ISpreadsheetModel> setColumnWidths(HashMap<String, Integer> colWidths) {
+    this.ss.setColHeaderWidths(colWidths);
+    return this;
   }
 
 }

@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-
 import edu.cs3500.spreadsheets.sexp.Parser;
 
 /**
@@ -23,6 +22,9 @@ public class SpreadsheetModel implements ISpreadsheetModel {
   private HashMap<Coord, Value> values = new HashMap<>();
   private HashMap<Coord, HashSet<Coord>> dependents = new HashMap<>();
   private HashMap<Coord, HashSet<Coord>> dependee = new HashMap<>();
+  private List<Coord> columnRefers = new ArrayList<>();
+  private HashMap<String, Integer> colHeaderWidth = new HashMap<>();
+  public static final Integer DEFAULT_COL_WIDTH = 80;
   private static final int DEFAULT_ROW = 20;
   private static final int DEFAULT_COL = 20;
 
@@ -75,12 +77,19 @@ public class SpreadsheetModel implements ISpreadsheetModel {
       this.initDependent(coord);
       this.updateDependentDependee(coord);
       formula.validateFormula();
+      boolean hasColumnRefs = formula.hasColumnRef();
       if (cyclePresent(coord, formula)) {
         values.put(coord, Error.REF);
       } else {
         if (values.containsKey(coord)) {
           values.remove(coord);
           this.deleteDependeeValue(coord);
+          if (this.columnRefers.contains(coord)) {
+            this.columnRefers.remove(coord);
+          }
+        }
+        if (hasColumnRefs) {
+          this.columnRefers.add(coord);
         }
         this.evaluateCell(coord);
       }
@@ -164,6 +173,7 @@ public class SpreadsheetModel implements ISpreadsheetModel {
       this.reevaluateValueMap(nonErrorDependee);
     }
     System.out.println("value map: " + this.values.values());
+    System.out.println("column refers: " + this.columnRefers);
 
   }
 
@@ -266,7 +276,7 @@ public class SpreadsheetModel implements ISpreadsheetModel {
    * Returns true if it was successful in putting the corresponding error message into the hashmap.
    *
    * @param exceptionMsg given error message
-   * @param coord        given coordinate
+   * @param coord given coordinate
    * @return representing whether function successfully put in the error
    */
   private boolean handleErrorValue(String exceptionMsg, Coord coord) {
@@ -284,7 +294,7 @@ public class SpreadsheetModel implements ISpreadsheetModel {
    * Checks if there is a cycle at the given coordinate and formula.
    *
    * @param currentCoord current coordinate
-   * @param formula      formula to be evaluated
+   * @param formula formula to be evaluated
    */
   private boolean cyclePresent(Coord currentCoord, Formula formula) {
     return formula.cyclePresent(currentCoord, new HashSet<Coord>());
@@ -356,6 +366,27 @@ public class SpreadsheetModel implements ISpreadsheetModel {
   @Override
   public void addRow() {
     this.row++;
+    this.updateColumnRefCoords();
+  }
+
+  /**
+   * Updates the values and dependee cells that use ColumnRefs.
+   *
+   */
+  private void updateColumnRefCoords() {
+    for (Coord c : this.columnRefers) {
+      this.updateCell(c, this.cells.get(c).toString());
+    }
+  }
+
+  @Override
+  public int getColWidth(String colHeader) {
+    return this.colHeaderWidth.getOrDefault(colHeader, DEFAULT_COL_WIDTH);
+  }
+
+  @Override
+  public void setColHeaderWidths(HashMap<String, Integer> map) {
+    this.colHeaderWidth = map;
   }
 
 }

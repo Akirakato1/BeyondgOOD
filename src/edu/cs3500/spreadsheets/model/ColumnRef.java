@@ -17,4 +17,16 @@ class ColumnRef extends RectangleRef {
   public String toString() {
     return super.first.toString().substring(0,1) + ":" + super.second.toString().substring(0,1);
   }
+  
+  @Override
+  public boolean hasColumnRef() {
+    return true;
+  }
+  
+  @Override
+  protected Formula[] expand() {
+    this.second=new Coord(this.second.col,ss.getRow());
+    return super.expand();
+  }
+  
 }

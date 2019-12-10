@@ -12,10 +12,16 @@ public interface Formula {
   /**
    * Evaluates the formula and returns a value representing its type (Str/Bool/Num).
    *
-   * @return returns output/result of the formula after it is evaluated.
+   * @return output/result of the formula after it is evaluated.
    */
   Value evaluate();
 
+  /**
+   * Checks if the formula contains any use of ColumnRefs.
+   * 
+   * @return boolean of the check.
+   */
+  boolean hasColumnRef();
 
   /**
    * Since cycles may be detected differently depending on the type of value/formula it is (eg.

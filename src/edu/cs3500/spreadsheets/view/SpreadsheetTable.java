@@ -3,16 +3,16 @@ package edu.cs3500.spreadsheets.view;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.HashMap;
 import java.util.List;
-
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-
 import edu.cs3500.spreadsheets.controller.Features;
 import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.model.ISpreadsheetViewOnly;
+import edu.cs3500.spreadsheets.model.SpreadsheetModel;
 
 /**
  * To represent a spreadsheet table to be rendered. It has rows and columns and converts the model
@@ -50,16 +50,46 @@ class SpreadsheetTable extends JPanel {
     CellUneditable model = new CellUneditable(data, header);
     table = new JTable(model);
     table.setPreferredScrollableViewportSize(
-            new Dimension(this.windowWidth - 150, this.windowHeight - 150));
+        new Dimension(this.windowWidth - 150, this.windowHeight - 150));
     table.setFillsViewportHeight(true);
 
     JScrollPane js = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-            JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     js.setVisible(true);
     add(js);
     table.getColumnModel().getColumn(0).setCellRenderer(new GrayBackground());
     table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+    this.setColWidths();
 
+  }
+
+  /**
+   * Set the column width to that stored in the model.
+   */
+  protected void setColWidths() {
+    for (int i = 1; i < ss.getCol(); i++) {
+      this.table.getColumnModel().getColumn(i)
+          .setPreferredWidth(ss.getColWidth(Coord.colIndexToName(i)));
+     this.table.getColumnModel().getColumn(i).setWidth(ss.getColWidth(Coord.colIndexToName(i)));
+    }
+  }
+
+  /**
+   * Creates and returns a hashmap between columnheader to its width. Mapping is created if the
+   * width is not equal to the default width.
+   * 
+   * @return Hashmap of header to width.
+   */
+  protected HashMap<String, Integer> getCurrentColWidths() {
+    HashMap<String, Integer> output = new HashMap<>();
+    int colWidth;
+    for (int i = 1; i < ss.getCol(); i++) {
+      colWidth = this.table.getColumnModel().getColumn(i).getWidth();
+      if (colWidth != SpreadsheetModel.DEFAULT_COL_WIDTH) {
+        output.put(Coord.colIndexToName(i), colWidth);
+      }
+    }
+    return output;
   }
 
   /**
@@ -168,8 +198,8 @@ class SpreadsheetTable extends JPanel {
    * Updates the current cell value in the table.
    *
    * @param value new formula
-   * @param row   row of cell
-   * @param col   column of cell
+   * @param row row of cell
+   * @param col column of cell
    */
   void updateCellValue(String value, int row, int col) {
     this.table.setValueAt(value, row - 1, col);
@@ -205,7 +235,7 @@ class SpreadsheetTable extends JPanel {
     /**
      * Constructor for uneditable cell.
      *
-     * @param data   data in array form
+     * @param data data in array form
      * @param header header array to display
      */
     CellUneditable(String[][] data, String[] header) {

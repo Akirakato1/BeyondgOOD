@@ -4,10 +4,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import edu.cs3500.spreadsheets.controller.Features;
 import edu.cs3500.spreadsheets.controller.SpreadsheetController;
 import edu.cs3500.spreadsheets.model.Coord;
@@ -47,6 +47,7 @@ public class BeyondGood {
     SpreadsheetView vv;
     SpreadsheetView tv;
     Readable file;
+    Readable datFile;
     PrintWriter writeFile;
 
     try {
@@ -65,7 +66,14 @@ public class BeyondGood {
             } else if (args[counter].equals("-provider") && args.length == 1) {
               ss = builder.createWorksheet();
               WorksheetView wv =
-                      ViewFactory.makeGraphical(new ProviderModelAdapter(ss), GUIViewType.STATIC);
+                  ViewFactory.makeGraphical(new ProviderModelAdapter(ss), GUIViewType.STATIC);
+              loopCondition = false;
+              break;
+            } else if (args[counter].equals("-edit") && args.length == 1) {
+              ss = builder.createWorksheet();
+              vv = new VisualViewWithEdit("New Blank", new SpreadsheetModelViewOnly(ss), 1000, 500);
+              controller = new SpreadsheetController(ss, vv);
+              vv.render();
               loopCondition = false;
               break;
             } else if (!args[counter].equals("-in")) {
@@ -75,7 +83,19 @@ public class BeyondGood {
             }
             break;
           case 1:
-            file = new FileReader(args[counter]);
+            file = new FileReader(args[counter] + ".txt");
+            try {
+              datFile = new FileReader(args[counter] + ".dat");
+            } catch (FileNotFoundException e1) {
+              File createNewDat = new File(".\\" + args[counter] + ".dat");
+              try {
+                createNewDat.createNewFile();
+              } catch (IOException e) {
+                System.out.println("failed to create new dat file");
+              }
+              datFile = new FileReader(args[counter] + ".dat");
+            }
+            WorksheetReader.readDat(builder, datFile);
             WorksheetReader.read(builder, file);
             ss = builder.createWorksheet();
             for (String s : ss.errorMessages()) {
@@ -91,15 +111,14 @@ public class BeyondGood {
               loopCondition = false;
               break;
             } else if (args[counter].equals("-edit") && args.length == 3) {
-              vv = new VisualViewWithEdit(args[1],
-                      new SpreadsheetModelViewOnly(ss), 1000, 500);
+              vv = new VisualViewWithEdit(args[1], new SpreadsheetModelViewOnly(ss), 1000, 500);
               controller = new SpreadsheetController(ss, vv);
               vv.render();
               loopCondition = false;
               break;
             } else if (args[counter].equals("-provider") && args.length == 3) {
               vv = new OurViewAdapter(
-                      ViewFactory.makeGraphical(new ProviderModelAdapter(ss), GUIViewType.EDIT));
+                  ViewFactory.makeGraphical(new ProviderModelAdapter(ss), GUIViewType.EDIT));
               controller = new SpreadsheetController(ss, vv);
               SpreadsheetFeatures pc = new ProviderFeaturesAdapter(controller);
 

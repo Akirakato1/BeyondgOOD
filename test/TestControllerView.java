@@ -1,8 +1,13 @@
 import org.junit.Test;
-
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Scanner;
 import edu.cs3500.spreadsheets.controller.Features;
 import edu.cs3500.spreadsheets.controller.SpreadsheetController;
 import edu.cs3500.spreadsheets.model.Coord;
@@ -14,7 +19,6 @@ import edu.cs3500.spreadsheets.model.WorksheetReader.WorksheetBuilder;
 import edu.cs3500.spreadsheets.view.SpreadsheetView;
 import edu.cs3500.spreadsheets.view.VisualViewWithEdit;
 import edu.cs3500.spreadsheets.model.ISpreadsheetModel;
-
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -24,6 +28,7 @@ public class TestControllerView {
   ISpreadsheetModel ss = new SpreadsheetModel();
   SpreadsheetView vv = new VisualViewWithEdit("test", new SpreadsheetModelViewOnly(ss), 1000, 500);
   Features controller = new SpreadsheetController(ss, vv);
+  WorksheetBuilder<ISpreadsheetModel> builder = new WorksheetBuilderImpl();
 
   /**
    * Tests if submit works.
@@ -93,7 +98,7 @@ public class TestControllerView {
     try {
       controller.displayFormula(3, 2);
       controller.submit("31415");
-      controller.save("testSave.txt");
+      controller.save("testSave");
 
       file = new FileReader("testSave.txt");
       WorksheetReader.read(builder, file);
@@ -104,4 +109,45 @@ public class TestControllerView {
       System.out.println("test file not found");
     }
   }
+
+  @Test
+  public void testColWidthDat1() {
+    HashMap<String, Integer> map = new HashMap<>();
+    map.put("A", 75);
+    map.put("B", 122);
+
+    this.ss.setColHeaderWidths(map);
+    SpreadsheetView vv2 =
+        new VisualViewWithEdit("test2", new SpreadsheetModelViewOnly(ss), 1000, 500);
+    Features controller2 = new SpreadsheetController(ss, vv2);
+    controller2.save("testColWidthDatOne");
+
+    try {
+      Readable datFile = new FileReader("testColWidthDatOne" + ".dat");
+
+      WorksheetReader.readDat(builder, datFile);
+      ISpreadsheetModel otherss = builder.createWorksheet();
+
+      assertEquals(map.get("A") + 0, otherss.getColWidth("A") + 0);
+      assertEquals(map.get("B") + 0, otherss.getColWidth("B") + 0);
+      assertEquals(SpreadsheetModel.DEFAULT_COL_WIDTH + 0, otherss.getColWidth("C") + 0);
+
+      Scanner scanDat = new Scanner(new File("testColWidthDatOne.dat"));
+      String text = scanDat.useDelimiter("\\A").next();
+      scanDat.close();
+
+      String ssColWidthText="";
+      for (int i = 1; i < ss.getCol(); i++) {
+        if (ss.getColWidth(Coord.colIndexToName(i)) != SpreadsheetModel.DEFAULT_COL_WIDTH) {
+          ssColWidthText = ssColWidthText + Coord.colIndexToName(i) + " "
+              + this.ss.getColWidth(Coord.colIndexToName(i)) + "\n";
+        }
+      }
+
+      assertEquals(text, ssColWidthText);
+    } catch (FileNotFoundException e1) {
+      System.out.println("could not find dat file");
+    }
+  }
+
 }

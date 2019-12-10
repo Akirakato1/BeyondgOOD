@@ -1,5 +1,6 @@
 package edu.cs3500.spreadsheets.model;
 
+import java.util.HashMap;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,12 +20,12 @@ public final class WorksheetReader {
     /**
      * Creates a new cell at the given coordinates and fills in its raw contents.
      *
-     * @param col      the column of the new cell (1-indexed)
-     * @param row      the row of the new cell (1-indexed)
+     * @param col the column of the new cell (1-indexed)
+     * @param row the row of the new cell (1-indexed)
      * @param contents the raw contents of the new cell: may be {@code null}, or any string. Strings
-     *                 beginning with an {@code =} character should be treated as formulas; all
-     *                 other strings should be treated as number or boolean values if possible, and
-     *                 string values otherwise.
+     *        beginning with an {@code =} character should be treated as formulas; all other strings
+     *        should be treated as number or boolean values if possible, and string values
+     *        otherwise.
      * @return this {@link WorksheetBuilder}
      */
     WorksheetBuilder<T> createCell(int col, int row, String contents);
@@ -35,6 +36,16 @@ public final class WorksheetReader {
      * @return the fully-filled-in worksheet
      */
     T createWorksheet();
+
+
+    /**
+     * Sets the column width header hashmap of the spreadsheet model.
+     * 
+     * @param colWidths
+     * @return this worksheetbuilder for further building.
+     */
+    WorksheetBuilder<T> setColumnWidths(HashMap<String, Integer> colWidths);
+
   }
 
   /**
@@ -64,9 +75,9 @@ public final class WorksheetReader {
    * evaluation occurs during this creation process.
    * </p>
    *
-   * @param builder  The source of the new Worksheet object
+   * @param builder The source of the new Worksheet object
    * @param readable the input source for the contents of this Worksheet
-   * @param <T>      the type of Worksheet to produce
+   * @param <T> the type of Worksheet to produce
    * @return the fully-filled-in Worksheet
    */
   public static <T> T read(WorksheetBuilder<T> builder, Readable readable) {
@@ -98,5 +109,24 @@ public final class WorksheetReader {
     }
 
     return builder.createWorksheet();
+  }
+
+  /**
+   * Reads in the dat file, creates the colwidth hashmap, then sets it with the builder.
+   * 
+   * @param builder The source of the new Worksheet object.
+   * @param readable the input source for the contents of this Worksheet.
+   */
+  public static <T> void readDat(WorksheetBuilder<T> builder, Readable readable) {
+    Scanner scan = new Scanner(readable);
+    Scanner scanLine;
+    HashMap<String, Integer> map = new HashMap<>();
+    while (scan.hasNextLine()) {
+      scanLine = new Scanner(scan.nextLine());
+      if (scanLine.hasNext()) {
+        map.put(scanLine.next(), scanLine.nextInt());
+      }
+    }
+    builder.setColumnWidths(map);
   }
 }

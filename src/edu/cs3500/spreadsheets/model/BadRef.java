@@ -48,4 +48,9 @@ public class BadRef implements Ref {
   public HashSet<Coord> getDependent() {
     return new HashSet<Coord>();
   }
+
+  @Override
+  public boolean hasColumnRef() {
+    return false;
+  }
 }

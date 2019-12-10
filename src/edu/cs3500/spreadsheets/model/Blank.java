@@ -55,4 +55,9 @@ public class Blank implements Value {
     return new HashSet<Coord>();
   }
 
+  @Override
+  public boolean hasColumnRef() {
+    return false;
+  }
+
 }

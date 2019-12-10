@@ -69,5 +69,10 @@ public class Bool implements Value {
     return new HashSet<Coord>();
   }
 
+  @Override
+  public boolean hasColumnRef() {
+    return false;
+  }
+
 
 }

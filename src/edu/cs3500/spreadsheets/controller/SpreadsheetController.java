@@ -4,8 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.PrintWriter;
-
+import java.util.HashMap;
 import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.model.ISpreadsheetModel;
 import edu.cs3500.spreadsheets.model.SpreadsheetModelViewOnly;
@@ -30,7 +31,7 @@ public class SpreadsheetController implements Features {
   /**
    * Constructor to create a spreadsheet controller.
    *
-   * @param ss   spreadsheet model
+   * @param ss spreadsheet model
    * @param view model view
    */
   public SpreadsheetController(ISpreadsheetModel ss, SpreadsheetView view) {
@@ -97,9 +98,10 @@ public class SpreadsheetController implements Features {
   @Override
   public void save(String filename) {
     try {
-      File outputFile = new File(".\\" + filename);
+      this.saveDatFile(filename);
+      File outputFile = new File(".\\" + filename + ".txt");
       outputFile.delete();
-      outputFile = new File(".\\" + filename);
+      outputFile = new File(".\\" + filename + ".txt");
       PrintWriter writeFile = new PrintWriter(new FileOutputStream(outputFile, true));
       SpreadsheetView tv = new TextualView(writeFile, new SpreadsheetModelViewOnly(ss));
       tv.render();
@@ -110,11 +112,47 @@ public class SpreadsheetController implements Features {
     }
   }
 
+  private void saveDatFile(String filename) {
+
+    try {
+      HashMap<String, Integer> colWidths = this.view.getColumnWidths();
+      File outputFile = new File(".\\" + filename + ".dat");
+      outputFile.delete();
+      outputFile = new File(".\\" + filename + ".dat");
+      PrintWriter writeFile;
+
+      writeFile = new PrintWriter(new FileOutputStream(outputFile, true));
+
+
+      for (String h : colWidths.keySet()) {
+        writeFile.append(h + " " + colWidths.get(h) + "\n");
+      }
+      
+      writeFile.flush();
+      writeFile.close();
+    } catch (FileNotFoundException e) {
+      System.out.println("save dat file failed");
+    }
+  }
+
   @Override
   public void open(String filename) {
     try {
       WorksheetBuilder<ISpreadsheetModel> builder = new WorksheetBuilderImpl();
-      Readable file = new FileReader(filename);
+      Readable file = new FileReader(filename + ".txt");
+      Readable datFile;
+      try {
+        datFile = new FileReader(filename + ".dat");
+      } catch (FileNotFoundException e1) {
+        File createNewDat = new File(".\\" + filename + ".dat");
+        try {
+          createNewDat.createNewFile();
+        } catch (IOException e) {
+          System.out.println("failed to create new dat file");
+        }
+        datFile = new FileReader(filename + ".dat");
+      }
+      WorksheetReader.readDat(builder, datFile);
       WorksheetReader.read(builder, file);
       this.view.close();
       this.ss = builder.createWorksheet();
@@ -122,7 +160,10 @@ public class SpreadsheetController implements Features {
       view.addFeatures(this);
       this.view.render();
     } catch (FileNotFoundException e) {
-      System.out.println("input file not found");
+      System.out.println("input file not found " + filename);
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
     }
   }
 

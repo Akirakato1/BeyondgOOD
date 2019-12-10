@@ -47,4 +47,11 @@ public interface ISpreadsheetViewOnly {
    */
   int getRow();
 
+  /**
+   * Gets the column width of the given column header.
+   * @param colHeader the String representation of the column header. 
+   * @return an integer that is the column width. 
+   */
+  int getColWidth(String colHeader);
+
 }

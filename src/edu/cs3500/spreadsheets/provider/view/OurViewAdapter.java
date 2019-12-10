@@ -1,19 +1,21 @@
 package edu.cs3500.spreadsheets.provider.view;
 
+import java.util.HashMap;
 import edu.cs3500.spreadsheets.controller.Features;
 import edu.cs3500.spreadsheets.model.Coord;
 import edu.cs3500.spreadsheets.controller.ProviderFeaturesAdapter;
 import edu.cs3500.spreadsheets.view.SpreadsheetView;
 
 /**
- * Turns provider view interface into our spreadsheet view interface. We used
- * the adapter pattern to make sure their view is compatible with our view.
+ * Turns provider view interface into our spreadsheet view interface. We used the adapter pattern to
+ * make sure their view is compatible with our view.
  */
 public class OurViewAdapter implements SpreadsheetView {
   WorksheetView ws;
 
   /**
    * Constructor for our view adapter.
+   * 
    * @param ws takes in worksheet view (provider interface)
    */
   public OurViewAdapter(WorksheetView ws) {
@@ -61,5 +63,11 @@ public class OurViewAdapter implements SpreadsheetView {
     ws.highlightAt(new Coord(col, row));
     ws.refresh();
   }
+
+  @Override
+  public HashMap<String, Integer> getColumnWidths() {
+    throw new UnsupportedOperationException("get column widths not supported by provider view");
+  }
+
 
 }

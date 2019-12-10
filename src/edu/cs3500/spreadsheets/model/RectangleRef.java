@@ -6,8 +6,8 @@ import java.util.HashSet;
  * To represent a rectangle of references (used when user inputs something like A1:B3).
  */
 class RectangleRef implements Ref {
-  protected final Coord first;
-  protected final Coord second;
+  protected Coord first;
+  protected Coord second;
   protected ISpreadsheetModel ss;
 
 
@@ -33,7 +33,7 @@ class RectangleRef implements Ref {
     return new Blank();
   }
 
-  public Formula[] expand() {
+  protected Formula[] expand() {
     Formula[] expanded = new Formula[(second.col - first.col + 1) * (second.row - first.row + 1)];
     int k = 0;
     for (int i = first.row; i <= second.row; i++) {
@@ -80,6 +80,11 @@ class RectangleRef implements Ref {
       output.addAll(r.getDependent());
     }
     return output;
+  }
+
+  @Override
+  public boolean hasColumnRef() {
+    return false;
   }
 
 }

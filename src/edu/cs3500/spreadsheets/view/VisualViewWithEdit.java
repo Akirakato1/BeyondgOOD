@@ -1,11 +1,10 @@
 package edu.cs3500.spreadsheets.view;
 
 import java.awt.GridBagLayout;
+import java.util.HashMap;
 import java.awt.BorderLayout;
-
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
-
 import edu.cs3500.spreadsheets.controller.Features;
 import edu.cs3500.spreadsheets.model.ISpreadsheetViewOnly;
 
@@ -19,13 +18,14 @@ public class VisualViewWithEdit extends AbstractVisualView {
 
   /**
    * Constructor for visual view edit.
+   * 
    * @param name name of file
    * @param ss spreadsheet model
    * @param windowWidth window width
    * @param windowHeight window height
    */
   public VisualViewWithEdit(String name, ISpreadsheetViewOnly ss, int windowWidth,
-                            int windowHeight) {
+      int windowHeight) {
     super(name, ss, windowWidth, windowHeight);
     this.editUI = new EditBoxAndExpand();
     this.saveopen = new SaveOpen();
@@ -73,6 +73,11 @@ public class VisualViewWithEdit extends AbstractVisualView {
   @Override
   public void close() {
     this.jf.setVisible(false);
+  }
+
+  @Override
+  public HashMap<String, Integer> getColumnWidths() {
+    return this.table.getCurrentColWidths();
   }
 
 }

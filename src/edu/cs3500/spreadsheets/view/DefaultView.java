@@ -1,5 +1,6 @@
 package edu.cs3500.spreadsheets.view;
 
+import java.util.HashMap;
 import edu.cs3500.spreadsheets.controller.Features;
 import edu.cs3500.spreadsheets.model.ISpreadsheetViewOnly;
 
@@ -22,8 +23,7 @@ public abstract class DefaultView implements SpreadsheetView {
   @Override
   public void addFeatures(Features f) {
     /**
-     * Textual views do not have buttons/views so we did not allow it to
-     * have a controller.
+     * Textual views do not have buttons/views so we did not allow it to have a controller.
      */
   }
 
@@ -56,5 +56,10 @@ public abstract class DefaultView implements SpreadsheetView {
   public void setHighlight(int row, int col) {
     // Do nothing because jTable already does the highlighting for us. This
     // was placed here to more easily adapt the provider's code.
+  }
+
+  @Override
+  public HashMap<String, Integer> getColumnWidths() {
+    throw new UnsupportedOperationException("getColumnWidths not supported");
   }
 }

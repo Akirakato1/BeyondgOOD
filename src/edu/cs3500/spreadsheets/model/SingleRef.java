@@ -58,4 +58,9 @@ class SingleRef implements Ref {
     output.add(refCoord);
     return output;
   }
+
+  @Override
+  public boolean hasColumnRef() {
+    return false;
+  }
 }

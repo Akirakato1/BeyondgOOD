@@ -1,5 +1,6 @@
 package edu.cs3500.spreadsheets.view;
 
+import java.util.HashMap;
 import edu.cs3500.spreadsheets.controller.Features;
 
 /**
@@ -32,8 +33,8 @@ public interface SpreadsheetView {
    * Updates the view of the cell at the given coordinates.
    *
    * @param value new formula
-   * @param row   cell row
-   * @param col   cell column
+   * @param row cell row
+   * @param col cell column
    */
   void updateCellValue(String value, int row, int col);
 
@@ -59,6 +60,14 @@ public interface SpreadsheetView {
    * @param col given cell column
    */
   void setHighlight(int row, int col);
+
+  /**
+   * Creates and returns a hashmap between columnheader to its width. Mapping is created if the
+   * width is not equal to the default width.
+   * 
+   * @return Hashmap of header to width.
+   */
+  HashMap<String, Integer> getColumnWidths();
 
 
 }
