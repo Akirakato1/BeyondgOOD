@@ -1,7 +1,29 @@
+Extra credit features we implemented:
+
+- supporting column references
+- allowing resizable cells
+
+Files changed: 
+ISpreadSheetModel
+ISpreadSheetReadOnly
+TranslateSexp
+ColumnRef
+Formula
+SpreadsheetTable
+TestControllerView
+TestSpreadsheet
+TestExtraCredit
+WorksheetBuilderImpl
+WorksheetReader
+BeyondgOOD
+
+
+__________________________________________________________________________________________________
+
 Assignment 7 changes README:
 Model:
 added dependent and dependee maps to reevalute cells upon update efficiently. Changes were made in reevalute function and helpers added to support this functionality. 
-Used adapter to create ViewOnlyModel that will be passed into the view when initilising. It does not have any access to methods that modify the model. 
+Used adapter to create ViewOnlyModel that will be passed into the view when initialising. It does not have any access to methods that modify the model. 
 
 View: 
 Create abstract class DefaultView to make all methods optional to throw unsupportedException. Created abstract class AbstractVisualView extends DefaultView that provides fields necessary for visual views and helper for render to eliminate duplicate code in VisualView and VisualViewWithEdits. 

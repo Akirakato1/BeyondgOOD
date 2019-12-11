@@ -27,14 +27,14 @@ public class SpreadsheetModel implements ISpreadsheetModel {
   public static final Integer DEFAULT_COL_WIDTH = 80;
   private static final int DEFAULT_ROW = 20;
   private static final int DEFAULT_COL = 20;
+  private boolean firstUpdate = true;
 
 
   /**
    * Default constructor for spreadsheet model.
    */
   public SpreadsheetModel() {
-    this.row = this.DEFAULT_ROW;
-    this.col = this.DEFAULT_COL;
+   this(DEFAULT_ROW, DEFAULT_COL);
   }
 
   /**
@@ -54,13 +54,23 @@ public class SpreadsheetModel implements ISpreadsheetModel {
    * @param coord cell coordinate
    */
   private void calculateRowCol(Coord coord) {
-    System.out.println(coord + " current: " + col + " " + row);
+    if (firstUpdate) {
+      int maxCol = DEFAULT_COL;
+      for (String col : colHeaderWidth.keySet()) {
+        if (maxCol < Coord.colNameToIndex(col)) {
+          maxCol = Coord.colNameToIndex(col);
+        }
+      }
+      firstUpdate = false;
+      calculateRowCol(new Coord(maxCol+1, this.row));
+    }
     if (coord.col > col) {
       col = coord.col;
     }
     if (coord.row > row) {
       row = coord.row;
     }
+    System.out.println("model col: "+this.col+" row:"+this.row);
   }
 
   @Override

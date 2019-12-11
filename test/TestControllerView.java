@@ -1,15 +1,9 @@
 import org.junit.Test;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Scanner;
-
 import edu.cs3500.spreadsheets.controller.Features;
 import edu.cs3500.spreadsheets.controller.SpreadsheetController;
 import edu.cs3500.spreadsheets.model.Coord;
@@ -21,7 +15,6 @@ import edu.cs3500.spreadsheets.model.WorksheetReader.WorksheetBuilder;
 import edu.cs3500.spreadsheets.view.SpreadsheetView;
 import edu.cs3500.spreadsheets.view.VisualViewWithEdit;
 import edu.cs3500.spreadsheets.model.ISpreadsheetModel;
-
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -123,8 +116,7 @@ public class TestControllerView {
 
     this.ss.setColHeaderWidths(map);
     SpreadsheetView vv2 =
-            new VisualViewWithEdit("test2", new SpreadsheetModelViewOnly(ss)
-                    , 1000, 500);
+        new VisualViewWithEdit("test2", new SpreadsheetModelViewOnly(ss), 1000, 500);
     Features controller2 = new SpreadsheetController(ss, vv2);
     controller2.save("testColWidthDatOne");
 
@@ -144,10 +136,8 @@ public class TestControllerView {
 
       String ssColWidthText = "";
       for (int i = 1; i < ss.getCol(); i++) {
-        if (ss.getColWidth(Coord.colIndexToName(i)) != SpreadsheetModel.DEFAULT_COL_WIDTH) {
-          ssColWidthText = ssColWidthText + Coord.colIndexToName(i) + " "
-                  + this.ss.getColWidth(Coord.colIndexToName(i)) + "\n";
-        }
+        ssColWidthText = ssColWidthText + Coord.colIndexToName(i) + " "
+            + this.ss.getColWidth(Coord.colIndexToName(i)) + "\n";
       }
 
       assertEquals(text, ssColWidthText);

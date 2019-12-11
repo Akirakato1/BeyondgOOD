@@ -24,6 +24,7 @@ class SpreadsheetTable extends JPanel {
   private final ISpreadsheetViewOnly ss;
   private final int windowWidth;
   private final int windowHeight;
+  private HashMap<String, Integer> localColWidthMap = new HashMap<>();
 
   /**
    * Constructor for SpreadsheetTable.
@@ -60,7 +61,7 @@ class SpreadsheetTable extends JPanel {
     table.getColumnModel().getColumn(0).setCellRenderer(new GrayBackground());
     table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
     this.setColWidths();
-
+    table.getColumnModel().getColumn(0).setPreferredWidth(50);
   }
 
   /**
@@ -70,7 +71,7 @@ class SpreadsheetTable extends JPanel {
     for (int i = 1; i < ss.getCol(); i++) {
       this.table.getColumnModel().getColumn(i)
           .setPreferredWidth(ss.getColWidth(Coord.colIndexToName(i)));
-     this.table.getColumnModel().getColumn(i).setWidth(ss.getColWidth(Coord.colIndexToName(i)));
+      this.table.getColumnModel().getColumn(i).setWidth(ss.getColWidth(Coord.colIndexToName(i)));
     }
   }
 
@@ -83,11 +84,11 @@ class SpreadsheetTable extends JPanel {
   protected HashMap<String, Integer> getCurrentColWidths() {
     HashMap<String, Integer> output = new HashMap<>();
     int colWidth;
-    for (int i = 1; i < ss.getCol(); i++) {
+    for (int i = 1; i < this.table.getColumnCount(); i++) {
       colWidth = this.table.getColumnModel().getColumn(i).getWidth();
-      if (colWidth != SpreadsheetModel.DEFAULT_COL_WIDTH) {
-        output.put(Coord.colIndexToName(i), colWidth);
-      }
+      // if (colWidth != SpreadsheetModel.DEFAULT_COL_WIDTH) {
+      output.put(Coord.colIndexToName(i), colWidth);
+      // }
     }
     return output;
   }
@@ -220,10 +221,24 @@ class SpreadsheetTable extends JPanel {
    */
   void increaseCol() {
     CellUneditable model = (CellUneditable) table.getModel();
+    localColWidthMap = this.getCurrentColWidths();
     model.addColumn(Coord.colIndexToName(ss.getCol() - 1), new String[0]);
     table.setModel(model);
     table.getColumnModel().getColumn(0).setCellRenderer(new GrayBackground());
     table.getColumnModel().getColumn(0).setPreferredWidth(50);
+    this.setColWidthsTable();
+  }
+
+  /**
+   * Sets the table's width with the cached table width data.
+   */
+  private void setColWidthsTable() {
+    for (String col : this.localColWidthMap.keySet()) {
+      this.table.getColumnModel().getColumn(Coord.colNameToIndex(col))
+          .setPreferredWidth(this.localColWidthMap.get(col));
+      this.table.getColumnModel().getColumn(Coord.colNameToIndex(col))
+          .setWidth(this.localColWidthMap.get(col));
+    }
   }
 
   /**

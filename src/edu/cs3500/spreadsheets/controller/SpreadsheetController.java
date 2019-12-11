@@ -75,6 +75,9 @@ public class SpreadsheetController implements Features {
   public void addCol() {
     ss.addCol();
     view.increaseCol();
+    HashMap<String, Integer> colWidths = this.view.getColumnWidths();
+    ss.setColHeaderWidths(colWidths);
+
   }
 
   @Override
@@ -127,7 +130,7 @@ public class SpreadsheetController implements Features {
       for (String h : colWidths.keySet()) {
         writeFile.append(h + " " + colWidths.get(h) + "\n");
       }
-      
+
       writeFile.flush();
       writeFile.close();
     } catch (FileNotFoundException e) {

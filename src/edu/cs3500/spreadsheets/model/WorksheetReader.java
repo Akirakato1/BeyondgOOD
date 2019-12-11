@@ -120,11 +120,15 @@ public final class WorksheetReader {
   public static <T> void readDat(WorksheetBuilder<T> builder, Readable readable) {
     Scanner scan = new Scanner(readable);
     Scanner scanLine;
+    String col = "";
+    int width;
     HashMap<String, Integer> map = new HashMap<>();
     while (scan.hasNextLine()) {
       scanLine = new Scanner(scan.nextLine());
       if (scanLine.hasNext()) {
-        map.put(scanLine.next(), scanLine.nextInt());
+        col = scanLine.next();
+        width = scanLine.nextInt();
+        map.put(col, width);
       }
     }
     builder.setColumnWidths(map);
