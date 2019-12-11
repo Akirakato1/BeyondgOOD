@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import edu.cs3500.spreadsheets.controller.Features;
 import edu.cs3500.spreadsheets.controller.SpreadsheetController;
 import edu.cs3500.spreadsheets.model.Coord;
@@ -66,7 +67,7 @@ public class BeyondGood {
             } else if (args[counter].equals("-provider") && args.length == 1) {
               ss = builder.createWorksheet();
               WorksheetView wv =
-                  ViewFactory.makeGraphical(new ProviderModelAdapter(ss), GUIViewType.STATIC);
+                      ViewFactory.makeGraphical(new ProviderModelAdapter(ss), GUIViewType.STATIC);
               loopCondition = false;
               break;
             } else if (args[counter].equals("-edit") && args.length == 1) {
@@ -118,7 +119,7 @@ public class BeyondGood {
               break;
             } else if (args[counter].equals("-provider") && args.length == 3) {
               vv = new OurViewAdapter(
-                  ViewFactory.makeGraphical(new ProviderModelAdapter(ss), GUIViewType.EDIT));
+                      ViewFactory.makeGraphical(new ProviderModelAdapter(ss), GUIViewType.EDIT));
               controller = new SpreadsheetController(ss, vv);
               SpreadsheetFeatures pc = new ProviderFeaturesAdapter(controller);
 

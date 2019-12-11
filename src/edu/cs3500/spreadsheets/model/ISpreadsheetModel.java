@@ -80,7 +80,16 @@ public interface ISpreadsheetModel {
    */
   void addRow();
 
+  /**
+   * Gets the column width of the given header.
+   * @param colHeader given header in string form
+   * @return column width of the header
+   */
   int getColWidth(String colHeader);
 
+  /**
+   * Sets all the column headers given a map of the headers
+   * @param map given map of header widths to set the model with
+   */
   void setColHeaderWidths(HashMap<String, Integer> map);
 }
